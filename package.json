@@ -1,0 +1,91 @@
+{
+  "name": "maxim-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prebuild": "yarn",
+    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve",
+    "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve --fix",
+    "prod": "vue-cli-service build --mode production --fix",
+    "prepackage": "yarn prod",
+    "package": "tar zcvf maxim-web.tar.gz dist",
+    "presdk": "yarn",
+    "sdk": "webpack --mode production --config ./config/webpack.sdk.config.js",
+    "prewasm": "yarn sdk",
+    "wasm": "./scripts/generate-wasm.sh && ./scripts/build-wasm.sh",
+    "prerelease-wasm": "yarn wasm",
+    "release-wasm": "./scripts/floo.sh maxim-web --wasm",
+    "prerelease": "yarn sdk",
+    "release": "./scripts/floo.sh maxim-web"
+  },
+  "dependencies": {
+    "core-js": "2",
+    "vuex": "^3.0.1",
+    "webpack-cli": "^3.3.10"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^4.1.2",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/eslint-config-prettier": "^5.0.0",
+    "assemblyscript": "^0.8.1",
+    "axios": "^0.19.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "7",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "clean-webpack-plugin": "^1.0.1",
+    "element-ui": "^2.12.0",
+    "eslint": "^6.4.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-vue": "^6.1.2",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "protobufjs": "^6.8.8",
+    "qrcode": "^1.3.3",
+    "query-string": "^6.2.0",
+    "socket.io-client": "^2.2.0",
+    "strip-ansi": "^6.0.0",
+    "terser-webpack-plugin": "^2.3.1",
+    "typescript": "^3.7.4",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.10",
+    "webpack-encoding-plugin": "^0.3.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "eslintIgnore": [
+    "/lib/", "/dist/", "/node_modules/"
+  ],
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
