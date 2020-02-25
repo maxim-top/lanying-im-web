@@ -1,9 +1,9 @@
 <template>
   <div class="chat-index">
-    <Header />
-    <Chat />
-    <Inputer />
-    <Forward />
+    <Header/>
+    <Chat/>
+    <Inputer/>
+    <Forward/>
   </div>
 </template>
 
@@ -13,7 +13,8 @@ import Inputer from "./inputer.vue";
 import Header from "./header.vue";
 import Forward from "./forward.vue";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "RosterChat",
   data() {

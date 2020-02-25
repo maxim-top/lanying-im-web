@@ -1,18 +1,18 @@
 <template>
   <div class="user_setting">
     <div class="avatar">
-      <img :src="avatar" class="av" @click="touchedAvatar" />
-      <img src="/image/qr.png" class="qrcode" @click="viewQrcode" />
+      <img :src="avatar" @click="touchedAvatar" class="av"/>
+      <img @click="viewQrcode" class="qrcode" src="/image/qr.png"/>
     </div>
-    <input type="file" ref="fileRef" @change="fileChangeHandler" />
+    <input @change="fileChangeHandler" ref="fileRef" type="file"/>
     <div class="line">
       <span class="ll">手机号码</span>
-      <p class="lr" @click="settingMobile">{{mobile  || '点击设置' }}</p>
+      <p @click="settingMobile" class="lr">{{mobile || '点击设置' }}</p>
       <!-- <input type="text" v-model="mobile" /><a @click="saveMobile">保存</a> -->
     </div>
     <div class="line">
       <span class="ll">昵称</span>
-      <p class="lr" @click="settingNick">{{nick_name || '点击设置' }}</p>
+      <p @click="settingNick" class="lr">{{nick_name || '点击设置' }}</p>
       <!-- <input type="text" v-model="nick_name" /><a @click="saveNick">保存</a> -->
     </div>
     <div class="line">
@@ -22,20 +22,21 @@
     </div>
     <div class="line">
       <span class="ll">好友验证</span>
-      <i @click="rosterSwitchTouch" class="switcher" :class="['r', auth_mode?'switcher_on':'switcher_off']"></i>
+      <i :class="['r', auth_mode?'switcher_on':'switcher_off']" @click="rosterSwitchTouch" class="switcher"></i>
     </div>
     <div class="line">
       <span class="ll">群邀请验证</span>
-      <i @click="groupSwitchTouch" class="switcher" :class="['r', group_confirm  ? 'switcher_on':'switcher_off']"></i>
+      <i :class="['r', group_confirm  ? 'switcher_on':'switcher_off']" @click="groupSwitchTouch" class="switcher"></i>
     </div>
 
-    <div class="logout" @click="logout">退出</div>
+    <div @click="logout" class="logout">退出</div>
 
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "rosterInfo",
   data() {
@@ -166,7 +167,8 @@ export default {
               alert("修改成功");
             });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     settingNick() {
       const im = this.$store.getters.im;
@@ -181,7 +183,8 @@ export default {
             alert("修改成功");
           });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     }
     //methods finish
   },

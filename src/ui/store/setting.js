@@ -7,43 +7,41 @@ const state = {
 };
 
 const getters = {
-  getSettingInfo (state) {
+  getSettingInfo(state) {
     return state.settingInfo;
   },
 
-  getProfileInfo (state) {
+  getProfileInfo(state) {
     return state.profileInfo;
   },
-
 
 
 };
 
 const mutations = {
-  setSettingInfo (state, x) {
+  setSettingInfo(state, x) {
     state.settingInfo = x;
   },
 
-  setProfileInfo (state, x) {
+  setProfileInfo(state, x) {
     state.profileInfo = x;
   },
 
 };
 
 const actions = {
-  actionGetProfile (context) {
+  actionGetProfile(context) {
     const { rootState } = context;
     rootState.im.userManage.asyncGetProfile(true).then(res => {
       context.commit('setProfileInfo', res)
     })
   },
-  actionGetSettingInfo (context) {
+  actionGetSettingInfo(context) {
     const { rootState } = context;
     rootState.im.userManage.asyncGetSettings().then(res => {
       context.commit('setSettingInfo', res)
     })
   }
-
 
 
 };

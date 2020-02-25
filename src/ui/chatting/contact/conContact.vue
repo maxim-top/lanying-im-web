@@ -3,34 +3,35 @@
     <div class="roster">
       <div @click="rosterTitleClick" class="header">好友 ({{getRosterList.length}})</div>
       <div class="list" v-show="rosterShow">
-        <div v-for="roster in getRosterList" v-bind:key="roster.user_id"
-             class="item" @click="touchRoster(roster.user_id)"> <img class="avatar" :src="roster.avatar" />
+        <div @click="touchRoster(roster.user_id)" class="item"
+             v-bind:key="roster.user_id" v-for="roster in getRosterList"><img :src="roster.avatar" class="avatar"/>
           <span class="name">{{roster.username}}</span>
         </div>
       </div>
     </div>
     <div class="group">
-      <div class="header" @click="groupTitleClick">群组 ({{getGroupList.length}})</div>
+      <div @click="groupTitleClick" class="header">群组 ({{getGroupList.length}})</div>
       <div class="list" v-show="groupShow">
-        <div v-for="group in getGroupList" v-bind:key="group.group_id" class="item"
-             @click="touchGroup(group.group_id)"> <img class="avatar" :src="group.avatar">
+        <div @click="touchGroup(group.group_id)" class="item" v-bind:key="group.group_id"
+             v-for="group in getGroupList"><img :src="group.avatar" class="avatar">
           <span class="name">{{group.name}}</span>
         </div>
       </div>
     </div>
     <div class="notice">
-      <div class="header" @click="noticeTitleClick" >系统消息</div>
+      <div @click="noticeTitleClick" class="header">系统消息</div>
       <div class="list" v-show="noticeShow">
-        <div class="item" @click="noticeClick('rosterNotice')"><span class="name">好友申请</span></div>
-        <div class="item" @click="noticeClick('groupInviteNotice')"><span class="name">群邀请</span></div>
-        <div class="item" @click="noticeClick('grpupApplyNotice')"><span class="name">群申请</span></div>
+        <div @click="noticeClick('rosterNotice')" class="item"><span class="name">好友申请</span></div>
+        <div @click="noticeClick('groupInviteNotice')" class="item"><span class="name">群邀请</span></div>
+        <div @click="noticeClick('grpupApplyNotice')" class="item"><span class="name">群申请</span></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {

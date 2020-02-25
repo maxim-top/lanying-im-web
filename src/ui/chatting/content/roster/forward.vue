@@ -1,31 +1,35 @@
 <template>
   <div
-    v-if="getShowForwardList"
     class="forwardMemberList"
+    v-if="getShowForwardList"
   >
     <div
       @click="cancelForward"
       class="closer"
-    >X</div>
+    >X
+    </div>
     <div class="sep">---好友---</div>
     <div
-      v-for="roster in getRosterList"
-      v-bind:key="roster.id"
       @click="clickMemberForwardMember(roster.id, 'roster')"
-    >{{roster.name}}</div>
+      v-bind:key="roster.id"
+      v-for="roster in getRosterList"
+    >{{roster.name}}
+    </div>
     <div class="sep">---群---</div>
 
     <div
-      v-for="group in getGroupList"
-      v-bind:key="group.id"
       @click="clickMemberForwardMember(group.id, 'group')"
-    >{{group.name}}</div>
+      v-bind:key="group.id"
+      v-for="group in getGroupList"
+    >{{group.name}}
+    </div>
 
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "RosterForward",
   mounted() {

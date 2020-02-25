@@ -9,40 +9,40 @@ const state = {
 };
 
 const getters = {
-  getRosterList (state) {
+  getRosterList(state) {
     return state.rosterList;
   },
 
-  getGroupList (state) {
+  getGroupList(state) {
     return state.groupList;
   },
 
-  getShowForwardList (state) {
+  getShowForwardList(state) {
     return state.showForwardList;
   },
 };
 
 const mutations = {
-  setRosterList (state, x) {
+  setRosterList(state, x) {
     state.rosterList = x;
   },
 
-  setGroupList (state, x) {
+  setGroupList(state, x) {
     state.groupList = x;
   },
 
-  setForwardMessage (state, x) {
+  setForwardMessage(state, x) {
     state.forwardMessage = x;
   },
 
-  setShowForwardList (state, x) {
+  setShowForwardList(state, x) {
     state.showForwardList = x;
   }
 
 };
 
 const actions = {
-  actionGetForwardList (context) {
+  actionGetForwardList(context) {
     const { rootState, state } = context;
     if (!state.rosterList.length && !state.groupList.length) {
       rootState.im.rosterManage.asyncGetRosterIdList().then(res => {
@@ -73,12 +73,12 @@ const actions = {
     }
   },
 
-  actionRecordForwardMessage (context, x) { // 记录要转发的message
+  actionRecordForwardMessage(context, x) { // 记录要转发的message
     context.commit('setForwardMessage', x);
     context.commit('setShowForwardList', true);
   },
 
-  actionForwardMessage (context, param) {
+  actionForwardMessage(context, param) {
     const { rootState, state } = context;
     const { type, id: xid } = param; //type: group, roster; id: uid,gid
     const fmsg = {};
@@ -92,7 +92,7 @@ const actions = {
     context.commit('setShowForwardList', false);
   },
 
-  actionCancelForward (context) {
+  actionCancelForward(context) {
     context.commit('setShowForwardList', false);
   }
 

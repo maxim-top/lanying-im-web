@@ -10,29 +10,29 @@ const state = {
 };
 
 const getters = {
-  getAppStatus (state) {
+  getAppStatus(state) {
     return state.appStatus;
   },
-  getLoginLog (state) {
+  getLoginLog(state) {
     return state.loginLog;
   },
-  getMobileSign (state) {
+  getMobileSign(state) {
     return state.mobileSign;
   },
-  getSignMobile (state) {
+  getSignMobile(state) {
     return state.signMobile;
   },
-  getLoginInfo (state) {
+  getLoginInfo(state) {
     return state.loginInfo;
   }
 };
 
 const mutations = {
-  changeAppStatus (state, status) { //如何变化collects,插入items
+  changeAppStatus(state, status) { //如何变化collects,插入items
     state.appStatus = status;
   },
 
-  addLoginLog (state, log) {
+  addLoginLog(state, log) {
     let sr = [].concat(state.loginLog);
     sr.push(log);
     if (sr.length > 3) {
@@ -40,33 +40,33 @@ const mutations = {
     }
     state.loginLog = sr;
   },
-  setMobileSigh (state, sign) {
+  setMobileSigh(state, sign) {
     state.mobileSign = sign;
   },
-  setSighMobile (state, mobile) {
+  setSighMobile(state, mobile) {
     state.signMobile = mobile;
   },
-  setLoginInfo (state, info) {
+  setLoginInfo(state, info) {
     state.loginInfo = info;
   }
 
 };
 
 const actions = {
-  actionChangeAppStatus (context, status) { //触发mutations里面的pushCollects ,传入数据形参item 对应到items
+  actionChangeAppStatus(context, status) { //触发mutations里面的pushCollects ,传入数据形参item 对应到items
     context.commit('changeAppStatus', status);
   },
 
-  actionAddLoginLog (context, log) {
+  actionAddLoginLog(context, log) {
     context.commit('addLoginLog', log);
   },
-  actionSetMobileSign (context, sign) {
+  actionSetMobileSign(context, sign) {
     context.commit('setMobileSigh', sign);
   },
-  actionSetSignMobile (context, mobile) {
+  actionSetSignMobile(context, mobile) {
     context.commit('setSighMobile', mobile);
   },
-  actionSetLoginInfo (context, info) {
+  actionSetLoginInfo(context, info) {
     context.commit('setLoginInfo', info);
   }
 

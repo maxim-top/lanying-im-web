@@ -1,11 +1,11 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint" @click="changeAppID(appid)"> AppID: {{appid}}</span>
-      <img class='edit_logo' @click="changeAppID(appid)" src='/image/edit.png' />
+      <span @click="changeAppID(appid)" class="hint"> AppID: {{appid}}</span>
+      <img @click="changeAppID(appid)" class='edit_logo' src='/image/edit.png'/>
     </p>
     <div class="logo">
-      <img src="/image/logob.png" />
+      <img src="/image/logob.png"/>
     </div>
     <!-- <div class="tab">
       <span>登录</span>
@@ -13,23 +13,25 @@
       <span class="reg" @click="touchReg">注册</span>
     </div> -->
     <div class="iptFrame mt21">
-      <input v-model="user.username" type="text" placeholder="用户名" autocomplete="false" />
+      <input autocomplete="false" placeholder="用户名" type="text" v-model="user.username"/>
     </div>
 
     <div class="iptFrame mt14">
-      <input v-model="user.password" @keyup.enter="submit" type="password" ref="password" placeholder="密码" autocomplete="false" />
+      <input @keyup.enter="submit" autocomplete="false" placeholder="密码" ref="password" type="password"
+             v-model="user.password"/>
     </div>
-    <div class="loginBtn mt14" @click="submit">注册</div>
+    <div @click="submit" class="loginBtn mt14">注册</div>
     <!-- <div class="log">
       <p v-for="(txt, index) in getLoginLog" :key="index">{{txt}}</p>
     </div> -->
     <p class="tab">
-      <span class="mr5 colorb" @click="switchLogin('login')">已有账号，去登录</span></p>
+      <span @click="switchLogin('login')" class="mr5 colorb">已有账号，去登录</span></p>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "regedit",
   props: ["sdkok", "appid"],
@@ -46,7 +48,7 @@ export default {
     ...mapGetters("login", ["getShowLayerFlag", "getLoginLog"])
   },
   methods: {
-    changeAppID(presentAppID){
+    changeAppID(presentAppID) {
       this.$store.dispatch("layer/actionSetAppID", presentAppID);
       this.$store.dispatch("layer/actionSetShowing", "changeappid");
       this.$store.dispatch("layer/actionSetShowmask", "true");

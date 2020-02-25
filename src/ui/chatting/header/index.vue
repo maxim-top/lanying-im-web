@@ -1,23 +1,24 @@
 <template>
   <div class="header">
     <div class="searchArea">
-      <input type="text" v-model="kw" placeHolder="搜索会话" @input="handleSearch" />
+      <input @input="handleSearch" placeHolder="搜索会话" type="text" v-model="kw"/>
       <div @click="headerAddChickHandler" class="addBtn"></div>
     </div>
-    <div class="tab" >
+    <div class="tab">
       <div @click="touchRecent" class="stab"><img :src="convImage"/></div>
       <div @click="touchContact" class="stab"><img :src="contactImage"/></div>
       <div @click="touchSetting" class="stab"><img :src="settingImage"/></div>
     </div>
     <div class="profile">
-      <img class="proAvater" :src="avatar" @click="touchSetting" />
+      <img :src="avatar" @click="touchSetting" class="proAvater"/>
       <div @click="touchSetting" class="proname">{{getUserProfile.username}}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   mounted() {
     this.$store.dispatch("header/actionLazyGetHeaderProfile");
@@ -33,8 +34,8 @@ export default {
     };
   },
   watch: {
-    getHeaderStatus( selected ){
-      this.changeStabImage( selected );
+    getHeaderStatus(selected) {
+      this.changeStabImage(selected);
     }
   },
   computed: {
@@ -52,18 +53,18 @@ export default {
   },
 
   methods: {
-    changeStabImage( selected ){
+    changeStabImage(selected) {
       this.convImage = "/image/conv.png";
       this.contactImage = "/image/contact.png";
       this.settingImage = "/image/setting.png";
 
-      if(selected === "contact"){
+      if (selected === "contact") {
         this.contactImage = "/image/contact-s.png";
-      }else if(selected === "conversation"){
+      } else if (selected === "conversation") {
         this.convImage = "/image/conv-s.png";
-      }else if(selected === "setting"){
+      } else if (selected === "setting") {
         this.settingImage = "/image/setting-s.png";
-      }else{
+      } else {
         //what are you doing??
         this.touchContact();
       }
@@ -84,7 +85,7 @@ export default {
       this.closeOtherLayers();
     },
 
-    closeOtherLayers(){
+    closeOtherLayers() {
       this.$store.dispatch("contact/actionSetSearchkeyword", "");
 
       this.$store.dispatch("layer/actionSetShowing", "");

@@ -1,12 +1,13 @@
 <template>
   <div class="header">
     <span @click="touchUserNameHandler">{{rosterName}}</span>
-    <span v-if="status" class="typing" style="padding-left:10px;color:#DDD;font-size:10px;">正在输入...</span>
+    <span class="typing" style="padding-left:10px;color:#DDD;font-size:10px;" v-if="status">正在输入...</span>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "RosterChat",
   data() {

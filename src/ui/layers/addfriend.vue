@@ -10,35 +10,35 @@
       <div class="layer_content">
         <p class="inputer">
           <input
-            v-model="username"
             placeHolder="输入username"
             type="text"
+            v-model="username"
           />
           <a
-            class="button"
             @click="searchNameClickHandler"
+            class="button"
           >搜索name</a>
         </p>
         <p class="inputer">
           <input
-            v-model="user_id"
             placeHolder="输入userid"
             type="text"
+            v-model="user_id"
           />
           <a
-            class="button"
             @click="searchIdClickHandler"
+            class="button"
           >搜索id</a>
         </p>
         <div
-          v-if="searchResult.user_id>0"
           class="add_roster_searchList"
+          v-if="searchResult.user_id>0"
         >
           <span v-if="isFriend">{{searchResult.username}} (已是好友)</span>
           <span v-if="!isFriend">{{searchResult.username}}
             <input
-              type="text"
               placeHolder="别名"
+              type="text"
               v-model="alias"
             >
             <span @click="clickUserHandler">添加好友</span></span>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   data() {
@@ -61,7 +61,8 @@ export default {
     };
   },
   name: "contentIndex",
-  mounted() {},
+  mounted() {
+  },
   components: {},
   computed: {
     ...mapGetters("layer", ["getShowing"]),

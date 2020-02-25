@@ -1,27 +1,29 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint" > AppID: {{appid}}</span>
+      <span class="hint"> AppID: {{appid}}</span>
     </p>
     <div class="logo">
-      <img src="/image/logo4.png" />
+      <img src="/image/logo4.png"/>
     </div>
     <p class="tab">继续注册，请绑定账户</p>
     <div class="iptFrame mt21">
-      <input v-model="user.username" type="text" placeholder="用户名" autocomplete="false" />
+      <input autocomplete="false" placeholder="用户名" type="text" v-model="user.username"/>
     </div>
 
     <div class="iptFrame mt14">
-      <input v-model="user.password" @keyup.enter="submit" type="password" ref="password" placeholder="密码" autocomplete="false" />
+      <input @keyup.enter="submit" autocomplete="false" placeholder="密码" ref="password" type="password"
+             v-model="user.password"/>
     </div>
-    <div class="loginBtn mt14" @click="submit">注册</div>
+    <div @click="submit" class="loginBtn mt14">注册</div>
     <p class="tab">
-      <span class="mr5 colorb" @click="switchLogin('bindacc')">已有账户，直接绑定</span></p>
+      <span @click="switchLogin('bindacc')" class="mr5 colorb">已有账户，直接绑定</span></p>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "bingreg",
   props: ["sdkok", "appid"],
@@ -33,7 +35,8 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+  },
 
   computed: {
     ...mapGetters("login", ["getMobileSign", "getSignMobile"])

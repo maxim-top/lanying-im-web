@@ -1,4 +1,5 @@
 import Long from 'long';
+
 const formatJson = (obj) => {
   const isLong = obj instanceof Long;
   if (isLong) {
@@ -15,13 +16,13 @@ const formatJson = (obj) => {
     });
     return arrRet;
   }
-  const hashRet = {}
+  const hashRet = {};
   const keys = Object.keys(obj);
   keys.forEach(key => {
     hashRet[key] = formatJson(obj[key]);
   });
   return hashRet;
-}
+};
 
 const transferToLong = (obj) => {
   const {
@@ -29,7 +30,7 @@ const transferToLong = (obj) => {
     high
   } = obj;
   if (typeof low !== 'undefined' && typeof high !== 'undefined') {
-    const srret = new Long(low, high, true)
+    const srret = new Long(low, high, true);
     return srret;
   }
   const type = typeof obj;
@@ -43,13 +44,13 @@ const transferToLong = (obj) => {
     });
     return arrRet;
   }
-  const hashRet = {}
+  const hashRet = {};
   const keys = Object.keys(obj);
   keys.forEach(key => {
     hashRet[key] = transferToLong(obj[key]);
   });
   return hashRet;
-}
+};
 
 const toNumber = (obj = 0) => {
   if (typeof obj === 'string') {
@@ -62,11 +63,11 @@ const toNumber = (obj = 0) => {
     low,
     high,
     unsigned = true
-  } = obj
+  } = obj;
   if (typeof low !== 'undefined' && high !== 'undefined') {
     return new Long(low, high, unsigned).toNumber();
   }
-}
+};
 
 const toLong = (obj) => {
   if (typeof obj === 'string') return Long.fromString(obj);
@@ -74,7 +75,7 @@ const toLong = (obj) => {
     low,
     high,
     unsigned = true
-  } = obj
+  } = obj;
   if (typeof low !== 'undefined' && high !== 'undefined') {
     return new Long(low, high, unsigned);
   }
@@ -82,7 +83,7 @@ const toLong = (obj) => {
     return Long.fromNumber(obj);
   }
   return new Long();
-}
+};
 
 const numToString = (obj) => {
   if (typeof obj === 'undefined') {
@@ -94,7 +95,7 @@ const numToString = (obj) => {
     return new Long(obj.low, obj.high, true).toString();
   }
   return new Long(obj).toString();
-}
+};
 
 
 const Uint8ArrayToString = (fileData) => {
@@ -104,7 +105,7 @@ const Uint8ArrayToString = (fileData) => {
   }
 
   return dataString
-}
+};
 
 const stringToUint8Array = (str) => {
   var arr = [];
@@ -113,13 +114,12 @@ const stringToUint8Array = (str) => {
   }
   var tmpUint8Array = new Uint8Array(arr);
   return tmpUint8Array
-}
-
+};
 
 
 const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 // private method for UTF-8 encoding
-var _utf8_encode = function (string) {
+var _utf8_encode = function(string) {
   string = string.replace(/\r\n/g, "\n");
   var utftext = "";
   for (var n = 0; n < string.length; n++) {
@@ -137,11 +137,11 @@ var _utf8_encode = function (string) {
 
   }
   return utftext;
-}
+};
 
 // private method for UTF-8 decoding
 // /* eslint-disable */
-var _utf8_decode = function (utftext) {
+var _utf8_decode = function(utftext) {
   var string = "";
   var i = 0;
   var c = 0;
@@ -165,14 +165,12 @@ var _utf8_decode = function (utftext) {
     }
   }
   return string;
-}
+};
 
 
+function Base64() {
 
-
-function Base64 () {
-
-  this.encode = function (input) {
+  this.encode = function(input) {
     var output = "";
     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
     var i = 0;
@@ -195,10 +193,10 @@ function Base64 () {
         _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
     }
     return output;
-  }
+  };
 
   // public method for decoding
-  this.decode = function (input) {
+  this.decode = function(input) {
     var output = "";
     var chr1, chr2, chr3;
     var enc1, enc2, enc3, enc4;

@@ -6,33 +6,34 @@
     <p class="header">
       <span class="hint"> AppID: {{appid}}</span>
     </p>
-    <span class="skip" @click="login">跳过</span>
+    <span @click="login" class="skip">跳过</span>
     <div class="logo">
-      <img src="/image/logob.png" />
+      <img src="/image/logob.png"/>
     </div>
     <div class="iptFrame mt21">
-      <input v-model="user.mobile" @keyup.enter="nameEnter" type="text" placeholder="手机号" autocomplete="false" />
+      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="手机号" type="text" v-model="user.mobile"/>
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input v-model="user.captcha" @keyup.enter="submit" type="text" placeholder="图片验证码" autocomplete="false" />
+        <input @keyup.enter="submit" autocomplete="false" placeholder="图片验证码" type="text" v-model="user.captcha"/>
       </div>
-      <img v-if="codeImageSrc" :src="codeImageSrc" class="vm ml15 w150 h45  pointer" @click="timerImage" />
+      <img :src="codeImageSrc" @click="timerImage" class="vm ml15 w150 h45  pointer" v-if="codeImageSrc"/>
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input v-model="user.code" @keyup.enter="submit" type="text" placeholder="手机验证码" autocomplete="false" />
+        <input @keyup.enter="submit" autocomplete="false" placeholder="手机验证码" type="text" v-model="user.code"/>
       </div>
-      <div class="smallbtn" @click="sendSms">{{checkText}}</div>
+      <div @click="sendSms" class="smallbtn">{{checkText}}</div>
     </div>
-    <div class="loginBtn mt14" @click="submit">绑定</div>
+    <div @click="submit" class="loginBtn mt14">绑定</div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "bind",
   props: ["sdkok", "appid"],

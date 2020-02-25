@@ -1,13 +1,13 @@
 <template>
   <div>
-    <Login v-if="sappStatus=='login'" :sdkok="sdkok" :appid="appid"/>
-    <Regedit v-if="sappStatus=='regedit'" :sdkok="sdkok" :appid="appid"/>
+    <Login :appid="appid" :sdkok="sdkok" v-if="sappStatus=='login'"/>
+    <Regedit :appid="appid" :sdkok="sdkok" v-if="sappStatus=='regedit'"/>
 
-    <Bindacc v-if="sappStatus=='bindacc'" :sdkok="sdkok" :appid="appid" />
-    <Bindreg v-if="sappStatus=='bindreg'" :sdkok="sdkok" :appid="appid"/>
-    <Codelogin v-if="sappStatus =='codelogin'" :sdkok="sdkok" :appid="appid"/>
-    <Qrlogin v-if="sappStatus=='qrlogin'" :sdkok="sdkok" :appid="appid"/>
-    <Bind v-if="sappStatus=='bind'" :sdkok="sdkok" :appid="appid"/>
+    <Bindacc :appid="appid" :sdkok="sdkok" v-if="sappStatus=='bindacc'"/>
+    <Bindreg :appid="appid" :sdkok="sdkok" v-if="sappStatus=='bindreg'"/>
+    <Codelogin :appid="appid" :sdkok="sdkok" v-if="sappStatus =='codelogin'"/>
+    <Qrlogin :appid="appid" :sdkok="sdkok" v-if="sappStatus=='qrlogin'"/>
+    <Bind :appid="appid" :sdkok="sdkok" v-if="sappStatus=='bind'"/>
   </div>
 </template>
 
@@ -21,7 +21,8 @@ import Codelogin from "./codelogin.vue";
 import Qrlogin from "./qrlogin.vue";
 import Bind from "./bind.vue";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "index",
   props: ["sdkok", "appid"],
@@ -45,7 +46,7 @@ export default {
     }
   },
   methods: {
-    changeAppID(presentAppID){
+    changeAppID(presentAppID) {
       this.$store.dispatch("layer/actionSetAppID", presentAppID);
       this.$store.dispatch("layer/actionSetShowing", "changeappid");
       this.$store.dispatch("layer/actionSetShowmask", "true");

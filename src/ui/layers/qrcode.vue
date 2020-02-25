@@ -9,14 +9,14 @@
         </div>
       </div>
       <div class="layer_content">
-        <canvas  ref="canvas"  class="canvas"></canvas>
+        <canvas class="canvas" ref="canvas"></canvas>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import QRCode from "qrcode";
 
 export default {
@@ -104,7 +104,8 @@ export default {
           this.$refs.canvas,
           "L_" + qr_code,
           { width: 200, margin: 0 },
-          function(/*err*/) {}
+          function(/*err*/) {
+          }
         );
         this.timerLogin();
         this.expTimer();

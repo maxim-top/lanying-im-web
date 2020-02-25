@@ -1,16 +1,16 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint" @click="changeAppID(appid)"> AppID: {{appid}}</span>
-      <img class='edit_logo' @click="changeAppID(appid)" src='/image/edit.png' />
+      <span @click="changeAppID(appid)" class="hint"> AppID: {{appid}}</span>
+      <img @click="changeAppID(appid)" class='edit_logo' src='/image/edit.png'/>
     </p>
     <div class="layer_content">
-      <canvas ref="canvas" class="canvas"></canvas>
+      <canvas class="canvas" ref="canvas"></canvas>
     </div>
     <p class="tab">使用「美信拓扑IM」App 扫码 </p>
     <p class="tab">
-      <intput> 返回 </intput>
-      <span class="mr5 colorb" @click="switchLogin('login')">密码登录</span>
+      <intput> 返回</intput>
+      <span @click="switchLogin('login')" class="mr5 colorb">密码登录</span>
     </p>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    changeAppID(presentAppID){
+    changeAppID(presentAppID) {
       this.$store.dispatch("layer/actionSetAppID", presentAppID);
       this.$store.dispatch("layer/actionSetShowing", "changeappid");
       this.$store.dispatch("layer/actionSetShowmask", "true");
@@ -59,7 +59,8 @@ export default {
           this.$refs.canvas,
           "L_" + qr_code,
           { width: 200, margin: 0 },
-          function(/*err*/) {}
+          function(/*err*/) {
+          }
         );
         this.timerLogin();
         this.expTimer();

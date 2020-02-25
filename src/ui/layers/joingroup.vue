@@ -11,13 +11,13 @@
       <div class="layer_content">
         <p class="inputer">
           <input
-            v-model="group_id"
             placeHolder="输入group id"
             type="text"
+            v-model="group_id"
           />
           <a
-            class="button"
             @click="search"
+            class="button"
           >搜索</a>
         </p>
         <div
@@ -27,8 +27,8 @@
 
           <div class="item">{{searchObj.name}}
             <span
-              class="r"
               @click="clickJoinHandler"
+              class="r"
               v-if="!isJoined"
             >申请</span>
             <span
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   data() {
@@ -53,7 +53,8 @@ export default {
     };
   },
   name: "contentIndex",
-  mounted() {},
+  mounted() {
+  },
   components: {},
   computed: {
     ...mapGetters("contact", ["getGroupList"]),

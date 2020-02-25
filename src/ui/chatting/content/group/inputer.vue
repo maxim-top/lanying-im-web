@@ -2,20 +2,23 @@
   <div class="inputer_frame">
     <div class="attach">
       <div class="mentionList" v-if="this.filteredMentionRosters.length > 0">
-        <div v-for="roster in this.filteredMentionRosters" :key="roster.user_id" @click="clickMemberListHander(roster.user_id)" class="mentionItem">{{roster.display_name}}</div>
+        <div :key="roster.user_id" @click="clickMemberListHander(roster.user_id)"
+             class="mentionItem" v-for="roster in this.filteredMentionRosters">{{roster.display_name}}
+        </div>
       </div>
-      <input type="file" ref="fileRef" @change="fileChangeHandler" />
+      <input @change="fileChangeHandler" ref="fileRef" type="file"/>
       <span @click="imageUploadClickHandler" class="ico image"></span>
       <span @click="fileUploadClickHandler" class="ico file"></span>
     </div>
     <div class="input">
-      <textarea class="input_text" placeholder="Type a message!" wrap="hard" @keydown="textareaKeyDown" @keyup="textKeyUp" v-model="message"></textarea>
+      <textarea @keydown="textareaKeyDown" @keyup="textKeyUp" class="input_text" placeholder="Type a message!"
+                v-model="message" wrap="hard"></textarea>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "rosterInputer",
@@ -125,12 +128,12 @@ export default {
       if (this.willsendMessage && this.mentionSelectedUids.length) {
         //mention消息
         /**
-           static const std::string kMentionAll = “mentionAll”;              // bool
-          static const std::string kMentionList = “mentionList”;            // vector<int64_t>
-          static const std::string kMentionedMessage = “mentionedMessage”;  // string
-          static const std::string kPushMessage = “pushMessage”;            // string
-          static const std::string kSenderNickname = “senderNickname”;      // string
-           */
+         static const std::string kMentionAll = “mentionAll”;              // bool
+         static const std::string kMentionList = “mentionList”;            // vector<int64_t>
+         static const std::string kMentionedMessage = “mentionedMessage”;  // string
+         static const std::string kPushMessage = “pushMessage”;            // string
+         static const std::string kSenderNickname = “senderNickname”;      // string
+         */
         const mentionAll = false;
         const mentionList = this.mentionSelectedUids.map(x => x - 0);
         const mentionedMessage = "";
@@ -153,7 +156,8 @@ export default {
         this.im.sysManage.sendGroupMessage({
           // type: 'text', // image , file， 默认 text， 可省略
           content: txt,
-          gid: this.getSid
+          gid: this.getSid,
+          priority: 0
         });
       }
       setTimeout(() => {
@@ -186,7 +190,8 @@ export default {
             type: this.fileType,
             gid: this.getSid,
             content: "",
-            attachment: fileInfo
+            attachment: fileInfo,
+            priority: 0
           });
           this.$refs.fileRef.value = "";
         })

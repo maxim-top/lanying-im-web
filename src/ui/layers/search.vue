@@ -1,17 +1,17 @@
 <template>
-  <div class="search_result_layer" @mouseleave="mouseLeave" v-if="getSearchKeyword !== ''" >
+  <div @mouseleave="mouseLeave" class="search_result_layer" v-if="getSearchKeyword !== ''">
     <div class="header">搜索用户结果</div>
     <div class="list">
-      <div class="item" v-for="r in rarr" :key="r.id" @click="rosterClick(r.id)">
-        <img class="avatar" :src="r.avatar" />
+      <div :key="r.id" @click="rosterClick(r.id)" class="item" v-for="r in rarr">
+        <img :src="r.avatar" class="avatar"/>
         <div class="name" v-html="r.name"></div>
         <div class="last_msg" v-html="r.content"></div>
       </div>
     </div>
     <div class="header">搜索群结果</div>
-    <div class="list" >
-      <div class="item" v-for="r in garr" :key="r.id" @click="groupClick(r.id)">
-        <img class="avatar" :src="r.avatar" />
+    <div class="list">
+      <div :key="r.id" @click="groupClick(r.id)" class="item" v-for="r in garr">
+        <img :src="r.avatar" class="avatar"/>
         <div class="name" v-html="r.name"></div>
         <div class="last_msg" v-html="r.content"></div>
       </div>
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "rosterInfo",
   data() {
@@ -103,7 +104,7 @@ export default {
         type: "groupchat"
       });
     },
-    mouseLeave(){
+    mouseLeave() {
       this.$store.dispatch("contact/actionSetSearchkeyword", "");
     },
   },

@@ -2,12 +2,12 @@
   <div class="user_setting">
 
     <div class="avatar">
-      <img :src="userInfo.avatar" class="av" />
+      <img :src="userInfo.avatar" class="av"/>
     </div>
 
     <div class="line">
       <span class="ll">用户id</span>
-      <p class="lr" >{{userInfo.user_id}}</p>
+      <p class="lr">{{userInfo.user_id}}</p>
     </div>
 
     <div class="line">
@@ -15,15 +15,16 @@
       <p class="lr">{{rosterName}}</p>
     </div>
 
-    <div v-if="isFriend" class="logout mt15" @click="chatRemoveHandler">删除好友</div>
-    <div v-else class="logout mt15" @click="addFriendHandler">添加好友</div>
-    <div v-if="isFriend" class="logout mt15" @click="chatClickHandler">开始聊天</div>
+    <div @click="chatRemoveHandler" class="logout mt15" v-if="isFriend">删除好友</div>
+    <div @click="addFriendHandler" class="logout mt15" v-else>添加好友</div>
+    <div @click="chatClickHandler" class="logout mt15" v-if="isFriend">开始聊天</div>
 
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "rosterInfo",
   data() {
@@ -32,11 +33,11 @@ export default {
     };
   },
   mounted() {
-    this.refreshUserInfo( this.getSid );
+    this.refreshUserInfo(this.getSid);
   },
   watch: {
-    getSid( newSid ) {
-      this.refreshUserInfo( newSid );
+    getSid(newSid) {
+      this.refreshUserInfo(newSid);
     }
   },
   components: {},
@@ -57,16 +58,16 @@ export default {
     }
   },
   methods: {
-    refreshUserInfo( newSid ) {
+    refreshUserInfo(newSid) {
       this.$store.getters.im.rosterManage
-              .asyncSearchRosterById({ user_id: newSid })
-              .then(res => {
-                res.avatar = this.$store.getters.im.sysManage.getImage({
-                  avatar: res.avatar,
-                  type: 'roster'
-                });
-                this.userInfo = res;
-              });
+        .asyncSearchRosterById({ user_id: newSid })
+        .then(res => {
+          res.avatar = this.$store.getters.im.sysManage.getImage({
+            avatar: res.avatar,
+            type: 'roster'
+          });
+          this.userInfo = res;
+        });
     },
     chatRemoveHandler() {
       this.$store.getters.im.rosterManage

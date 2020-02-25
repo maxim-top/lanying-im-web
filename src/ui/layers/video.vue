@@ -1,18 +1,19 @@
 <template>
-  <div class="video_layer" @click="closeLayer" >
-    <video v-if="getShowing=='video'" :src="getVideoUrl" class="video" autoplay />
+  <div @click="closeLayer" class="video_layer">
+    <video :src="getVideoUrl" autoplay class="video" v-if="getShowing=='video'"/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   data() {
     return {};
   },
   name: "video",
-  mounted() {},
+  mounted() {
+  },
 
   computed: {
     ...mapGetters("layer", ["getShowing"]),
@@ -36,7 +37,8 @@ export default {
 
     //finish
   },
-  beforeDestroy() {}
+  beforeDestroy() {
+  }
 };
 </script>
 

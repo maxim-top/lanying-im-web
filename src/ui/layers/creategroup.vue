@@ -2,38 +2,40 @@
   <div class="create_group_layer">
     <div class="layer">
       <div class="layer_header">创建群
-        <input type="file" ref="fileRef" @change="fileChangeHandler" />
+        <input @change="fileChangeHandler" ref="fileRef" type="file"/>
         <div @click="clickCreateGroupCloseHandler" class="closer"></div>
       </div>
       <div class="layer_content">
         <!-- <img src="/image/roster.png" class="avatar" @click="avatarClickHandler" /> -->
         <p class="inputer">
           <span>群名称</span>
-          <input v-model="name" placeHolder="群名称，必填" type="text" />
+          <input placeHolder="群名称，必填" type="text" v-model="name"/>
         </p>
         <p class="inputer">
           <span>群描述</span>
-          <input v-model="description" placeHolder="群描述" type="text" />
+          <input placeHolder="群描述" type="text" v-model="description"/>
         </p>
         <p class="inputer">
           <span>是否公开</span>
-          <i id="publicType" @click="switchTouched" :class="['ispublic', type == 1?'switcher_on':'switcher_off']"></i>
+          <i :class="['ispublic', type == 1?'switcher_on':'switcher_off']" @click="switchTouched" id="publicType"></i>
         </p>
         <div class="create_group_member_List">
-          <div v-for="roster in getRosterList" :key="roster.roster_id">{{roster.username}}
-            <input name="Fruit" type="checkbox" @click="checkChangeHandler(roster)" :checked="selectedList.findIndex(x=>x===roster.user_id)>=0" /></div>
+          <div :key="roster.roster_id" v-for="roster in getRosterList">{{roster.username}}
+            <input :checked="selectedList.findIndex(x=>x===roster.user_id)>=0" @click="checkChangeHandler(roster)"
+                   name="Fruit"
+                   type="checkbox"/></div>
         </div>
       </div>
       <div class="layer_footer">
-        <span class="button-ok" @click="createClickHandler">创建</span>
-        <span class="button-cancel" @click="clickCreateGroupCloseHandler">取消</span>
+        <span @click="createClickHandler" class="button-ok">创建</span>
+        <span @click="clickCreateGroupCloseHandler" class="button-cancel">取消</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   data() {
@@ -48,7 +50,8 @@ export default {
     };
   },
   name: "contentIndex",
-  mounted() {},
+  mounted() {
+  },
   components: {},
   computed: {
     ...mapGetters("contact", ["getRosterList"]),

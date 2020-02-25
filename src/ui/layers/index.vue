@@ -1,21 +1,21 @@
 <template>
   <div class="layer_frame">
-    <Addfriend v-if="getShowing=='addfriend'" />
-    <ChangeAppID v-if="getShowing=='changeappid'" />
-    <CreateGroup v-if="getShowing=='creategroup'" />
-    <JoinGroup v-if="getShowing=='joingroup'" />
-    <GroupSetting v-if="getShowing=='groupsetting'" />
-    <Qrcode v-if="getShowing=='qrlogin'" />
-    <Qrcode v-if="getShowing=='qrprofile'" />
-    <Qrcode v-if="getShowing=='qrgroup'" />
-    <Searcher />
-    <AddPop v-if="getShowing=='addpop'" />
-    <Video v-if="getShowing=='video'" />
+    <Addfriend v-if="getShowing=='addfriend'"/>
+    <ChangeAppID v-if="getShowing=='changeappid'"/>
+    <CreateGroup v-if="getShowing=='creategroup'"/>
+    <JoinGroup v-if="getShowing=='joingroup'"/>
+    <GroupSetting v-if="getShowing=='groupsetting'"/>
+    <Qrcode v-if="getShowing=='qrlogin'"/>
+    <Qrcode v-if="getShowing=='qrprofile'"/>
+    <Qrcode v-if="getShowing=='qrgroup'"/>
+    <Searcher/>
+    <AddPop v-if="getShowing=='addpop'"/>
+    <Video v-if="getShowing=='video'"/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 import AddPop from "./addpop";
 import ChangeAppID from "./changeappid";
@@ -29,7 +29,8 @@ import Video from "./video";
 
 export default {
   name: "contentIndex",
-  mounted() {},
+  mounted() {
+  },
   components: {
     AddPop,
     Addfriend,

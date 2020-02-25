@@ -1,21 +1,21 @@
 //collection.js
-import { toNumber, toLong } from '../third/tools';
+import {toLong, toNumber} from '../third/tools';
 // import axios from 'axios'
 
 const state = {
   /**
    rosterinfo
-    groupinfo
+   groupinfo
 
-    rosterchat
-    groupchat
+   rosterchat
+   groupchat
 
-    notice
-    setting
+   notice
+   setting
 
-    rosterNotice
-    groupInviteNotice
-    grpupApplyNotice
+   rosterNotice
+   groupInviteNotice
+   grpupApplyNotice
    */
   viewType: '',
   sid: 0, //selected roster/group id..
@@ -36,113 +36,113 @@ const state = {
 };
 
 const getters = {
-  getViewType (state) {
+  getViewType(state) {
     return state.viewType;
   },
 
-  getSid (state) {
+  getSid(state) {
     return state.sid;
   },
 
-  getMessages (state) {
+  getMessages(state) {
     return state.messages;
   },
 
-  getMessageTime (state) {
+  getMessageTime(state) {
     return state.time;
   },
 
-  getRosterInfo (state) {
+  getRosterInfo(state) {
     return state.rosterMap[state.sid] || {};
   },
 
-  getGroupInfo (state) {
+  getGroupInfo(state) {
     return state.groupMap[state.sid] || {};
   },
 
-  getMemberList (state) {
+  getMemberList(state) {
     return state.memberlistMap[state.sid] || [];
   },
-  getAdminList (state) {
+  getAdminList(state) {
     return state.adminListMap[state.sid] || [];
   },
 
-  getScroll (state) {
+  getScroll(state) {
     return state.scroll;
   },
 };
 
 const mutations = {
-  setViewType (state, x) {
+  setViewType(state, x) {
     state.viewType = x;
   },
 
-  setSid (state, x) {
+  setSid(state, x) {
     state.sid = x;
     this.queryHistoryMessageId = 0;
   },
 
-  setMessage (state, x) {
+  setMessage(state, x) {
     state.messages = x;
   },
 
-  addMessages (state, x = []) {
+  addMessages(state, x = []) {
     state.messages.push(x);
   },
 
-  setMessageTime (state, t) {
+  setMessageTime(state, t) {
     const s = state.time;
     s.push(t);
     state.time = [].concat(s);
   },
 
-  setRosterInfo (state, x) {
+  setRosterInfo(state, x) {
     const obj = Object.assign({}, state.rosterMap, { [state.sid]: x });
     state.rosterMap = obj;
     // state.rosterMap[state.sid] = x;
   },
 
-  setGroupInfo (state, x) {
+  setGroupInfo(state, x) {
     const obj = Object.assign({}, state.groupMap, { [state.sid]: x });
     state.groupMap = obj;
     // state.groupMap[state.sid] = x;
   },
 
-  setMemberList (state, x) {
+  setMemberList(state, x) {
     const obj = Object.assign({}, state.memberlistMap, { [state.sid]: x });
     state.memberlistMap = obj;
   },
-  setAdminList (state, x) {
+  setAdminList(state, x) {
     const obj = Object.assign({}, state.adminListMap, { [state.sid]: x });
     state.adminListMap = obj;
   },
-  setQud (state, x) {
+  setQud(state, x) {
     state.queryHistoryMessageId = x;
   },
 
-  recordHistoryQuery(state){
+  recordHistoryQuery(state) {
     let times = state.queryHistoryRecords[state.sid] || 0;
-    times ++;
+    times++;
     state.queryHistoryRecords[state.sid] = times;
   }
 };
 
 const actions = {
 
-  actionOpenGroup (context) {
+  actionOpenGroup(context) {
     const { rootState, state } = context;
     rootState.im.groupManage.openGroup(state.sid);
-    rootState.im.groupManage.readGroupMessage(state.sid)
+    rootState.im.groupManage.readGroupMessage(state.sid);
 
     rootState.im.groupManage.asyncGetAdminList({ group_id: state.sid }).then(res => {
       context.commit('setAdminList', res);
-    })
+    });
     rootState.im.groupManage.asyncGetGroupInfo(state.sid, true).then(res => {
       context.commit('setGroupInfo', res);
     })
   },
 
-  actionSetType (context, x) {
+  actionSetType(context, x) {
     const { state } = context;
     if (!x.sid) {
       x.type && context.commit('setViewType', x.type);
@@ -155,48 +155,48 @@ const actions = {
     }
   },
 
-  actionUpdateRoster (context) {
+  actionUpdateRoster(context) {
     const { rootState, state } = context;
     rootState.im.rosterManage.asyncGetRosterInfo(state.sid).then(res => {
       context.commit('setRosterInfo', res);
     })
   },
 
-  actionUpdateGroup (context) {
+  actionUpdateGroup(context) {
     const { rootState, state } = context;
     rootState.im.groupManage.asyncGetGroupInfo(state.sid).then(res => {
       context.commit('setGroupInfo', res);
     });
   },
 
-  actionUpdateMemberList (context) {
+  actionUpdateMemberList(context) {
     const { rootState, state } = context;
     const members = rootState.im.groupManage.getGroupMembers(state.sid);
     context.commit('setMemberList', members);
   },
 
-  actionRequireMessage (context) {
+  actionRequireMessage(context) {
     // eslint-disable-next-line no-unused-vars
     const { rootState, state } = context;
 
     let localMessages = undefined;
     if (state.viewType === "rosterchat") {
       localMessages = rootState.im.rosterManage.getRosterMessageByRid(state.sid);
-    }else if (state.viewType === "groupchat") {
+    } else if (state.viewType === "groupchat") {
       localMessages = rootState.im.groupManage.getGruopMessage(state.sid);
-    }else ; //undefined type
+    } else ; //undefined type
 
     if (localMessages) {
       context.dispatch('actionAppendMessage', { messages: localMessages });
     }
 
     const historyQueryTimes = state.queryHistoryRecords[state.sid] || 0;
-    if (historyQueryTimes === 0 && (!localMessages || localMessages.length <=3)) {
+    if (historyQueryTimes === 0 && (!localMessages || localMessages.length <= 3)) {
       context.dispatch('queryHistory');
     }
   },
 
-  actionAppendMessage (context, data = {}) {
+  actionAppendMessage(context, data = {}) {
     const newMessages = data.messages || [];
     const isHistory = data.history;
     if (isHistory) {
@@ -205,10 +205,10 @@ const actions = {
     const { state, rootState } = context;
     const uid = rootState.im.userManage.getUid();
     const oldMessages = state.messages || [];
-    newMessages.filter( meta =>{
-        // ignore input status messages
-        if ( meta.ext && meta.ext.input_status) return false;
-        else return true;
+    newMessages.filter(meta => {
+      // ignore input status messages
+      if (meta.ext && meta.ext.input_status) return false;
+      else return true;
     }).forEach(meta => {
       const { from, to } = meta;
       const fromUid = toNumber(from);
@@ -255,7 +255,7 @@ const actions = {
     }
   },
 
-  queryHistory (context) {
+  queryHistory(context) {
     const { rootState, state } = context;
     const mid = this.queryHistoryMessageId || 0; // messageid, 第一条，最早的一个
     rootState.im.sysManage.requireHistoryMessage(state.sid, mid);
@@ -263,11 +263,11 @@ const actions = {
     context.commit('recordHistoryQuery');
   },
 
-  actionUpdateMessageTime (context, time) {
+  actionUpdateMessageTime(context, time) {
     context.commit('setMessageTime', time);
   },
 
-  actionUpdateQueryMessageId () {
+  actionUpdateQueryMessageId() {
 
   }
 };

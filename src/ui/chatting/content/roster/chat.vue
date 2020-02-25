@@ -1,16 +1,17 @@
 <template>
   <div class="list" ref="rlist">
-    <div id="roster_history_btn" @click="requestHistory">{{queryingHistory ? '正在拉取历史消息，请稍候' : '点击拉取历史消息'}}</div>
-    <Message v-for="(message, aid) in allMessages" :message="message" v-bind:key="aid" />
+    <div @click="requestHistory" id="roster_history_btn">{{queryingHistory ? '正在拉取历史消息，请稍候' : '点击拉取历史消息'}}</div>
+    <Message :message="message" v-bind:key="aid" v-for="(message, aid) in allMessages"/>
   </div>
 </template>
 
 <script>
 // import Chat from "./chat.vue";
 import Message from "./renderMsg.vue";
-import { numToString, toNumber } from "../../../third/tools";
+import {numToString, toNumber} from "../../../third/tools";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "RosterChat",
   mounted() {
@@ -128,7 +129,7 @@ export default {
     scroll() {
       setTimeout(() => {
         this.$refs.rlist &&
-          (this.$refs.rlist.scrollTop = this.$refs.rlist.scrollHeight);
+        (this.$refs.rlist.scrollTop = this.$refs.rlist.scrollHeight);
       }, 200);
     }
     //methods finish ...

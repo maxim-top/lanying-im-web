@@ -1,6 +1,6 @@
 <template>
-  <div id="app" :key="appStyle" :style="appStyle" >
-    <Index />
+  <div :key="appStyle" :style="appStyle" id="app">
+    <Index/>
   </div>
 </template>
 
@@ -32,10 +32,10 @@ export default {
   },
 
   methods: {
-    responsive(){
+    responsive() {
       const left = this.windowWidth < 760 ? '0%' : '50%';
       const top = this.windowHeight < 400 ? '0%' : '50%';
-      return "left: "+left+";top: " +top+"; transform: translate(-"+left+", -"+top+");";
+      return "left: " + left + ";top: " + top + "; transform: translate(-" + left + ", -" + top + ");";
     },
 
     onResize() {

@@ -1,7 +1,7 @@
 <template>
   <div class="contact">
-    <ConContact v-if="showContact" />
-    <ConConversation v-if="showConversation" />
+    <ConContact v-if="showContact"/>
+    <ConConversation v-if="showConversation"/>
   </div>
 </template>
 
@@ -9,7 +9,8 @@
 import ConContact from "./conContact.vue";
 import ConConversation from "./conConversation.vue";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "HelloWorld",
   components: {

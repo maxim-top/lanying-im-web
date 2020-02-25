@@ -35,34 +35,34 @@ export default new Vuex.Store({
       return state.appID;
     },
 
-    wim (state) {
+    wim(state) {
       return state.im;
     },
-    im (state) {
+    im(state) {
       return state.im;
     },
 
-    uid (state) {
+    uid(state) {
       return state.im.userManage.getUid();
     }
   },
 
   mutations: {
-    changeAppID(state, newAppID){
+    changeAppID(state, newAppID) {
       state.appID = newAppID;
     },
 
-    saveIm (state, pim) {
+    saveIm(state, pim) {
       state.im = pim;
     },
   },
 
   actions: {
-    actionChangeAppID(context, appID){
+    actionChangeAppID(context, appID) {
       context.commit('changeAppID', appID);
     },
 
-    actionSaveIm (context, pim) {
+    actionSaveIm(context, pim) {
       context.commit('saveIm', pim);
     },
   }

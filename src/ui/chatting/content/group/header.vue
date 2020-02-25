@@ -10,8 +10,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { toNumber } from "../../../third/tools";
+import {mapGetters} from "vuex";
+import {toNumber} from "../../../third/tools";
+
 export default {
   name: "GroupChat",
   data() {

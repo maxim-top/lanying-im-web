@@ -1,8 +1,8 @@
 <template>
-  <div class="chat-index" >
-    <Header />
-    <Contact />
-    <Content />
+  <div class="chat-index">
+    <Header/>
+    <Contact/>
+    <Content/>
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
   <div class="ui-index">
     <div class="layer_mask" v-if="getShowmask"></div>
-    <Chatting v-if="getAppStatus=='chatting'" />
-    <Login v-else :sdkok="sdkok" :appid="appid" />
-    <Layers />
+    <Chatting v-if="getAppStatus=='chatting'"/>
+    <Login :appid="appid" :sdkok="sdkok" v-else/>
+    <Layers/>
   </div>
 </template>
 
@@ -12,7 +12,8 @@ import Login from "./login/index.vue";
 import Chatting from "./chatting/index.vue";
 import Layers from "./layers/index.vue";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "index",
   components: {
@@ -53,36 +54,38 @@ export default {
     }
   },
   methods: {
-    prepare( newAppID ){
+    prepare(newAppID) {
       // not prepare for same appid except the previous preparation is aborted;
-      if ( newAppID && ( newAppID !== this.appid || !this.sdkok)){
+      if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
         this.appid = newAppID;
         this.sdkok = false;
         setTimeout(() => {
           this.init_flooIM();
         }, 100);
-      }else{
+      } else {
         console.log("Invalid AppID", newAppID);
       }
     },
-    init_flooIM(){
+    init_flooIM() {
       const config = {
         dnsServer: "https://dns.maximtop.com/app_dns",
         appid: this.appid,
         ws: false,
         autoLogin: true
       };
-      try{
+      try {
         console.log("Init floo IM for ", this.appid);
         const im = new window.flooIM(config);
         this.$store.dispatch("actionSaveIm", im);
         this.sdkok = true;
-      }catch(ex){
+      } catch (ex) {
         // sdk not ready, should retry later
-        setTimeout( () => { this.init_flooIM();}, 100);
+        setTimeout(() => {
+          this.init_flooIM();
+        }, 100);
       }
 
-      if( this.sdkok ) {
+      if (this.sdkok) {
         this.$store.state.im.on({
           loginMessage: msg => {
             this.$store.dispatch("login/actionAddLoginLog", msg);

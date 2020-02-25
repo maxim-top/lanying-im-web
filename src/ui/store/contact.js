@@ -14,69 +14,69 @@ const contactRequestFlag = {
 };
 
 const getters = {
-  getRosterList (state) {
+  getRosterList(state) {
     return state.rosterList;
   },
-  getGroupList (state) {
+  getGroupList(state) {
     return state.groupList;
   },
-  getContactStatus (state) {
+  getContactStatus(state) {
     return state.contactStatus;
   },
 
-  getConversationList (state) {
+  getConversationList(state) {
     return state.conversationList;
   },
 
-  getSearchKeyword (state) {
+  getSearchKeyword(state) {
     return state.searchKeyword;
   }
 
 };
 
 const mutations = {
-  setRosterList (state, x) {
+  setRosterList(state, x) {
     state.rosterList = x;
   },
 
-  setGroupList (state, x) {
+  setGroupList(state, x) {
     state.groupList = x;
   },
 
-  setContactStatus (state, x) {
+  setContactStatus(state, x) {
     state.contactStatus = x;
   },
 
-  saveConversationList (state, x) {
+  saveConversationList(state, x) {
     state.conversationList = x;
   },
 
-  setSearchKeyword (state, x) {
+  setSearchKeyword(state, x) {
     state.searchKeyword = x;
   }
 };
 
 const actions = {
-  actionSetRosterList (context, x) {
+  actionSetRosterList(context, x) {
     const { rootState } = context;
     x.forEach(s => {
       s.avatar = rootState.im.sysManage.getImage({ avatar: s.avatar, type: 'roster' });
-    })
+    });
     context.commit('setRosterList', x);
   },
-  actionSetGroupList (context, x) {
+  actionSetGroupList(context, x) {
     const { rootState } = context;
     x.forEach(s => {
       s.avatar = rootState.im.sysManage.getImage({ avatar: s.avatar, type: 'group' });
-    })
+    });
     context.commit('setGroupList', x);
   },
 
-  actionSetContactStatus (context, x) {
+  actionSetContactStatus(context, x) {
     context.commit('setContactStatus', x);
   },
 
-  actionGetConversationList (context) {
+  actionGetConversationList(context) {
     const {
       rootState
     } = context;
@@ -94,7 +94,7 @@ const actions = {
         rootState.im.groupManage.getUnreadCount(id);
       const unread = unreadCount > 0 ? unreadCount : 0;
       if (item.type === 'roster') { //roster
-        const sroster = allRosterMap[id] || {}
+        const sroster = allRosterMap[id] || {};
         name = sroster.username || id;
         avatar = sroster.avatar;
       } else if (item.type === 'group') { //group
@@ -117,13 +117,13 @@ const actions = {
       }
     });
 
-    const sortedConvList = convData.sort((a, b) =>{
-      return (a.timestamp < b.timestamp) ? 1 : (a.timestamp > b.timestamp? -1 : 0);
+    const sortedConvList = convData.sort((a, b) => {
+      return (a.timestamp < b.timestamp) ? 1 : (a.timestamp > b.timestamp ? -1 : 0);
     });
     context.commit('saveConversationList', sortedConvList);
   },
 
-  actionLazyGetRosterList (context) {
+  actionLazyGetRosterList(context) {
     const {
       state,
       rootState
@@ -148,7 +148,7 @@ const actions = {
     }
   },
 
-  actionLazyGetGroupList (context) {
+  actionLazyGetGroupList(context) {
     const {
       state,
       rootState
@@ -168,14 +168,14 @@ const actions = {
     }
   },
 
-  actionClearGroupList (context) {
+  actionClearGroupList(context) {
     context.commit('setGroupList', []);
   },
-  actionClearRosterList (context) {
+  actionClearRosterList(context) {
     context.commit('setRosterList', []);
   },
 
-  actionSetSearchkeyword (context, x) {
+  actionSetSearchkeyword(context, x) {
     context.commit('setSearchKeyword', x)
   }
 

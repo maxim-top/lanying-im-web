@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "contentIndex",
@@ -29,7 +29,7 @@ export default {
       this.$store.dispatch("layer/actionSetShowmask", "true");
     },
 
-    mouseLeave(){
+    mouseLeave() {
       this.$store.dispatch("layer/actionSetShowing", "");
       this.$store.dispatch("layer/actionSetShowmask", false);
     },

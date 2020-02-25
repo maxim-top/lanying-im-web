@@ -10,33 +10,33 @@ const headerRequestFlag = {
 };
 
 const getters = {
-  getHeaderStatus (state) {
+  getHeaderStatus(state) {
     return state.headerStatus;
   },
-  getUserProfile (state) {
+  getUserProfile(state) {
     return state.userProfile;
   }
 };
 
 const mutations = {
-  changeHeaderStatus (state, status) {
+  changeHeaderStatus(state, status) {
     state.headerStatus = status;
   },
 
-  changeHeaderUserProfile (state, profile) {
+  changeHeaderUserProfile(state, profile) {
     state.userProfile = profile;
   }
 
 };
 
 const actions = {
-  actionChangeHeaderStatus (context, status) {
+  actionChangeHeaderStatus(context, status) {
     context.commit('changeHeaderStatus', status);
   },
-  actionChangeHeaderUserProfile (context, profile) {
+  actionChangeHeaderUserProfile(context, profile) {
     context.commit('changeHeaderUserProfile', profile);
   },
-  actionLazyGetHeaderProfile (context) {
+  actionLazyGetHeaderProfile(context) {
     const { state, rootState } = context;
     if (!state.userProfile.user_id && !headerRequestFlag.profile) {
       headerRequestFlag.profile = true;

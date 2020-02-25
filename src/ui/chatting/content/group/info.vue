@@ -2,40 +2,41 @@
   <div class="user_setting">
 
     <div class="avatar">
-      <input type="file" ref="fileRef" @change="fileChangeHandler" />
-      <img @click="touchedAvatar" class="av" :src="groupInfo.avatar" />
-      <img v-if="groupInfo.member_invite" src="/image/qr.png" class="qrcode" @click="viewQrcode" />
+      <input @change="fileChangeHandler" ref="fileRef" type="file"/>
+      <img :src="groupInfo.avatar" @click="touchedAvatar" class="av"/>
+      <img @click="viewQrcode" class="qrcode" src="/image/qr.png" v-if="groupInfo.member_invite"/>
     </div>
 
     <div class="line">
       <span class="ll">群名称</span>
-      <p class="lr" @click="nameModifyHandler">{{groupInfo.name}}</p>
+      <p @click="nameModifyHandler" class="lr">{{groupInfo.name}}</p>
     </div>
 
     <div class="line">
       <span class="ll">群id</span>
-      <p class="lr" >{{getSid}}</p>
+      <p class="lr">{{getSid}}</p>
     </div>
 
     <div class="line">
       <span class="ll">群描述</span>
-      <p class="lr" @click="descriptionModifyHanderl">{{groupInfo.description}}</p>
+      <p @click="descriptionModifyHanderl" class="lr">{{groupInfo.description}}</p>
     </div>
 
     <div class="line">
       <span class="ll">群名片</span>
-      <p class="lr" @click="cardModifyHandler">{{cardName}}</p>
+      <p @click="cardModifyHandler" class="lr">{{cardName}}</p>
     </div>
 
-    <div class="logout mt15" @click="destroyClickHandler">{{dismissMessage}}</div>
+    <div @click="destroyClickHandler" class="logout mt15">{{dismissMessage}}</div>
 
-    <div class="logout mt15" @click="chatClickHandler">开始聊天</div>
+    <div @click="chatClickHandler" class="logout mt15">开始聊天</div>
 
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "groupInfo",
   data() {
@@ -48,7 +49,7 @@ export default {
     this.refreshGroupInfo(this.getSid);
   },
   watch: {
-    getSid( newSid ){
+    getSid(newSid) {
       this.refreshGroupInfo(newSid);
     }
   },
@@ -88,18 +89,18 @@ export default {
     }
   },
   methods: {
-    refreshGroupInfo( newSid ){
+    refreshGroupInfo(newSid) {
       this.$store.getters.im.groupManage.asyncGetInfo({ group_id: newSid })
-              .then( res => {
-                res.avatar = this.$store.getters.im.sysManage.getImage({
-                  avatar: res.avatar,
-                  type: 'group'
-                });
-                this.groupInfo = res;
-              })
-              .catch(ex => {
-                this.serr(ex);
-              });
+        .then(res => {
+          res.avatar = this.$store.getters.im.sysManage.getImage({
+            avatar: res.avatar,
+            type: 'group'
+          });
+          this.groupInfo = res;
+        })
+        .catch(ex => {
+          this.serr(ex);
+        });
 
       const uid = this.$store.getters.im.userManage.getUid();
       const user = this.getMemberList.find(x => x.user_id === uid);
@@ -196,7 +197,8 @@ export default {
               alert("修改成功");
             });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     descriptionModifyHanderl() {
       if (!this.isAdmin && !this.isOwner && !this.getGroupInfo.member_modify) {
@@ -218,7 +220,8 @@ export default {
               alert("修改成功");
             });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     cardModifyHandler() {
       if (!this.isAdmin && !this.isOwner && !this.getGroupInfo.member_modify) {
@@ -241,7 +244,8 @@ export default {
               alert("修改成功");
             });
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     }
     //methods finish
   }

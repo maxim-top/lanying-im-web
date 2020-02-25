@@ -1,49 +1,50 @@
 <template>
   <div>
     <!-- <div v-if="messageType===1"> -->
-    <div v-if="timeMessage!=''" class="timeline">{{timeMessage}}</div>
+    <div class="timeline" v-if="timeMessage!=''">{{timeMessage}}</div>
     <div :class="{messageFrame:true, self:isSelf, roster:!isSelf}">
       <div class="rosterInfo">
-        <img :src="userObj.avatar" />
+        <img :src="userObj.avatar"/>
       </div>
       <div class="contentFrame">
         <p class="username" v-if="!isSelf">{{userObj.username}}</p>
         <div class="c_content">
           <div v-if="message.type === 'text'">{{message.content}}</div>
           <div v-if="message.type === 'image'">
-            <img v-if="attachImage!==''" :src="attachImage" @click="touchImage" />
+            <img :src="attachImage" @click="touchImage" v-if="attachImage!==''"/>
           </div>
-          <div v-if="message.type === 'audio'" class="audio_frame" @click="playAudio">
-            <img class="audio" src="/image/audio.png" />
+          <div @click="playAudio" class="audio_frame" v-if="message.type === 'audio'">
+            <img class="audio" src="/image/audio.png"/>
           </div>
-          <div v-if="message.type === 'video'" class="video_frame" @click="playVideo">
-              <img class="preview" :src="videoImage" />
-              <img class="play" src="/image/play.png" />
+          <div @click="playVideo" class="video_frame" v-if="message.type === 'video'">
+            <img :src="videoImage" class="preview"/>
+            <img class="play" src="/image/play.png"/>
           </div>
-          <div v-if="message.type === 'file'" class="loc_frame">
-            <img class="loc" src="/image/file2.png" />
-            <span class="loc_txt" @click="downloadFile">{{attachName}}</span>
+          <div class="loc_frame" v-if="message.type === 'file'">
+            <img class="loc" src="/image/file2.png"/>
+            <span @click="downloadFile" class="loc_txt">{{attachName}}</span>
           </div>
-          <div v-if="message.type === 'location'" @click="openLocation" class="loc_frame">
-            <img class="loc" src="/image/loc.png" />
+          <div @click="openLocation" class="loc_frame" v-if="message.type === 'location'">
+            <img class="loc" src="/image/loc.png"/>
             <span class="loc_txt">{{attachLocation.addr}}</span>
           </div>
 
-          <el-popover :placement="isSelf? 'left':'right'" width="70" trigger="hover">
+          <el-popover :placement="isSelf? 'left':'right'" trigger="hover" width="70">
             <div class="messageExt">
-              <div v-if="!message.h" class="item delete" @click="deleteMessage">删除</div>
-              <div class="recall item" @click="forwardMessage">转发</div>
-              <div class="recall item" v-if="isSelf && !message.h" @click="recallMessage">撤回</div>
+              <div @click="deleteMessage" class="item delete" v-if="!message.h">删除</div>
+              <div @click="forwardMessage" class="recall item">转发</div>
+              <div @click="recallMessage" class="recall item" v-if="isSelf && !message.h">撤回</div>
 
               <div class="msgStatus item item" v-if="isSelf && !ackStatus && !message.h">未读</div>
               <div class="msgStatus item" v-if="isSelf && ackStatus===1  && !message.h">送达</div>
               <div class="msgStatus item" v-if="isSelf && ackStatus===2  && !message.h">已读</div>
 
               <div class="unread item" v-if="ackStatus===3 && !isSelf  && !message.h">未读</div>
-              <div class="set_unread item" v-if="ackStatus!==3 && !isSelf  && !message.h" @click="unreadMessage">设置未读</div>
+              <div @click="unreadMessage" class="set_unread item" v-if="ackStatus!==3 && !isSelf  && !message.h">设置未读
+              </div>
             </div>
             <div class="h_image" slot="reference">
-              <img src="/image/more.png" />
+              <img src="/image/more.png"/>
             </div>
 
           </el-popover>
@@ -65,10 +66,9 @@
 // import Chat from "./chat.vue";
 // import Inputer from "./inputer.vue";
 import moment from "moment";
-import { toNumber, numToString } from "../../../third/tools";
-import { mapGetters } from "vuex";
+import {numToString, toNumber} from "../../../third/tools";
+import {mapGetters} from "vuex";
 
-import {} from "vuex";
 export default {
   name: "RosterChat",
   data() {
@@ -135,16 +135,16 @@ export default {
       const attach = this.message.attach || {};
       const { url = "" } = attach;
 
-     if (url) {
-        return ( url +
-                "&access-token=" +
-                this.im.userManage.getToken() +
-                "&app_id=" +
-                this.im.userManage.getAppid()
+      if (url) {
+        return (url +
+          "&access-token=" +
+          this.im.userManage.getToken() +
+          "&app_id=" +
+          this.im.userManage.getAppid()
         );
-      }else{
-       return url;
-     }
+      } else {
+        return url;
+      }
     },
 
     attachImage() {

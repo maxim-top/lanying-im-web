@@ -1,29 +1,32 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint" @click="changeAppID(appid)"> AppID: {{appid}}</span>
-      <img class='edit_logo' @click="changeAppID(appid)" src='/image/edit.png' />
-      <img src="/image/qr.png" class="qrcode" title="扫码登录" @click="switchLogin('qrlogin')" />
+      <span @click="changeAppID(appid)" class="hint"> AppID: {{appid}}</span>
+      <img @click="changeAppID(appid)" class='edit_logo' src='/image/edit.png'/>
+      <img @click="switchLogin('qrlogin')" class="qrcode" src="/image/qr.png" title="扫码登录"/>
     </p>
     <div class="logo">
-      <img src="/image/logob.png" />
+      <img src="/image/logob.png"/>
     </div>
     <div class="iptFrame mt21">
-      <input v-model="user.name" @keyup.enter="nameEnter" type="text" placeholder="用户名" autocomplete="false" />
+      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="用户名" type="text" v-model="user.name"/>
     </div>
 
     <div class="iptFrame mt14">
-      <input v-model="user.password" @keyup.enter="submit" type="password" ref="password" placeholder="密码" autocomplete="false" />
+      <input @keyup.enter="submit" autocomplete="false" placeholder="密码" ref="password" type="password"
+             v-model="user.password"/>
     </div>
-    <div class="loginBtn mt14" @click="submit">{{sdkok? '登录' : '加载中...'}}</div>
+    <div @click="submit" class="loginBtn mt14">{{sdkok? '登录' : '加载中...'}}</div>
     <p class="tab">
-      <span class="mr5 colorb" @click="switchLogin('codelogin')" >手机验证码登录</span>|<span class="ml5" @click="switchLogin('regedit')">注册</span>
+      <span @click="switchLogin('codelogin')" class="mr5 colorb">手机验证码登录</span>|<span @click="switchLogin('regedit')"
+                                                                                      class="ml5">注册</span>
     </p>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "login",
   props: ["sdkok", "appid"],
@@ -50,7 +53,7 @@ export default {
       }
     },
 
-    changeAppID(presentAppID){
+    changeAppID(presentAppID) {
       this.$store.dispatch("layer/actionSetAppID", presentAppID);
       this.$store.dispatch("layer/actionSetShowing", "changeappid");
       this.$store.dispatch("layer/actionSetShowmask", "true");

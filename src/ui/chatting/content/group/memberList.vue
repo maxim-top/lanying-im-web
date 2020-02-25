@@ -2,7 +2,7 @@
   <div class="group_memberlist">
     <div class="infos">群组成员
       <span class="group_count">{{getMemberList.length}}人</span>
-      <span v-if="isAdmin" class="setting">
+      <span class="setting" v-if="isAdmin">
         <span @click="settingClicked">设置</span>
       </span>
     </div>
@@ -10,8 +10,9 @@
       <input type="text" placeholder="Search" />
     </div> -->
     <div class="gm_list" ref="imgContainer">
-      <div class="item" v-for="roster in getMemberList" v-bind:key="roster.user_id" @click="touchRoster(roster.user_id)">
-        <img :src="rImage(roster.avatar)" class="avatar" />
+      <div @click="touchRoster(roster.user_id)" class="item" v-bind:key="roster.user_id"
+           v-for="roster in getMemberList">
+        <img :src="rImage(roster.avatar)" class="avatar"/>
         <div class="name">{{roster.display_name || roster.user_name}}</div>
       </div>
     </div>
@@ -20,7 +21,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   data() {
     return {

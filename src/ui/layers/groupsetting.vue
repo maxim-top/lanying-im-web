@@ -8,32 +8,34 @@
         <div class="group_setting_group">
           <p>
             <span class="sl">需要邀请才能入群</span><span class="sr">
-              <i @click="switchTouched(0)" :class="['r', groupInfo.member_invite  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.member_invite  ? 'switcher_on':'switcher_off']" @click="switchTouched(0)"></i></span>
           </p>
 
           <p>
             <span class="sl">允许成员修改信息</span><span class="sr">
-              <i @click="switchTouched(1)" :class="['r', groupInfo.member_modify  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.member_modify  ? 'switcher_on':'switcher_off']" @click="switchTouched(1)"></i></span>
           </p>
 
           <p>
             <span class="sl">开启群聊消息已读功能</span><span class="sr">
-              <i @click="switchTouched(2)" :class="['r', groupInfo.read_ack  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.read_ack  ? 'switcher_on':'switcher_off']"
+                 @click="switchTouched(2)"></i></span>
           </p>
 
           <p>
             <span class="sl">允许成员查看历史消息</span><span class="sr">
-              <i @click="switchTouched(3)" :class="['r', groupInfo.history_visible  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.history_visible  ? 'switcher_on':'switcher_off']"
+                 @click="switchTouched(3)"></i></span>
           </p>
 
           <p>
             <span class="sl">入群需要审批</span><span class="sr">
-              <i @click="switchTouched(4)" :class="['r', groupInfo.apply_approval  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.apply_approval  ? 'switcher_on':'switcher_off']" @click="switchTouched(4)"></i></span>
           </p>
 
           <p>
             <span class="sl">屏蔽此群消息</span><span class="sr">
-              <i @click="switchTouched(5)" :class="['r', groupInfo.msg_mute_mode  ? 'switcher_on':'switcher_off']"></i></span>
+              <i :class="['r', groupInfo.msg_mute_mode  ? 'switcher_on':'switcher_off']" @click="switchTouched(5)"></i></span>
           </p>
 
         </div>
@@ -46,66 +48,68 @@
             <a @click="touchedListHeader(4)">文件</a>
             <a @click="touchedListHeader(5)">添加成员</a>
           </div>
-          <div v-if="listTab===0" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===0">
             <p>请选择成员进行操作</p>
-            <div class="item" v-for="p in memberList" :key="p.user_id"><span>
+            <div :key="p.user_id" class="item" v-for="p in memberList"><span>
                 {{p.user_name}}
                 {{adminList.indexOf(p.user_id)>=0 ? '(管理员)':''}}
               </span>
-              <input type="checkbox" :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" />
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
             </div>
             <div class="category">
               <a @click="kickMember">踢出群</a>
               <a @click="addBlockList">拉黑</a>
-              <a v-if="userLevel===3" @click="removeAdminMember">删除管理</a>
-              <a v-if="userLevel===3" @click="addAdminMember">提升管理</a>
+              <a @click="removeAdminMember" v-if="userLevel===3">删除管理</a>
+              <a @click="addAdminMember" v-if="userLevel===3">提升管理</a>
             </div>
           </div>
 
-          <div v-if="listTab===1" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===1">
             <p>请选择禁言的成员</p>
-            <div v-for="p in this.banList" :key="p.user_id" class="item"><span>{{p.user_name}} {{p.duration}}</span>
-              <input type="checkbox" :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" />
+            <div :key="p.user_id" class="item" v-for="p in this.banList"><span>{{p.user_name}} {{p.duration}}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
             </div>
             <div class="category"><a @click="addMute">禁言</a><a @click="removeMute">解除禁言</a>
-              <input type="text" placeholder="输入分钟数" v-model="banDuration" />分钟(-1永久)</div>
+              <input placeholder="输入分钟数" type="text" v-model="banDuration"/>分钟(-1永久)
+            </div>
           </div>
 
-          <div v-if="listTab===2" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===2">
             <p>请选择要移除的用户</p>
-            <div v-for="p in this.blockList" :key="p.user_id" class="item"><span>{{p.user_name}}</span>
-              <input type="checkbox" :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" />
+            <div :key="p.user_id" class="item" v-for="p in this.blockList"><span>{{p.user_name}}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
             </div>
             <div class="category"><a @click="removeBlock">移除黑名单</a></div>
           </div>
 
-          <div v-if="listTab===3" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===3">
             <p>请添加或选择要删除的公告</p>
             <a @click="addPublic">添加</a>
-            <input type="text" placeHolder="title" v-model="public_title" />
-            <input type="text" placeHolder="content" v-model="public_content" />
-            <div v-for="p in this.publicList" :key="p.id" class="item"><span>title:{{p.title}}</span><br /><span>content:{{p.content}}</span>
-              <a class="r" @click="removePublic(p.id)">删除</a>
+            <input placeHolder="title" type="text" v-model="public_title"/>
+            <input placeHolder="content" type="text" v-model="public_content"/>
+            <div :key="p.id" class="item" v-for="p in this.publicList"><span>title:{{p.title}}</span><br/><span>content:{{p.content}}</span>
+              <a @click="removePublic(p.id)" class="r">删除</a>
             </div>
           </div>
 
-          <div v-if="listTab===4" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===4">
             <p>请选择上传的文件</p>
-            <input style="width:150px;height:28px;visibility:visible;position:static;" type="file" ref="fileRef" />
-            <a class="ml10" @click="uploadFile">上传</a>
-            <a class="r" @click="removeFile">批量删除</a>
+            <input ref="fileRef" style="width:150px;height:28px;visibility:visible;position:static;" type="file"/>
+            <a @click="uploadFile" class="ml10">上传</a>
+            <a @click="removeFile" class="r">批量删除</a>
 
-            <div v-for="d in this.fileList" :key="d.file_id" class="item p5 bprder" style="width: 400px">
-              <p><a class="r" @click="downloadImage(d.url)">下载</a>
-                文件名:{{d.name}}<br />大小:{{d.size}}
-                <input type="checkbox" :checked="selIdList.indexOf(d.file_id) >= 0" @click="touchMemberCheck(d.file_id)" /></p>
+            <div :key="d.file_id" class="item p5 bprder" style="width: 400px" v-for="d in this.fileList">
+              <p><a @click="downloadImage(d.url)" class="r">下载</a>
+                文件名:{{d.name}}<br/>大小:{{d.size}}
+                <input :checked="selIdList.indexOf(d.file_id) >= 0" @click="touchMemberCheck(d.file_id)"
+                       type="checkbox"/></p>
             </div>
           </div>
 
-          <div v-if="listTab===5" class="setting_lists">
+          <div class="setting_lists" v-if="listTab===5">
             <p>请选择邀请的好友</p>
-            <div v-for="p in this.rosterList" :key="p.user_id" class="item"><span>{{p.user_name}}</span>
-              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox" />
+            <div :key="p.user_id" class="item" v-for="p in this.rosterList"><span>{{p.user_name}}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
             </div>
             <div class="category"><a @click="inviteRoster">邀请好友</a></div>
           </div>
@@ -118,8 +122,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import moment from "moment";
+
 export default {
   name: "contentIndex",
   data() {

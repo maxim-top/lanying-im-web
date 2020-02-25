@@ -1,10 +1,10 @@
 <template>
   <div class="chat-index">
-    <MemberList />
-    <Header />
-    <Chat />
-    <Inputer />
-    <Forward />
+    <MemberList/>
+    <Header/>
+    <Chat/>
+    <Inputer/>
+    <Forward/>
 
   </div>
 </template>
@@ -16,7 +16,8 @@ import Header from "./header.vue";
 import Forward from "./forward.vue";
 import MemberList from "./memberList";
 
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "GroupChat",
   data() {

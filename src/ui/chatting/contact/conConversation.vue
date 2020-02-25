@@ -1,9 +1,9 @@
 <template>
   <div class="l_conversation" ref="imgContainer">
-    <div class="item" :class="{sel:getSid==conversation.sid}" v-for="(conversation, index) in getConversationList"
-         v-bind:key="index" @click="touchConversation(index)">
+    <div :class="{sel:getSid==conversation.sid}" @click="touchConversation(index)" class="item"
+         v-bind:key="index" v-for="(conversation, index) in getConversationList">
       <span :class="{'none' : conversation.unread === 0 }" class="unread_number">{{conversation.unread}}</span>
-      <img class="avatar" :src="conversation.avatar" />
+      <img :src="conversation.avatar" class="avatar"/>
       <div class="name">{{conversation.name}}</div>
       <div class="last_msg_time">{{formatTimeString(conversation.timestamp)}}</div>
       <div class="last_msg">{{conversation.content}}</div>
@@ -12,9 +12,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import {toNumber} from "../../third/tools";
 import moment from "moment";
+
 export default {
   mounted() {
     this.$store.dispatch("contact/actionGetConversationList");
@@ -29,15 +30,15 @@ export default {
   },
 
   methods: {
-    formatTimeString( timestamp ) {
-      if( !timestamp ) return "";
+    formatTimeString(timestamp) {
+      if (!timestamp) return "";
 
       const timestampNumber = toNumber(timestamp);
       return moment(timestampNumber).calendar("", {
-          sameDay: "HH:mm",
-          lastDay: "HH:mm",
-          lastWeek: "YY/MM/DD",
-          sameElse: "YY/MM/DD"
+        sameDay: "HH:mm",
+        lastDay: "HH:mm",
+        lastWeek: "YY/MM/DD",
+        sameElse: "YY/MM/DD"
       });
     },
 

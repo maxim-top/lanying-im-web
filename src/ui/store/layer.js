@@ -10,34 +10,34 @@ const state = {
 };
 
 const getters = {
-  getShowing (state) {
+  getShowing(state) {
     return state.showing;
   },
-  getShowmask (state) {
+  getShowmask(state) {
     return state.showmask;
   },
 
-  gettingqrcode (state) {
+  gettingqrcode(state) {
     return state.qrcode;
   },
-  getVideoUrl (state) {
+  getVideoUrl(state) {
     return state.videoUrl;
   },
-  getAppID (state){
+  getAppID(state) {
     return state.appID;
   },
 
 };
 
 const mutations = {
-  setShowing (state, x) {
+  setShowing(state, x) {
     state.showing = x;
   },
-  setShowmask (state, x) {
+  setShowmask(state, x) {
     state.showmask = x;
   },
 
-  setVideoUrl (state, x) {
+  setVideoUrl(state, x) {
     state.videoUrl = x;
   },
 
@@ -48,17 +48,17 @@ const mutations = {
 };
 
 const actions = {
-  actionSetShowing (context, x) {
+  actionSetShowing(context, x) {
     if (x === 'addpop' && state.showing === 'addpop') {
       x = '';
     }
     context.commit('setShowing', x)
   },
-  actionSetShowmask (context, x) {
+  actionSetShowmask(context, x) {
     context.commit('setShowmask', x)
   },
 
-  actionSetQrcode (context, x) {
+  actionSetQrcode(context, x) {
     context.commit('setQrcode', x)
   },
 
@@ -66,7 +66,7 @@ const actions = {
     context.commit('setAppID', x);
   },
 
-  actionSetVideoUrl (context, x) {
+  actionSetVideoUrl(context, x) {
     context.commit('setVideoUrl', x);
   }
 

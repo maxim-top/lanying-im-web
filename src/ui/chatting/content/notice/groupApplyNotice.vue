@@ -2,20 +2,20 @@
   <div class="roster_notice_list">
 
     <div
-      v-for="(notice, index) in this.notices"
       :key="index"
       class="item"
+      v-for="(notice, index) in this.notices"
     >
       <span v-if="notice.status===1">你同意了 {{notice.user_name}} 申请加入 {{notice.group_name}} 群的请求</span>
       <span v-else-if="notice.status===2">你拒绝了 {{notice.user_name}} 申请加入 {{notice.group_name}} 群的请求</span>
       <span v-else-if="notice.expired_time<time">{{notice.user_name}} 想要加入群 {{notice.group_name}} ，请求已过期</span>
       <span v-else>{{notice.user_name}} 请求加入群 {{notice.group_name}} <span
-          class="agree"
-          @click="agreeHandler(notice.applicant_id, notice.group_id)"
-        >同意</span>
+        @click="agreeHandler(notice.applicant_id, notice.group_id)"
+        class="agree"
+      >同意</span>
         或者 <span
-          class="decline"
           @click="declineHandler(notice.applicant_id, notice.group_id)"
+          class="decline"
         >拒绝</span></span>
     </div>
 
@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+
 export default {
   name: "RosterNotice",
   mounted() {

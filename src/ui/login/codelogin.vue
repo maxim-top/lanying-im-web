@@ -1,37 +1,38 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint" @click="changeAppID(appid)"> AppID: {{appid}}</span>
-      <img class='edit_logo' @click="changeAppID(appid)" src='/image/edit.png' />
-      <img src="/image/qr.png" class="qrcode" title="扫码登录" @click="switchLogin('qrlogin')" />
+      <span @click="changeAppID(appid)" class="hint"> AppID: {{appid}}</span>
+      <img @click="changeAppID(appid)" class='edit_logo' src='/image/edit.png'/>
+      <img @click="switchLogin('qrlogin')" class="qrcode" src="/image/qr.png" title="扫码登录"/>
     </p>
     <div class="logo">
-      <img src="/image/logob.png" />
+      <img src="/image/logob.png"/>
     </div>
     <div class="iptFrame mt21">
-      <input v-model="user.mobile" @keyup.enter="nameEnter" type="text" placeholder="手机号" autocomplete="false" />
+      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="手机号" type="text" v-model="user.mobile"/>
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input v-model="user.captcha" @keyup.enter="submit" type="text" placeholder="图片验证码" autocomplete="false" />
+        <input @keyup.enter="submit" autocomplete="false" placeholder="图片验证码" type="text" v-model="user.captcha"/>
       </div>
-      <img v-if="codeImageSrc" :src="codeImageSrc" class="vm ml15 w150 h45  pointer" @click="timerImage" />
+      <img :src="codeImageSrc" @click="timerImage" class="vm ml15 w150 h45  pointer" v-if="codeImageSrc"/>
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input v-model="user.code" @keyup.enter="submit" type="text" placeholder="手机验证码" autocomplete="false" />
+        <input @keyup.enter="submit" autocomplete="false" placeholder="手机验证码" type="text" v-model="user.code"/>
       </div>
-      <div class="smallbtn" @click="sendSms">{{checkText}}</div>
+      <div @click="sendSms" class="smallbtn">{{checkText}}</div>
     </div>
 
-    <div class="loginBtn mt14" @click="submit">登录</div>
+    <div @click="submit" class="loginBtn mt14">登录</div>
     <!-- <div class="log">
       <p v-for="(txt, index) in getLoginLog" :key="index">{{txt}}</p>
     </div> -->
     <p class="tab">
-      <span class="mr5 colorb" @click="switchLogin('login')">密码登录</span>|<span class="ml5" @click="switchLogin('regedit')">注册</span>
+      <span @click="switchLogin('login')" class="mr5 colorb">密码登录</span>|<span @click="switchLogin('regedit')"
+                                                                               class="ml5">注册</span>
     </p>
   </div>
 </template>
@@ -73,7 +74,7 @@ export default {
     }
   },
   methods: {
-    changeAppID(presentAppID){
+    changeAppID(presentAppID) {
       this.$store.dispatch("layer/actionSetAppID", presentAppID);
       this.$store.dispatch("layer/actionSetShowing", "changeappid");
       this.$store.dispatch("layer/actionSetShowmask", "true");

@@ -1,18 +1,19 @@
 <template>
   <div class="inputer_frame">
     <div class="attach">
-      <input type="file" ref="fileRef" @change="fileChangeHandler" />
+      <input @change="fileChangeHandler" ref="fileRef" type="file"/>
       <span @click="imageUploadClickHandler" class="ico image"></span>
       <span @click="fileUploadClickHandler" class="ico file"></span>
     </div>
     <div class="input">
-      <textarea class="input_text" placeholder="Type a message!" wrap="hard" @keydown="textareaKeyDown" v-model="message" @focus="inputFocusHandler" @blur="inputBlurHandler"></textarea>
+      <textarea @blur="inputBlurHandler" @focus="inputFocusHandler" @keydown="textareaKeyDown" class="input_text"
+                placeholder="Type a message!" v-model="message" wrap="hard"></textarea>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "rosterInputer",
