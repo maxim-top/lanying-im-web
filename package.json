@@ -76,7 +76,7 @@
     }
   },
   "eslintIgnore": [
-    "/lib/", "/dist/", "/node_modules/"
+    "/src/im/", "/dist/", "/node_modules/"
   ],
   "postcss": {
     "plugins": {
