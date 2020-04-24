@@ -39,6 +39,7 @@
 
 <script>
 // import { mapGetters } from "vuex";
+
 export default {
   name: "codelogin",
   props: ["sdkok", "appid"],
@@ -59,12 +60,12 @@ export default {
 
   computed: {
     codeImageSrc() {
-      if (!this.user["image_captcha_id"]) return "";
-      return `${
-        this.$store.state.im.sysManage.getServers().ratel
-      }/app/captcha/image?image_id=${
-        this.user["image_captcha_id"]
-      }&app_id=${this.$store.state.im.userManage.getAppid()}`;
+      const image_id = this.user["image_captcha_id"];
+      if (!image_id) return "";
+
+      const app_id = this.$store.state.im.userManage.getAppid();
+      const url = this.$store.state.im.sysManage.getServers(app_id).ratel + "/app/captcha/image";
+      return url + "?image_id=" + image_id + "&app_id=" + app_id;
     },
     checkText() {
       if (this.checkCodeTime > 0) {

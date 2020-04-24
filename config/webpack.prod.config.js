@@ -9,15 +9,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const EncodingPlugin = require('webpack-encoding-plugin');
 
 const projectDir = path.join(__dirname, "..");
-const srcDir = path.join(projectDir, 'src');
-
 module.exports = env => {
-    let SDK_PATH = path.join(srcDir, 'im', 'floo-2.0.0.js');
-
-    if ("source" === process.env.sdk) {
-        console.log("use sdk source files");
-        SDK_PATH = path.join(srcDir, 'sdk', 'index.js');
-    }
     return {
         entry: {
             vendors: [
@@ -26,7 +18,6 @@ module.exports = env => {
                 "axios",
                 "lodash",
             ],
-            sdk: SDK_PATH,
             app: path.join(projectDir, "src", "main.js"),
         },
         module: {

@@ -2,7 +2,7 @@
   <div class="group_memberlist">
     <div class="infos">群组成员
       <span class="group_count">{{getMemberList.length}}人</span>
-      <span class="setting" v-if="isAdmin">
+      <span class="setting">
         <span @click="settingClicked">设置</span>
       </span>
     </div>
@@ -46,8 +46,13 @@ export default {
 
   methods: {
     settingClicked() {
-      this.$store.dispatch("layer/actionSetShowing", "groupsetting");
-      this.$store.dispatch("layer/actionSetShowmask", "true");
+      if( this.isAdmin )
+      {
+        this.$store.dispatch("layer/actionSetShowing", "groupsetting");
+        this.$store.dispatch("layer/actionSetShowmask", "true");
+      }else{
+        alert("只有管理员才可设置");
+      }
     },
     touchRoster(sid) {
       const uid = this.$store.getters.im.userManage.getUid();

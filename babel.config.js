@@ -1,9 +1,8 @@
 const path = require("path");
 
 // let projectDir = path.join(__dirname, '.');
-
 module.exports = {
-  presets: ["@vue/app"],
+  presets: ["@vue/app", {sourceType: 'unambiguous'}],
   plugins: [
     [
       "component",
@@ -12,7 +11,6 @@ module.exports = {
         styleLibraryName: "theme-chalk",
       },
     ],
-
     [
       "module-resolver",
       {

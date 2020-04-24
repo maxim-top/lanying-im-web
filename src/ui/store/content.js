@@ -18,7 +18,7 @@ const state = {
    grpupApplyNotice
    */
   viewType: '',
-  sid: 0, //selected roster/group id..
+  sid: -1, //selected roster/group id..
   messages: [],
   time: [], // 这个是，消息的时间，几分钟显示一下，按现在的逻辑..
 
@@ -136,15 +136,20 @@ const actions = {
 
     rootState.im.groupManage.asyncGetAdminList({ group_id: state.sid }).then(res => {
       context.commit('setAdminList', res);
+    }).catch((err) => {
+      console.error("Failed to GetAdminList, error:", err);
     });
+
     rootState.im.groupManage.asyncGetGroupInfo(state.sid, true).then(res => {
       context.commit('setGroupInfo', res);
-    })
+    }).catch((err) => {
+      console.error("Failed to GetGroupInfo, error:", err);
+    });
   },
 
   actionSetType(context, x) {
     const { state } = context;
-    if (!x.sid) {
+    if ( typeof x.sid === "undefined" || x.sid < 0 ) {
       x.type && context.commit('setViewType', x.type);
     }
     if (state.sid !== x.sid || state.viewType !== x.type) {

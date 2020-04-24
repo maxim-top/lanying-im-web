@@ -1,20 +1,11 @@
 const webpack = require("webpack");
 const path = require("path");
-
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const projectDir = path.join(__dirname, "..");
-const srcDir = path.join(projectDir, 'src');
-
 module.exports = env => {
-    let SDK_PATH = path.join(srcDir, 'im', 'floo-2.0.0.js');
-
-    if ("source" === process.env.sdk) {
-        console.log("use sdk source files");
-        SDK_PATH = path.join(srcDir, 'sdk', 'index.js');
-    }
     return {
 
         entry: {
@@ -24,7 +15,6 @@ module.exports = env => {
                 "axios",
                 "lodash",
             ],
-            sdk: SDK_PATH,
             app: path.join(projectDir, "src", "main.js"),
         },
         module: {
@@ -37,8 +27,8 @@ module.exports = env => {
                   },
                 },
             ]},
-
         plugins: [
+            new webpack.HotModuleReplacementPlugin({}),
             new CleanWebpackPlugin(["dist"], {
                 root: projectDir,
             }),

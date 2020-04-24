@@ -72,7 +72,12 @@ import {mapGetters} from "vuex";
 export default {
   name: "RosterChat",
   data() {
-    return {};
+    return {
+      system_roster: {
+        name: "系统通知",
+        avatar: "/image/setting.png"
+      }
+    };
   },
   mounted() {
     let { timestamp } = this.message;
@@ -126,7 +131,10 @@ export default {
       let avatar = this.im.sysManage.getImage({ avatar: fromUserObj.avatar });
 
       if (fromUid === cuid) {
-        username = "我自己";
+        username = "我";
+      }else if ( 0 == fromUid ){
+        username = this.system_roster.name;
+        avatar = this.system_roster.avatar;
       }
       return { username, avatar };
     },

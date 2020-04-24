@@ -9,9 +9,7 @@ import './assets/index.css';
 import ElementUI from "element-ui";
 
 Vue.config.productionTip = false;
-
 Vue.prototype.axios = axios;
-
 Vue.use(ElementUI);
 
 Vue.prototype.serr = (err) => {
