@@ -143,60 +143,37 @@ export default {
       const attach = this.message.attach || {};
       const { url = "" } = attach;
 
-      if (url) {
-        return (url +
-          "&access-token=" +
-          this.im.userManage.getToken() +
-          "&app_id=" +
-          this.im.userManage.getAppid()
-        );
-      } else {
-        return url;
-      }
+      return this.im.sysManage.getChatFile({ url });
     },
 
     attachImage() {
-      const image = this.im.sysManage.getImage({ avatar: this.attachUrl });
-      return image;
+      return this.getImage({});
     },
 
     attachAudio() {
-      let attachUrl = this.attachUrl;
-      if (attachUrl) {
-        return attachUrl + "&format=mp3";
-      }
-      return "";
+      const attach = this.message.attach || {};
+      return this.im.sysManage.getAudio({ url: attach.url });
     },
+
     attachVideo() {
-      return this.attachUrl;
+      return this.getVideo();
     },
+
     attachFile() {
       return this.attachUrl;
     },
+
     videoImage() {
       const attachment = this.message.attach || "{}";
       const { url, tUrl } = attachment;
       if (tUrl && tUrl.length) {
-        return (
-          tUrl +
-          "&access-token=" +
-          this.im.userManage.getToken() +
-          "&app_id=" +
-          this.im.userManage.getAppid() +
-          "&image_type=2"
-        );
+        return this.attachImage(tUrl);
       } else if (url) {
-        return (
-          url +
-          "&access-token=" +
-          this.im.userManage.getToken() +
-          "&app_id=" +
-          this.im.userManage.getAppid() +
-          "&image_type=3"
-        );
+        return this.getVideo(true);
       }
       return url;
     },
+
     attachLocation() {
       const attachment = this.message.attach || "{}";
       let attachObj = {};
@@ -242,28 +219,24 @@ export default {
   },
 
   methods: {
+    getImage({avatar = '', thumbnail = true}){
+      if (!avatar){
+        const attach = this.message.attach || {};
+        avatar = attach.url;
+      }
+      return this.im.sysManage.getImage({ avatar, thumbnail });
+    },
+
     touchImage() {
-      if (this.attachUrl) {
-        const image = this.im.sysManage.getImage({
-          avatar: this.attachUrl,
-          thumbnail: false
-        });
+      const image = this.getImage(false);
+      if (image) {
         window.open(image);
       } else {
         alert("附件错误..");
       }
     },
     playAudio() {
-      let url = this.message.attach.url;
-
-      url =
-        url +
-        "&access-token=" +
-        this.im.userManage.getToken() +
-        "&app_id=" +
-        this.im.userManage.getAppid() +
-        "&format=mp3"; // 4 === web
-
+      const url = this.attachAudio;
       if (!url) {
         alert("url为空，不能播放");
         return;
@@ -298,6 +271,15 @@ export default {
       const idStr = numToString(this.message.id).toString();
       this.im.rosterManage.unreadMessage(this.getSid, idStr);
     },
+
+    getVideo(cover = false) {
+      let url = this.attachUrl;
+      if( cover ){
+        url += "&imgage_type=3";
+      }
+      return url;
+    },
+
     playVideo() {
       let attachUrl = this.attachUrl;
       this.$store.dispatch("layer/actionSetShowing", "video");
