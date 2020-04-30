@@ -55,9 +55,12 @@ export default {
         this.message = "";
         return;
       }
+
+      // 如果需要自定义消息，直接使用 ext 字段即可
       this.im.sysManage.sendRosterMessage({
         content: this.message,
-        uid: this.getSid
+        uid: this.getSid,
+        // ext: "自定义消息字段",
       });
       setTimeout(() => {
         this.message = "";

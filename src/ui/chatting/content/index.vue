@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <audio id="xawfkjawefawefafwefawfe"/>
+    <audio id="audio_player"/>
     <RosterInfo v-if="getViewType=='rosterinfo'"/>
     <GroupInfo v-if="getViewType=='groupinfo'"/>
 

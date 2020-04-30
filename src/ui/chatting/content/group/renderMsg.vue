@@ -11,7 +11,9 @@
         <div class="c_content" v-html="message.mentionStr" v-if="message.mentionStr">
         </div>
         <div class="c_content" v-if="!message.mentionStr">
-          <div v-if="message.type === 'text'">{{message.content}}</div>
+          <div v-if="message.type === 'text'">{{message.content}}
+            <div v-if="message.ext">ext:{{message.ext}}</div>
+          </div>
           <div v-if="message.type === 'image'">
             <img :src="attachImage" @click="touchImage" v-if="attachImage!==''"/>
           </div>
@@ -132,7 +134,7 @@ export default {
 
       let avatar = this.getImage({ avatar: fromUserObj.avatar, type: "group" });
       if (fromUid === cuid) {
-        username = "我自己";
+        username = "我";
       }
       return { username, avatar };
     },
@@ -239,7 +241,7 @@ export default {
         alert("url为空，不能播放");
         return;
       }
-      const au = document.querySelector("#xawfkjawefawefafwefawfe");
+      const au = document.querySelector("#audio_player");
       au.src = url;
       au.play();
     },

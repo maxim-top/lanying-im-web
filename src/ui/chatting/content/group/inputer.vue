@@ -153,10 +153,13 @@ export default {
         });
       } else {
         if (!txt) return;
+
+        // 如果需要自定义消息，直接使用 ext 字段即可
         this.im.sysManage.sendGroupMessage({
           // type: 'text', // image , file， 默认 text， 可省略
           content: txt,
           gid: this.getSid,
+          // ext: "自定义消息字段",
           priority: 0
         });
       }
@@ -191,6 +194,7 @@ export default {
             gid: this.getSid,
             content: "",
             attachment: fileInfo,
+            ext: "自定义消息字段",
             priority: 0
           });
           this.$refs.fileRef.value = "";

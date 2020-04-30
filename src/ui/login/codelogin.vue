@@ -45,6 +45,8 @@ export default {
   props: ["sdkok", "appid"],
   data() {
     return {
+      checkCodeTime: 0,
+      checkCodeTimer: null,
       user: {
         mobile: "",
         captcha: "",
@@ -126,6 +128,14 @@ export default {
         this.$message.error("请输入手机号");
         return;
       }
+
+      this.checkCodeTime = 60;
+      this.checkCodeTimer = setInterval(() => {
+        this.checkCodeTime -= 1;
+        if (this.checkCodeTime == 0) {
+          clearInterval(this.checkCodeTimer);
+        }
+      }, 1000);
 
       this.$store.state.im.userManage
         .asyncCaptchaSms({
