@@ -109,14 +109,24 @@ export default {
             this.$store.dispatch("login/actionChangeAppStatus", "chatting");
             this.bindMobile();
           },
+          loginFail: msg => {
+            window.alert("登陆失败, error: " + msg);
+          },
           logout: () => {
             this.$store.dispatch("login/actionChangeAppStatus", "login");
           },
-          loginUnnormal: () => {
-            window.location.reload();
-          },
           onReloginRequired: () => {
             window.location.reload();
+          },
+          flooError: msg => {
+            const { category, desc } = msg;
+            switch( category ) {
+              case 'USER_BANNED':
+                window.alert("用户错误: " + desc);
+                break;
+              default:
+                console.log("未知错误：" + category + " : " + desc);
+            }
           },
           dnsError: () => {
             window.alert("dns服务器错误，请刷新重试");
