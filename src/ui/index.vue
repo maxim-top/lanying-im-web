@@ -102,9 +102,6 @@ export default {
 
       if (this.sdkok) {
         this.$store.state.im.on({
-          loginMessage: msg => {
-            this.$store.dispatch("login/actionAddLoginLog", msg);
-          },
           loginSuccess: () => {
             this.$store.dispatch("login/actionChangeAppStatus", "chatting");
             this.bindMobile();
@@ -112,11 +109,23 @@ export default {
           loginFail: msg => {
             window.alert("登陆失败, error: " + msg);
           },
-          logout: () => {
-            this.$store.dispatch("login/actionChangeAppStatus", "login");
-          },
-          onReloginRequired: () => {
-            window.location.reload();
+          flooNotice: msg => {
+            console.log("Floo Notice: " + msg);
+            const { category, desc } = msg;
+            switch( category ) {
+              case 'action':
+                if( 'relogin' == desc ){
+                  window.location.reload();
+                }else{
+                  console.log("Floo Notice: unknown action ", desc);
+                }
+                break;
+              case 'loginMessage':
+                this.$store.dispatch("login/actionAddLoginLog", desc);
+                break;
+              default:
+                console.log("Floo Notice: unknown category " + category);
+            }
           },
           flooError: msg => {
             const { category, desc } = msg;
@@ -124,12 +133,11 @@ export default {
               case 'USER_BANNED':
                 window.alert("用户错误: " + desc);
                 break;
+              case 'DNS_FAILED':
+                window.alert("DNS错误: 无法访问 " + desc);
               default:
-                console.log("未知错误：" + category + " : " + desc);
+                console.log("Floo Error：" + category + " : " + desc);
             }
-          },
-          dnsError: () => {
-            window.alert("dns服务器错误，请刷新重试");
           }
         });
       }

@@ -68,6 +68,7 @@ export default {
 
     fileChangeHandler(e) {
       const file = e.target.files[0];
+      console.log("Choose file: ", file);
       this.$store.getters.im.sysManage
         .asyncFileUpload({
           file,
