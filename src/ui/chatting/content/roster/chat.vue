@@ -37,15 +37,12 @@ export default {
       this.requireMessage();
     });
 
-    this.$store.getters.im.on("onMessageRecalled", () => {
-      this.requireMessage();
+    this.$store.getters.im.on("onMessageRecalled", ({mid}) => {
+      this.deleteMessage(mid);
     });
 
-    this.$store.getters.im.on("onMessageDeleted", message => {
-      const uid = this.$store.getters.im.userManage.getUid();
-      if (uid + "" === message.uid + "") {
-        this.requireMessage();
-      }
+    this.$store.getters.im.on("onMessageDeleted", ({mid}) => {
+      this.deleteMessage(mid);
     });
 
     this.$store.getters.im.on("onMessageCanceled", message => {
@@ -99,6 +96,15 @@ export default {
         this.$store.dispatch("content/actionRequireMessage");
       }, 200);
     },
+
+    deleteMessage(mid) {
+      setTimeout(() => {
+        this.$store.dispatch("content/actionDeleteMessage", mid);
+      }, 200);
+
+      !this.getMessages.length && this.scroll();
+    },
+
     reloadMessage(message) {
       const uid = this.$store.getters.im.userManage.getUid();
       const toUid = toNumber(message.to);

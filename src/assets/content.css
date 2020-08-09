@@ -39,6 +39,21 @@
   background-color: #f0f0f0
 }
 
+.content .header .delete_button {
+  position: absolute;
+  right: 24px;
+  width: 64px;
+  height: 18px;
+  line-height: 32px;
+  margin-top: -32px;
+  font-size: 12px;
+  color: #319DE1;
+}
+
+.content .header .delete_button:hover {
+  color: #880000;
+}
+
 .content .list {
   width: auto;
   height: 75%;

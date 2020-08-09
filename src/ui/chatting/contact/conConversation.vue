@@ -45,6 +45,12 @@ export default {
     }
   },
 
+  watch: {
+    getConversationList(){
+      //refresh list
+    }
+  },
+
   methods: {
     formatTimeString(timestamp) {
       if (!timestamp) return "";

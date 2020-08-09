@@ -110,8 +110,8 @@ export default {
             window.alert("登陆失败, error: " + msg);
           },
           flooNotice: msg => {
-            console.log("Floo Notice: " + msg);
             const { category, desc } = msg;
+            console.log("Floo Notice: " + category + " : " + desc);
             switch( category ) {
               case 'action':
                 if( 'relogin' == desc ){
@@ -135,6 +135,7 @@ export default {
                 break;
               case 'DNS_FAILED':
                 window.alert("DNS错误: 无法访问 " + desc);
+                break;
               default:
                 console.log("Floo Error：" + category + " : " + desc);
             }

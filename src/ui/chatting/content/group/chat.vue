@@ -37,14 +37,12 @@ export default {
       this.requireMessage();
     });
 
-    this.$store.getters.im.on("onMessageRecalled", () => {
-      //多刷一次无所谓
-      this.requireMessage();
+    this.$store.getters.im.on("onMessageRecalled", ({mid}) => {
+      this.deleteMessage(mid);
     });
 
-    this.$store.getters.im.on("onMessageDeleted", () => {
-      //多刷一次无所谓
-      this.requireMessage();
+    this.$store.getters.im.on("onMessageDeleted", ({mid}) => {
+      this.deleteMessage(mid);
     });
 
     this.$store.getters.im.on("onMessageCanceled", message => {
@@ -120,6 +118,15 @@ export default {
         this.$store.dispatch("content/actionRequireMessage");
       }, 200);
     },
+
+    deleteMessage(mid) {
+      setTimeout(() => {
+        this.$store.dispatch("content/actionDeleteMessage", mid);
+      }, 200);
+
+      !this.getMessages.length && this.scroll();
+    },
+
     reloadMessage(message) {
       const toUid = toNumber(message.to);
       const pid = this.getSid;

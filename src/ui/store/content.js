@@ -150,8 +150,10 @@ const actions = {
   actionSetType(context, x) {
     const { state } = context;
     if ( typeof x.sid === "undefined" || x.sid < 0 ) {
-      x.type && context.commit('setViewType', x.type);
+      context.commit('setMessage', []);
+      context.commit('setViewType', '');
     }
+
     if (state.sid !== x.sid || state.viewType !== x.type) {
       context.commit('setSid', x.sid);
       x.type && context.commit('setViewType', x.type);
@@ -257,6 +259,20 @@ const actions = {
     context.commit('setMessage', [].concat(oldMessages));
     if (!isHistory && oldMessages.length !== state.messages.length) {
       state.scroll = state.scroll + 1;
+    }
+  },
+
+  actionDeleteMessage(context, mid) {
+    const { state } = context;
+    const oldMessages = state.messages || [];
+    const newMessages = oldMessages.filter( meta => {
+      if ( meta.id == mid ) return false;
+      else return true;
+    });
+
+    context.commit('setMessage', [].concat(newMessages));
+    if ( oldMessages.length !== state.messages.length) {
+      state.scroll = state.scroll - 1;
     }
   },
 

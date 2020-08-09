@@ -6,6 +6,9 @@
       <span class="text">{{mentionMessage}}</span>
     </div>
     <span class="typing" style="padding-left:20px;color:#DDD;"></span>
+    <div class="delete_button" @click="deleteConversation(getSid)">
+      删除会话
+    </div>
   </div>
 </template>
 
@@ -56,6 +59,18 @@ export default {
         type: "groupinfo"
       });
     },
+
+    deleteConversation(id) {
+      this.$store.getters.im.deleteConversation(id);
+      alert("会话删除成功");
+
+      this.$store.dispatch("contact/actionGetConversationList");
+      this.$store.dispatch("header/actionChangeHeaderStatus", "conversation");
+      this.$store.dispatch("content/actionSetType", {
+        sid: undefined,
+      });
+    },
+
     closeMention() {
       this.mentionMessage = "";
     }
