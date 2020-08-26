@@ -75,6 +75,9 @@ export default {
         .then(() => {
           alert("好友已删除");
         });
+
+      const also_delete_other_devices = true;
+      this.$store.getters.im.sysManage.deleteConversation(this.getSid, also_delete_other_devices);
     },
     addFriendHandler() {
       const { user_id, username } = this.userInfo;

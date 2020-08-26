@@ -172,6 +172,9 @@ export default {
             alert("您已退出了此群。。");
           });
       }
+
+      const also_delete_other_devices = true;
+      this.$store.getters.im.sysManage.deleteConversation(this.getSid, also_delete_other_devices);
     },
     viewQrcode() {
       this.$store.dispatch("layer/actionSetShowmask", "true");

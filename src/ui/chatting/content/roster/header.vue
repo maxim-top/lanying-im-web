@@ -47,7 +47,8 @@ export default {
     },
 
     deleteConversation(id) {
-      this.$store.getters.im.deleteConversation(id);
+      const also_delete_other_devices = true;
+      this.$store.getters.im.sysManage.deleteConversation(id, also_delete_other_devices);
       alert("会话删除成功");
 
       this.$store.dispatch("contact/actionGetConversationList");

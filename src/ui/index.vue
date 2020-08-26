@@ -105,6 +105,7 @@ export default {
           loginSuccess: () => {
             this.$store.dispatch("login/actionChangeAppStatus", "chatting");
             this.bindMobile();
+            // this.bindDeviceToken( device_token, notifier_name );
           },
           loginFail: msg => {
             window.alert("登陆失败, error: " + msg);
@@ -142,6 +143,33 @@ export default {
           }
         });
       }
+    },
+
+    //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
+    //其中 notifier_name 为证书名称，也即在美信拓扑控制台内上传证书时候设置的名称。
+    bindDeviceToken( device_token, notifier_name ){
+      const imUser = this.$store.state.im.userManage
+      const device_sn = imUser.getDeviceSN();
+      imUser.asyncBindDeviceToken({
+        device_sn,
+        device_token,
+        notifier_name
+      }).then(()=>{
+        window.alert("设备绑定成功: " + device_sn );
+      }).catch( err =>{
+        window.alert("设备绑定失败: " + err.code +":"+err.errMsg);
+      });
+    },
+    unbindDeviceToken( ){
+      const imUser = this.$store.state.im.userManage
+      const device_sn = imUser.getDeviceSN();
+      imUser.asyncUnbindDeviceToken({
+        deviceSn: device_sn
+      }).then(()=>{
+        window.alert("设备解绑成功: " + device_sn );
+      }).catch( err =>{
+        window.alert("设备解绑失败: " + err.code +":"+err.errMsg);
+      });
     },
     bindMobile() {
       if (this.getMobileSign && this.getSignMobile) {
