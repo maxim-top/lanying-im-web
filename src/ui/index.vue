@@ -112,7 +112,7 @@ export default {
           },
           flooNotice: msg => {
             const { category, desc } = msg;
-            console.log("Floo Notice: " + category + " : " + desc);
+            console.log("Floo Notice: " + category + " : " + desc.toString());
             switch( category ) {
               case 'action':
                 if( 'relogin' == desc ){
@@ -123,6 +123,9 @@ export default {
                 break;
               case 'loginMessage':
                 this.$store.dispatch("login/actionAddLoginLog", desc);
+                break;
+              case 'conversation_deleted':
+                console.log("Floo Notice: 会话被删除：", desc.toString());
                 break;
               default:
                 console.log("Floo Notice: unknown category " + category);
@@ -148,7 +151,7 @@ export default {
     //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
     //其中 notifier_name 为证书名称，也即在美信拓扑控制台内上传证书时候设置的名称。
     bindDeviceToken( device_token, notifier_name ){
-      const imUser = this.$store.state.im.userManage
+      const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
       imUser.asyncBindDeviceToken({
         device_sn,
@@ -161,7 +164,7 @@ export default {
       });
     },
     unbindDeviceToken( ){
-      const imUser = this.$store.state.im.userManage
+      const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
       imUser.asyncUnbindDeviceToken({
         deviceSn: device_sn

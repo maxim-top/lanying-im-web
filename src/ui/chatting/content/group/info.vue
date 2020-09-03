@@ -47,6 +47,11 @@ export default {
   },
   mounted() {
     this.refreshGroupInfo(this.getSid);
+
+    this.$store.getters.im.on("onGroupListUpdate", () => {
+      this.$store.dispatch("contact/actionClearGroupList");
+      this.$store.dispatch("contact/actionLazyGetGroupList");
+    });
   },
   watch: {
     getSid(newSid) {
@@ -106,13 +111,7 @@ export default {
       const user = this.getMemberList.find(x => x.user_id === uid);
       this.cardName = (user && (user.display_name || user.name)) || "";
     },
-    chatRemoveHandler() {
-      this.$store.getters.im.rosterManage
-        .asyncDeleteRoster({ user_id: this.getSid })
-        .then(() => {
-          alert("好友已删除");
-        });
-    },
+
     chatClickHandler() {
       this.$store.dispatch("header/actionChangeHeaderStatus", "conversation");
       this.$store.dispatch("content/actionSetType", {
