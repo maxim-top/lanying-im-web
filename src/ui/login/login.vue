@@ -48,6 +48,7 @@ export default {
       this.$refs.password.focus();
     },
     submit() {
+      window.localStorage.setItem('maxim_logininfo', this.user);
       if (this.sdkok) {
         this.$store.state.im.login(this.user);
       }

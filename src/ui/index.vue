@@ -75,7 +75,7 @@ export default {
 
     init_flooIM() {
       const config = {
-        dnsServer: "https://dns.maximtop.com/app_dns",
+        // dnsServer: "https://dns.maximtop.com/v2/app_dns",
         appid: this.appid,
         ws: false,
         autoLogin: true
@@ -115,9 +115,22 @@ export default {
             console.log("Floo Notice: " + category + " : " + desc.toString());
             switch( category ) {
               case 'action':
-                if( 'relogin' == desc ){
-                  window.location.reload();
-                }else{
+                if ('relogin' == desc) {
+                  console.log("Token失效，尝试自动登录中");
+                  const info = window.localStorage.getItem('maxim_logininfo') || {};
+                  if( info.name ) {
+                    // ensureIMLogin();
+                    this.$store.state.im.login(info);
+                  }else{
+                    //no user info means you should relogin manually.
+                  }
+                } else if ('relogin_manually' == desc) {
+                  window.alert("请重新登录");
+                  const im = this.$store.getters.im;
+                  im.logout();
+                  window.localStorage.removeItem('maxim_logininfo');
+                  this.$store.dispatch("login/actionChangeAppStatus", "login");
+                } else {
                   console.log("Floo Notice: unknown action ", desc);
                 }
                 break;
@@ -140,6 +153,9 @@ export default {
               case 'DNS_FAILED':
                 window.alert("DNS错误: 无法访问 " + desc);
                 break;
+              case 'LICENSE':
+                window.alert("服务需要续费: " + desc);
+                break;
               default:
                 console.log("Floo Error：" + category + " : " + desc);
             }
@@ -150,7 +166,7 @@ export default {
 
     //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
     //其中 notifier_name 为证书名称，也即在美信拓扑控制台内上传证书时候设置的名称。
-    bindDeviceToken( device_token, notifier_name ){
+    bindDeviceToken(device_token, notifier_name) {
       const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
       imUser.asyncBindDeviceToken({
@@ -163,7 +179,7 @@ export default {
         window.alert("设备绑定失败: " + err.code +":"+err.errMsg);
       });
     },
-    unbindDeviceToken( ){
+    unbindDeviceToken() {
       const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
       imUser.asyncUnbindDeviceToken({
@@ -186,7 +202,18 @@ export default {
             this.$store.dispatch("login/actionSetSignMobile", "");
           });
       }
-    }
+    },
+
+    // saveLoginInfo(info) {
+    //   // const {name, password} = info;
+    //   window.localStorage.setItem('maxim_logininfo', info);
+    // },
+    // getLoginInfo() {
+    //   return window.localStorage.getItem('maxim_logininfo') || {};
+    // },
+    // removeLoginInfo() {
+    //   window.localStorage.removeItem('maxim_logininfo');
+    // }
   }
 };
 </script>

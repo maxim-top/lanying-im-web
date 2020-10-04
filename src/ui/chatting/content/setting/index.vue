@@ -116,8 +116,10 @@ export default {
         });
     },
     logout() {
-      window.localStorage.clear();
-      window.location.reload();
+      const im = this.$store.getters.im;
+      im.logout();
+      window.localStorage.removeItem('maxim_logininfo');
+      this.$store.dispatch("login/actionChangeAppStatus", "login");
     },
     rosterSwitchTouch() {
       const auth_mode = this.auth_mode === 1 ? 0 : 1;

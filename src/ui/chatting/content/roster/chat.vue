@@ -17,13 +17,17 @@ export default {
   mounted() {
     this.requireMessage();
     this.scroll();
-    this.$store.getters.im.rosterManage.readRosterMessage(this.getSid);
 
-    this.$store.getters.im.on("onRosterMessage", message => {
+    const im = this.$store.getters.im;
+    if( !im ) return;
+
+    im.rosterManage.readRosterMessage(this.getSid);
+
+    im.on("onRosterMessage", message => {
       this.reloadMessage(message);
     });
 
-    this.$store.getters.im.on("onReceiveHistoryMsg", messages => {
+    im.on("onReceiveHistoryMsg", messages => {
       this.queryingHistory = false;
       this.$store.dispatch("content/actionAppendMessage", {
         history: true,
@@ -33,23 +37,38 @@ export default {
       !this.getMessages.length && this.scroll();
     });
 
-    this.$store.getters.im.on("onMessageStatusChanged", () => {
+    im.on("onMessageStatusChanged", ({mid}) => {
+      console.log("Message status changed, mid: ", mid);
       this.requireMessage();
     });
 
-    this.$store.getters.im.on("onMessageRecalled", ({mid}) => {
+    im.on("onMessageRecalled", ({mid}) => {
       this.deleteMessage(mid);
     });
 
-    this.$store.getters.im.on("onMessageDeleted", ({mid}) => {
+    im.on("onMessageDeleted", ({mid}) => {
       this.deleteMessage(mid);
     });
 
-    this.$store.getters.im.on("onMessageCanceled", message => {
+    im.on("onMessageCanceled", message => {
       const uid = this.$store.getters.im.userManage.getUid();
       if (uid + "" === message.uid + "") {
         this.requireMessage();
       }
+    });
+  },
+
+  destroyed() {
+    const im = this.$store.getters.im;
+    if( !im ) return;
+
+    im.off({
+      'onRosterMessage': '',
+      'onReceiveHistoryMsg': '',
+      'onMessageStatusChanged': '',
+      'onMessageRecalled': '',
+      'onMessageDeleted': '',
+      'onMessageCanceled': '',
     });
   },
 

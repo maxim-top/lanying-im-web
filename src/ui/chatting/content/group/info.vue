@@ -27,8 +27,7 @@
       <p @click="cardModifyHandler" class="lr">{{cardName}}</p>
     </div>
 
-    <div @click="destroyClickHandler" class="logout mt15" v-if="isOwner">解散</div>
-    <div @click="leaveClickHandler" class="logout mt15" v-else>退出</div>
+    <div @click="destroyClickHandler" class="logout mt15">{{dismissMessage}}</div>
 
     <div @click="chatClickHandler" class="logout mt15">开始聊天</div>
 
@@ -43,31 +42,20 @@ export default {
   data() {
     return {
       groupInfo: {},
-      isOwner: false,
       cardName: ""
     };
   },
   mounted() {
+    this.refreshGroupInfo(this.getSid);
+
     this.$store.getters.im.on("onGroupListUpdate", () => {
       this.$store.dispatch("contact/actionClearGroupList");
       this.$store.dispatch("contact/actionLazyGetGroupList");
     });
-
-    this.refreshGroupInfo();
   },
   watch: {
     getSid(newSid) {
-      this.refreshGroupInfo();
-    },
-    getGroupInfo(newGroupInfo) {
-      this.groupInfo = newGroupInfo;
-      this.groupInfo.avatar = this.$store.getters.im.sysManage.getImage({
-        avatar: newGroupInfo.avatar,
-        type: 'group'
-      });
-
-      const uid = this.$store.getters.im.userManage.getUid();
-      this.isOwner = newGroupInfo.owner_id === uid;
+      this.refreshGroupInfo(newSid);
     }
   },
   components: {},
@@ -96,11 +84,28 @@ export default {
         this.getAdminList.filter(x => x.user_id === uid).length > 0 ||
         this.getGroupInfo.member_modify
       );
+    },
+    isOwner() {
+      const uid = this.$store.getters.im.userManage.getUid();
+      return this.getGroupInfo.owner_id === uid;
+    },
+    dismissMessage() {
+      return this.isOwner ? "解散" : "退出";
     }
   },
   methods: {
-    refreshGroupInfo() {
-      this.$store.dispatch("content/actionOpenGroup");
+    refreshGroupInfo(newSid) {
+      this.$store.getters.im.groupManage.asyncGetInfo({ group_id: newSid })
+        .then(res => {
+          res.avatar = this.$store.getters.im.sysManage.getImage({
+            avatar: res.avatar,
+            type: 'group'
+          });
+          this.groupInfo = res;
+        })
+        .catch(ex => {
+          this.serr(ex);
+        });
 
       const uid = this.$store.getters.im.userManage.getUid();
       const user = this.getMemberList.find(x => x.user_id === uid);
@@ -151,22 +156,21 @@ export default {
     },
 
     destroyClickHandler() {
-      this.$store.getters.im.groupManage
-        .asyncDestroy({ group_id: this.getSid })
-        .then(() => {
-          alert("您已解散了此群。。");
-        });
-
-      const also_delete_other_devices = true;
-      this.$store.getters.im.sysManage.deleteConversation(this.getSid, also_delete_other_devices);
-    },
-
-    leaveClickHandler() {
-      this.$store.getters.im.groupManage
-        .asyncLeave({ group_id: this.getSid })
-        .then(() => {
-          alert("您已退出了此群。。");
-        });
+      if (this.isOwner) {
+        //dismiss
+        this.$store.getters.im.groupManage
+          .asyncDestroy({ group_id: this.getSid })
+          .then(() => {
+            alert("您已解散了此群。。");
+          });
+      } else {
+        //leave
+        this.$store.getters.im.groupManage
+          .asyncLeave({ group_id: this.getSid })
+          .then(() => {
+            alert("您已退出了此群。。");
+          });
+      }
 
       const also_delete_other_devices = true;
       this.$store.getters.im.sysManage.deleteConversation(this.getSid, also_delete_other_devices);
