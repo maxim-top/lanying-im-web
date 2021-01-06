@@ -130,7 +130,7 @@ export default {
       const fromUid = toNumber(this.message.from);
       const fromUserObj = umaps[fromUid] || {};
       let username = fromUserObj.username || "";
-      let avatar = this.im.sysManage.getImage({ avatar: fromUserObj.avatar });
+      let avatar = this.im.sysManage.getImage({ url: fromUserObj.avatar });
 
       if (fromUid === cuid) {
         username = "我";
@@ -169,7 +169,7 @@ export default {
       const attachment = this.message.attach || "{}";
       const { url, tUrl } = attachment;
       if (tUrl && tUrl.length) {
-        return this.getImage(tUrl);
+        return this.getImage({ url: tUrl, thumbnail: true });
       } else if (url) {
         return this.getVideo(true);
       }
@@ -221,18 +221,18 @@ export default {
   },
 
   methods: {
-    getImage({avatar = '', thumbnail = true}){
-      if (!avatar){
+    getImage({url = '', thumbnail = true}){
+      if (!url){
         const attach = this.message.attach || {};
-        avatar = attach.url;
+        url = attach.url;
       }
-      return this.im.sysManage.getImage({ avatar, thumbnail });
+      return this.im.sysManage.getImage({ avatar: url, thumbnail });
     },
 
     touchImage() {
-      const image = this.getImage(false);
+      const image = this.getImage({ thumbnail: false} );
       if (image) {
-        window.open(image);
+        this.openImage(image);
       } else {
         alert("附件错误..");
       }
@@ -280,6 +280,12 @@ export default {
         url += "&imgage_type=3";
       }
       return url;
+    },
+
+    openImage( url ) {
+      this.$store.dispatch("layer/actionSetShowing", "image");
+      this.$store.dispatch("layer/actionSetShowmask", true);
+      this.$store.dispatch("layer/actionSetImageUrl", url);
     },
 
     playVideo() {
