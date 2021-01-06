@@ -10,6 +10,7 @@
     <Qrcode v-if="getShowing=='qrgroup'"/>
     <Searcher/>
     <AddPop v-if="getShowing=='addpop'"/>
+    <Image2 v-if="getShowing=='image'"/>
     <Video v-if="getShowing=='video'"/>
   </div>
 </template>
@@ -25,6 +26,7 @@ import Addfriend from "./addfriend";
 import GroupSetting from "./groupsetting";
 import Searcher from "./search";
 import Qrcode from "./qrcode";
+import Image2 from "./image2";
 import Video from "./video";
 
 export default {
@@ -40,6 +42,7 @@ export default {
     GroupSetting,
     Searcher,
     Qrcode,
+    Image2,
     Video
   },
   computed: {

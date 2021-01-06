@@ -5,6 +5,7 @@ const state = {
   // groupsetting, addfriend, creategroup, joingroup, search, addpop // qrlogin, qrprofile, qrgroup
   showing: '',
   showmask: false,
+  imageUrl: '',
   videoUrl: '',
   appID: '',
 };
@@ -19,6 +20,9 @@ const getters = {
 
   gettingqrcode(state) {
     return state.qrcode;
+  },
+  getImageUrl(state) {
+    return state.imageUrl;
   },
   getVideoUrl(state) {
     return state.videoUrl;
@@ -37,6 +41,9 @@ const mutations = {
     state.showmask = x;
   },
 
+  setImageUrl(state, x) {
+    state.imageUrl = x;
+  },
   setVideoUrl(state, x) {
     state.videoUrl = x;
   },
@@ -64,6 +71,10 @@ const actions = {
 
   actionSetAppID(context, x) {
     context.commit('setAppID', x);
+  },
+
+  actionSetImageUrl(context, x) {
+    context.commit('setImageUrl', x);
   },
 
   actionSetVideoUrl(context, x) {
