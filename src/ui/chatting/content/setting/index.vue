@@ -120,6 +120,7 @@ export default {
       im.logout();
       window.localStorage.removeItem('maxim_logininfo');
       this.$store.dispatch("login/actionChangeAppStatus", "login");
+      this.$store.dispatch("header/actionChangeHeaderUserProfile", {});
     },
     rosterSwitchTouch() {
       const auth_mode = this.auth_mode === 1 ? 0 : 1;

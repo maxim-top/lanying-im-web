@@ -11,7 +11,7 @@
     </div>
     <div class="profile">
       <img :src="avatar" @click="touchSetting" class="proAvater"/>
-      <div @click="touchSetting" class="proname">{{getUserProfile.username}}</div>
+      <div @click="touchSetting" class="proname">{{username}}</div>
     </div>
   </div>
 </template>
@@ -31,9 +31,18 @@ export default {
       convImage: '',
       contactImage: '',
       settingImage: '',
+      username: '',
+      avatar: '',
     };
   },
   watch: {
+    getUserProfile( profile ) {
+      this.avatar = this.$store.state.im.sysManage.getImage({
+        avatar: profile.avatar,
+        type: 'roster'
+      });
+      this.username = profile.username;
+    },
     getHeaderStatus(selected) {
       this.changeStabImage(selected);
     }
@@ -41,12 +50,12 @@ export default {
   computed: {
     ...mapGetters("header", ["getHeaderStatus", "getUserProfile"]),
 
-    avatar() {
-      return this.$store.state.im.sysManage.getImage({
-        avatar: this.getUserProfile.avatar,
-        type: 'roster'
-      });
-    },
+    // avatar() {
+    //   return this.$store.state.im.sysManage.getImage({
+    //     avatar: this.getUserProfile.avatar,
+    //     type: 'roster'
+    //   });
+    // },
     token() {
       return this.$store.getters.im.userManage.getToken();
     }

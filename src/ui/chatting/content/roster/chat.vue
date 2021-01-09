@@ -21,8 +21,6 @@ export default {
     const im = this.$store.getters.im;
     if( !im ) return;
 
-    im.rosterManage.readRosterMessage(this.getSid);
-
     im.on("onRosterMessage", message => {
       this.reloadMessage(message);
     });
@@ -40,6 +38,11 @@ export default {
     im.on("onMessageStatusChanged", ({mid}) => {
       console.log("Message status changed, mid: ", mid);
       this.requireMessage();
+    });
+
+    this.$store.getters.im.on("onSendingMessageStatusChanged", ({status, mid}) => {
+      console.log("Sending Message status changed to ", status," mid: ", mid);
+      // this.requireMessage();
     });
 
     im.on("onMessageRecalled", ({mid}) => {
@@ -100,7 +103,6 @@ export default {
   watch: {
     getSid(a, b) {
       if (a !== b) {
-        this.$store.getters.im.rosterManage.readRosterMessage(this.getSid);
         this.requireMessage();
         this.scroll();
       }

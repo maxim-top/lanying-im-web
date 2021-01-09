@@ -183,7 +183,6 @@ const actions = {
   },
 
   actionRequireMessage(context) {
-    // eslint-disable-next-line no-unused-vars
     const { rootState, state } = context;
 
     let localMessages = undefined;
@@ -212,12 +211,16 @@ const actions = {
     const { state, rootState } = context;
     const uid = rootState.im.userManage.getUid();
     const oldMessages = state.messages || [];
-    newMessages.filter(meta => {
-      // ignore input status messages
-      if (meta.ext && meta.ext.input_status) return false;
-      else return true;
-    }).forEach(meta => {
-      const { from, to } = meta;
+
+    let allMessages = [];
+    let i = 0, j = 0;
+    while( i < newMessages.length && j < oldMessages.length ){
+      const newMeta = newMessages[i];
+      if (newMeta.ext && newMeta.ext.input_status) {
+        i++;
+        continue;
+      }
+      const { from, to } = newMeta;
       const fromUid = toNumber(from);
       const toUid = toNumber(to);
       let saveUid = fromUid === uid ? toUid : fromUid;
@@ -228,36 +231,31 @@ const actions = {
         return; //group，to 必须是sid
       }
 
-      if (oldMessages.length > 0) {
-        const firstItem = oldMessages[0];
-        const lastItem = oldMessages[oldMessages.length - 1];
-        const compFirst = toLong(meta.id).comp(toLong(firstItem.id) || 0);
-        const compLast = toLong(meta.id).comp(toLong(lastItem.id) || 0);
-
-        if (compFirst === -1) { // 比第一个小
-          oldMessages.unshift(meta);
-        } else if (compLast === 1) {
-          oldMessages.push(meta);
-        } else {
-          let index = -1;
-          for (var i = 0; i < oldMessages.length - 2; i += 1) {
-            const compCurr = toLong(meta.id).comp(toLong(oldMessages[i].id));
-            const compNext = toLong(meta.id).comp(toLong(oldMessages[i + 1].id));
-            if (compCurr === 1 && compNext === -1) {
-              index = i;
-            }
-          }
-          if (index > -1) {
-            oldMessages.splice(index, 0, meta); // 插入到这里
-          }
-        }
-      } else { // 数组为空
-        oldMessages.push(meta);
+      const oldMeta = oldMessages[j];
+      const c = toLong(newMeta.id).comp(toLong(oldMeta.id));
+      if( -1 === c ){
+        allMessages.push(newMeta);
+        i++;
+      }else if( 1 === c ) {
+        allMessages.push(oldMeta);
+        j++;
+      }else{
+        //same id, which means message info updated
+        allMessages.push(newMeta);
+        i++;
+        j++;
       }
-    });
-    // foreach over...
-    context.commit('setMessage', [].concat(oldMessages));
-    if (!isHistory && oldMessages.length !== state.messages.length) {
+    }
+
+    if( i < newMessages.length ){
+      allMessages = allMessages.concat( newMessages.slice(i, newMessages.length));
+    }
+
+    if( j < newMessages.length ){
+      allMessages = allMessages.concat( oldMessages.slice(i, oldMessages.length));
+    }
+    context.commit('setMessage', allMessages);
+    if (!isHistory && allMessages.length !== oldMessages.length) {
       state.scroll = state.scroll + 1;
     }
   },
@@ -278,8 +276,9 @@ const actions = {
 
   queryHistory(context) {
     const { rootState, state } = context;
-    const mid = this.queryHistoryMessageId || 0; // messageid, 第一条，最早的一个
-    rootState.im.sysManage.requireHistoryMessage(state.sid, mid);
+    const mid = this.queryHistoryMessageId || 0; // Query historys older than the message with id:mid, 0 means from the last message;
+    const amount = 20; // Batch size of one time history message query.
+    rootState.im.sysManage.requireHistoryMessage(state.sid, mid, amount);
 
     context.commit('recordHistoryQuery');
   },

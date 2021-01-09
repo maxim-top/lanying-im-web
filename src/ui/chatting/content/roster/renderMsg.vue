@@ -37,12 +37,12 @@
               <div @click="forwardMessage" class="recall item">转发</div>
               <div @click="recallMessage" class="recall item" v-if="isSelf && !message.h">撤回</div>
 
-              <div class="msgStatus item item" v-if="isSelf && !ackStatus && !message.h">未读</div>
-              <div class="msgStatus item" v-if="isSelf && ackStatus===1  && !message.h">送达</div>
-              <div class="msgStatus item" v-if="isSelf && ackStatus===2  && !message.h">已读</div>
+              <div class="msgStatus item item" v-if="isSelf && messageStatus === 'unread' && !message.h">未读</div>
+              <div class="msgStatus item" v-if="isSelf && messageStatus === 'delivered'  && !message.h">送达</div>
+              <div class="msgStatus item" v-if="isSelf && messageStatus === 'read'  && !message.h">已读</div>
 
-              <div class="unread item" v-if="ackStatus===3 && !isSelf  && !message.h">未读</div>
-              <div @click="unreadMessage" class="set_unread item" v-if="ackStatus!==3 && !isSelf  && !message.h">设置未读
+              <div class="unread item" v-if="messageStatus === 'unread' && !isSelf  && !message.h">未读</div>
+              <div @click="unreadMessage" class="set_unread item" v-if="messageStatus !== 'unread' && !isSelf  && !message.h">设置未读
               </div>
             </div>
             <div class="h_image" slot="reference">
@@ -211,13 +211,11 @@ export default {
       return "文件附件";
     },
 
-    ackStatus() {
-      const idStr = numToString(this.message.id).toString();
-      const allAcks = this.im.sysManage.getAllMessageStatus() || {};
-      const ackStatus = allAcks[idStr] || 0;
-      return ackStatus - 0;
+    messageStatus() {
+      const fromUid = toNumber(this.message.from);
+      // status will be unread / delivered / read
+      return this.im.sysManage.getMessageStatus(fromUid, this.message.id);
     }
-    // computed over...
   },
 
   methods: {

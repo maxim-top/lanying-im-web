@@ -38,12 +38,6 @@
               <div @click="deleteMessage" class="delete  item" v-if="!message.h">删除</div>
               <div @click="forwardMessage" class="recall  item">转发</div>
               <div @click="recallMessage" class="recall item" v-if="isSelf && !message.h">撤回</div>
-
-              <!-- <div class="msgStatus" v-if="isSelf && !ackStatus && !message.h">未读</div>
-          <div class="msgStatus" v-if="isSelf && ackStatus===1  && !message.h">送达</div>
-          <div class="msgStatus" v-if="isSelf && ackStatus===2  && !message.h">已读</div>
-          <div class="unread" v-if="ackStatus===3 && !isSelf  && !message.h">未读</div>
-          <div class="set_unread" v-if="ackStatus!==3 && !isSelf  && !message.h" @click="unreadMessage">设置未读</div> -->
             </div>
             <div class="h_image" slot="reference">
               <img src="/image/more.png"/>
@@ -208,13 +202,6 @@ export default {
       }
       return "文件附件";
     }
-    // ackStatus() {
-    //   const idStr = numToString(this.message.id).toString();
-    //   const allAcks = this.im.sysManage.getAllMessageStatus() || {};
-    //   const ackStatus = allAcks[idStr] || 0;
-    //   return ackStatus - 0;
-    // }
-    // computed over...
   },
 
   methods: {

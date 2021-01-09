@@ -20,6 +20,11 @@ import {mapGetters} from "vuex";
 // 2. module 方式，import flooim 后，使用 flooim()
 import flooim from '../im/floo-2.0.0';
 
+const AUTO_LOGIN_DELAY = 2000; // ms
+const AUTO_LOGIN_TIMES_MAX = 3;
+let autoLoginTimes = 0;
+const INIT_CHECK_TIMES_MAX = 20;
+
 export default {
   name: "index",
   components: {
@@ -65,11 +70,30 @@ export default {
       if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
         this.appid = newAppID;
         this.sdkok = false;
-        setTimeout(() => {
+
+        const im = this.$store.state.im;
+        if ( !(im && im.isReady && im.isReady()) ){
           this.init_flooIM();
-        }, 100);
+        }
+        this.waitForFlooReadyAndLogin(0);
       } else {
         console.log("Invalid AppID", newAppID);
+      }
+    },
+
+    waitForFlooReadyAndLogin( times ){
+      const im = this.$store.state.im;
+      //通常来讲，初始化过程会非常快，但由于涉及网络调用，这个时间并无法保证；如果你的业务非常依赖初始化成功，请等待；
+      if (im && im.isReady && im.isReady()) {
+        console.log("flooim 初始化成功 ", times);
+        this.sdkok = true;
+        this.addIMListeners();
+        return;
+      }
+      if(times < INIT_CHECK_TIMES_MAX) {
+        setTimeout(()=> this.waitForFlooReadyAndLogin(times+1), 1000);
+      }else{
+        console.error("flooim 初始化失败，请重新初始化");
       }
     },
 
@@ -98,70 +122,72 @@ export default {
       // 2. 使用 flooim module 模式
       const im = flooim(config);
       this.$store.dispatch("actionSaveIm", im);
-      this.sdkok = true;
+    },
 
-      if (this.sdkok) {
-        this.$store.state.im.on({
-          loginSuccess: () => {
-            this.$store.dispatch("login/actionChangeAppStatus", "chatting");
-            this.bindMobile();
-            // this.bindDeviceToken( device_token, notifier_name );
-          },
-          loginFail: msg => {
-            window.alert("登陆失败, error: " + msg);
-          },
-          flooNotice: msg => {
-            const { category, desc } = msg;
-            console.log("Floo Notice: " + category + " : " + desc.toString());
-            switch( category ) {
-              case 'action':
-                if ('relogin' == desc) {
-                  console.log("Token失效，尝试自动登录中");
-                  const info = window.localStorage.getItem('maxim_logininfo') || {};
-                  if( info.name ) {
-                    // ensureIMLogin();
+    addIMListeners(){
+      this.$store.state.im.on({
+        loginSuccess: () => {
+          this.$store.dispatch("login/actionChangeAppStatus", "chatting");
+          this.bindMobile();
+          // this.bindDeviceToken( device_token, notifier_name );
+        },
+        loginFail: msg => {
+          window.alert("登陆失败, error: " + msg);
+        },
+        flooNotice: msg => {
+          const { category, desc } = msg;
+          console.log("Floo Notice: " + category + " : " + desc.toString());
+          switch( category ) {
+            case 'action':
+              if ('relogin' == desc) {
+                console.log("Token失效，尝试自动登录中");
+                const info = window.localStorage.getItem('maxim_logininfo') || {};
+                if( info.name && autoLoginTimes < AUTO_LOGIN_TIMES_MAX ) {
+                  console.log("Token失效，尝试自动登录中:", autoLoginTimes);
+                  setTimeout(() => {
                     this.$store.state.im.login(info);
-                  }else{
-                    //no user info means you should relogin manually.
-                  }
-                } else if ('relogin_manually' == desc) {
+                  }, autoLoginTimes * AUTO_LOGIN_DELAY);
+                  autoLoginTimes++;
+                }else {
+                  console.log("自动登录失败次数过多，请手工登录。");
+                  autoLoginTimes = 0;
                   window.alert("请重新登录");
-                  const im = this.$store.getters.im;
-                  im.logout();
-                  window.localStorage.removeItem('maxim_logininfo');
-                  this.$store.dispatch("login/actionChangeAppStatus", "login");
-                } else {
-                  console.log("Floo Notice: unknown action ", desc);
+                  this.imLogout();
                 }
-                break;
-              case 'loginMessage':
-                this.$store.dispatch("login/actionAddLoginLog", desc);
-                break;
-              case 'conversation_deleted':
-                console.log("Floo Notice: 会话被删除：", desc.toString());
-                break;
-              default:
-                console.log("Floo Notice: unknown category " + category);
-            }
-          },
-          flooError: msg => {
-            const { category, desc } = msg;
-            switch( category ) {
-              case 'USER_BANNED':
-                window.alert("用户错误: " + desc);
-                break;
-              case 'DNS_FAILED':
-                window.alert("DNS错误: 无法访问 " + desc);
-                break;
-              case 'LICENSE':
-                window.alert("服务需要续费: " + desc);
-                break;
-              default:
-                console.log("Floo Error：" + category + " : " + desc);
-            }
+              } else if ('relogin_manually' == desc) {
+                window.alert("请重新登录");
+                this.imLogout();
+              } else {
+                console.log("Floo Notice: unknown action ", desc);
+              }
+              break;
+            case 'loginMessage':
+              this.$store.dispatch("login/actionAddLoginLog", desc);
+              break;
+            case 'conversation_deleted':
+              console.log("Floo Notice: 会话被删除：", desc.toString());
+              break;
+            default:
+              console.log("Floo Notice: unknown category " + category);
           }
-        });
-      }
+        },
+        flooError: msg => {
+          const { category, desc } = msg;
+          switch( category ) {
+            case 'USER_BANNED':
+              window.alert("用户错误: " + desc);
+              break;
+            case 'DNS_FAILED':
+              window.alert("DNS错误: 无法访问 " + desc);
+              break;
+            case 'LICENSE':
+              window.alert("服务需要续费: " + desc);
+              break;
+            default:
+              console.log("Floo Error：" + category + " : " + desc);
+          }
+        }
+      });
     },
 
     //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
@@ -204,6 +230,12 @@ export default {
       }
     },
 
+    imLogout(){
+      const im = this.$store.getters.im;
+      im.logout();
+      window.localStorage.removeItem('maxim_logininfo');
+      this.$store.dispatch("login/actionChangeAppStatus", "login");
+    }
     // saveLoginInfo(info) {
     //   // const {name, password} = info;
     //   window.localStorage.setItem('maxim_logininfo', info);

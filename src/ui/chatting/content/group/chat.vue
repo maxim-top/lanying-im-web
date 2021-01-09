@@ -15,7 +15,6 @@ import {mapGetters} from "vuex";
 export default {
   name: "RosterChat",
   mounted() {
-    this.$store.getters.im.groupManage.readGroupMessage(this.getSid);
     this.requireMessage();
     this.scroll();
 
@@ -33,8 +32,14 @@ export default {
       !this.getMessages.length && this.scroll();
     });
 
-    this.$store.getters.im.on("onMessageStatusChanged", () => {
+    this.$store.getters.im.on("onMessageStatusChanged", ({mid}) => {
+      console.log("Message status changed, mid: ", mid);
       this.requireMessage();
+    });
+
+    this.$store.getters.im.on("onSendingMessageStatusChanged", ({status, mid}) => {
+      console.log("Sending Message status changed to ", status," mid: ", mid);
+      // this.requireMessage();
     });
 
     this.$store.getters.im.on("onMessageRecalled", ({mid}) => {
