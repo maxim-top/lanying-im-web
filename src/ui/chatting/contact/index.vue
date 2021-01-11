@@ -1,34 +1,33 @@
 <template>
   <div class="contact">
-    <ConContact v-if="showContact"/>
-    <ConConversation v-if="showConversation"/>
+    <ConContact v-if="showContact" />
+    <ConConversation v-if="showConversation" />
   </div>
 </template>
 
 <script>
-import ConContact from "./conContact.vue";
-import ConConversation from "./conConversation.vue";
+import ConContact from './conContact.vue';
+import ConConversation from './conConversation.vue';
 
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   components: {
     ConContact,
     ConConversation
   },
   computed: {
-    ...mapGetters("header", ["getHeaderStatus"]),
+    ...mapGetters('header', ['getHeaderStatus']),
     showContact() {
-      return this.getHeaderStatus === "contact";
+      return this.getHeaderStatus === 'contact';
     },
     showConversation() {
-      return this.getHeaderStatus === "conversation";
+      return this.getHeaderStatus === 'conversation';
     }
   },
   methods: {}
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,39 +1,25 @@
 <template>
-  <div
-    class="forwardMemberList"
-    v-if="getShowForwardList"
-  >
-    <div
-      @click="cancelForward"
-      class="closer"
-    >X
-    </div>
+  <div class="forwardMemberList" v-if="getShowForwardList">
+    <div @click="cancelForward" class="closer">X</div>
     <div class="sep">---好友---</div>
-    <div
-      @click="clickMemberForwardMember(roster.id, 'roster')"
-      v-bind:key="roster.id"
-      v-for="roster in getRosterList"
-    >{{roster.name}}
+    <div @click="clickMemberForwardMember(roster.id, 'roster')" v-bind:key="roster.id" v-for="roster in getRosterList">
+      {{ roster.name }}
     </div>
     <div class="sep">---群---</div>
 
-    <div
-      @click="clickMemberForwardMember(group.id, 'group')"
-      v-bind:key="group.id"
-      v-for="group in getGroupList"
-    >{{group.name}}
+    <div @click="clickMemberForwardMember(group.id, 'group')" v-bind:key="group.id" v-for="group in getGroupList">
+      {{ group.name }}
     </div>
-
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "RosterForward",
+  name: 'RosterForward',
   mounted() {
-    this.$store.dispatch("forward/actionGetForwardList");
+    this.$store.dispatch('forward/actionGetForwardList');
   },
   data() {
     return {
@@ -42,21 +28,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters("content", ["getSid", "getMessages", "getMessageTime"]),
-    ...mapGetters("forward", [
-      "getRosterList",
-      "getGroupList",
-      "getShowForwardList"
-    ])
+    ...mapGetters('content', ['getSid', 'getMessages', 'getMessageTime']),
+    ...mapGetters('forward', ['getRosterList', 'getGroupList', 'getShowForwardList'])
   },
 
   methods: {
     cancelForward() {
-      this.$store.dispatch("forward/actionCancelForward", false);
+      this.$store.dispatch('forward/actionCancelForward', false);
     },
 
     clickMemberForwardMember(id, type) {
-      this.$store.dispatch("forward/actionForwardMessage", {
+      this.$store.dispatch('forward/actionForwardMessage', {
         type,
         id
       });
@@ -66,5 +48,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

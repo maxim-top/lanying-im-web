@@ -11,24 +11,21 @@ const formatJson = (obj) => {
   }
   if (Array.isArray(obj)) {
     const arrRet = [];
-    obj.forEach(item => {
+    obj.forEach((item) => {
       arrRet.push(formatJson(item));
     });
     return arrRet;
   }
   const hashRet = {};
   const keys = Object.keys(obj);
-  keys.forEach(key => {
+  keys.forEach((key) => {
     hashRet[key] = formatJson(obj[key]);
   });
   return hashRet;
 };
 
 const transferToLong = (obj) => {
-  const {
-    low,
-    high
-  } = obj;
+  const { low, high } = obj;
   if (typeof low !== 'undefined' && typeof high !== 'undefined') {
     const srret = new Long(low, high, true);
     return srret;
@@ -39,14 +36,14 @@ const transferToLong = (obj) => {
   }
   if (Array.isArray(obj)) {
     const arrRet = [];
-    obj.forEach(item => {
+    obj.forEach((item) => {
       arrRet.push(transferToLong(item));
     });
     return arrRet;
   }
   const hashRet = {};
   const keys = Object.keys(obj);
-  keys.forEach(key => {
+  keys.forEach((key) => {
     hashRet[key] = transferToLong(obj[key]);
   });
   return hashRet;
@@ -59,11 +56,7 @@ const toNumber = (obj = 0) => {
   if (typeof obj === 'number') {
     return obj;
   }
-  const {
-    low,
-    high,
-    unsigned = true
-  } = obj;
+  const { low, high, unsigned = true } = obj;
   if (typeof low !== 'undefined' && high !== 'undefined') {
     return new Long(low, high, unsigned).toNumber();
   }
@@ -71,11 +64,7 @@ const toNumber = (obj = 0) => {
 
 const toLong = (obj) => {
   if (typeof obj === 'string') return Long.fromString(obj);
-  const {
-    low,
-    high,
-    unsigned = true
-  } = obj;
+  const { low, high, unsigned = true } = obj;
   if (typeof low !== 'undefined' && high !== 'undefined') {
     return new Long(low, high, unsigned);
   }
@@ -87,7 +76,7 @@ const toLong = (obj) => {
 
 const numToString = (obj) => {
   if (typeof obj === 'undefined') {
-    '';
+    ('');
   }
   if (typeof obj === 'string') return obj;
   if (typeof obj === 'number') return obj + '';
@@ -97,14 +86,13 @@ const numToString = (obj) => {
   return new Long(obj).toString();
 };
 
-
 const Uint8ArrayToString = (fileData) => {
-  var dataString = "";
+  var dataString = '';
   for (var i = 0; i < fileData.length; i++) {
     dataString += String.fromCharCode(fileData[i]);
   }
 
-  return dataString
+  return dataString;
 };
 
 const stringToUint8Array = (str) => {
@@ -113,20 +101,19 @@ const stringToUint8Array = (str) => {
     arr.push(str.charCodeAt(i));
   }
   var tmpUint8Array = new Uint8Array(arr);
-  return tmpUint8Array
+  return tmpUint8Array;
 };
 
-
-const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+const _keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 // private method for UTF-8 encoding
-var _utf8_encode = function(string) {
-  string = string.replace(/\r\n/g, "\n");
-  var utftext = "";
+var _utf8_encode = function (string) {
+  string = string.replace(/\r\n/g, '\n');
+  var utftext = '';
   for (var n = 0; n < string.length; n++) {
     var c = string.charCodeAt(n);
     if (c < 128) {
       utftext += String.fromCharCode(c);
-    } else if ((c > 127) && (c < 2048)) {
+    } else if (c > 127 && c < 2048) {
       utftext += String.fromCharCode((c >> 6) | 192);
       utftext += String.fromCharCode((c & 63) | 128);
     } else {
@@ -134,15 +121,14 @@ var _utf8_encode = function(string) {
       utftext += String.fromCharCode(((c >> 6) & 63) | 128);
       utftext += String.fromCharCode((c & 63) | 128);
     }
-
   }
   return utftext;
 };
 
 // private method for UTF-8 decoding
 // /* eslint-disable */
-var _utf8_decode = function(utftext) {
-  var string = "";
+var _utf8_decode = function (utftext) {
+  var string = '';
   var i = 0;
   var c = 0;
   // var c1 = 0;
@@ -153,7 +139,7 @@ var _utf8_decode = function(utftext) {
     if (c < 128) {
       string += String.fromCharCode(c);
       i++;
-    } else if ((c > 191) && (c < 224)) {
+    } else if (c > 191 && c < 224) {
       c2 = utftext.charCodeAt(i + 1);
       string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
       i += 2;
@@ -167,11 +153,9 @@ var _utf8_decode = function(utftext) {
   return string;
 };
 
-
 function Base64() {
-
-  this.encode = function(input) {
-    var output = "";
+  this.encode = function (input) {
+    var output = '';
     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
     var i = 0;
     input = _utf8_encode(input);
@@ -188,20 +172,18 @@ function Base64() {
       } else if (isNaN(chr3)) {
         enc4 = 64;
       }
-      output = output +
-        _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
-        _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+      output = output + _keyStr.charAt(enc1) + _keyStr.charAt(enc2) + _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
     }
     return output;
   };
 
   // public method for decoding
-  this.decode = function(input) {
-    var output = "";
+  this.decode = function (input) {
+    var output = '';
     var chr1, chr2, chr3;
     var enc1, enc2, enc3, enc4;
     var i = 0;
-    input = input.replace(/[^A-Za-z0-9+/=]/g, "");
+    input = input.replace(/[^A-Za-z0-9+/=]/g, '');
     while (i < input.length) {
       enc1 = _keyStr.indexOf(input.charAt(i++));
       enc2 = _keyStr.indexOf(input.charAt(i++));
@@ -220,17 +202,7 @@ function Base64() {
     }
     output = _utf8_decode(output);
     return output;
-  }
+  };
 }
 
-
-export {
-  formatJson,
-  transferToLong,
-  toLong,
-  toNumber,
-  numToString,
-  Uint8ArrayToString,
-  stringToUint8Array,
-  Base64,
-}
+export { formatJson, transferToLong, toLong, toNumber, numToString, Uint8ArrayToString, stringToUint8Array, Base64 };

@@ -1,20 +1,20 @@
 <template>
   <div :key="appStyle" :style="appStyle" id="app">
-    <Index/>
+    <Index />
   </div>
 </template>
 
 <script>
-import Index from "./ui/index.vue";
+import Index from './ui/index.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   data() {
     return {
       windowWidth: 0,
       windowHeight: 0,
-      appStyle: "",
-      appid: 'welovemaxim',
+      appStyle: '',
+      appid: 'welovemaxim'
     };
   },
   mounted() {
@@ -35,14 +35,14 @@ export default {
     responsive() {
       const left = this.windowWidth < 760 ? '0%' : '50%';
       const top = this.windowHeight < 400 ? '0%' : '50%';
-      return "left: " + left + ";top: " + top + "; transform: translate(-" + left + ", -" + top + ");";
+      return 'left: ' + left + ';top: ' + top + '; transform: translate(-' + left + ', -' + top + ');';
     },
 
     onResize() {
       this.windowWidth = window.innerWidth;
       this.windowHeight = window.innerHeight;
       this.appStyle = this.responsive();
-    },
+    }
   },
   components: {
     Index
@@ -50,5 +50,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

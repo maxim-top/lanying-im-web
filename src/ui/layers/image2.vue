@@ -1,23 +1,22 @@
 <template>
   <div @click="closeLayer" class="image_layer">
-    <img :src="getImageUrl" class="image" v-if="getShowing=='image'"/>
+    <img :src="getImageUrl" class="image" v-if="getShowing == 'image'" />
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {};
   },
-  name: "image2",
-  mounted() {
-  },
+  name: 'image2',
+  mounted() {},
 
   computed: {
-    ...mapGetters("layer", ["getShowing"]),
-    ...mapGetters("layer", ["getImageUrl"]),
+    ...mapGetters('layer', ['getShowing']),
+    ...mapGetters('layer', ['getImageUrl']),
     token() {
       return this.$store.getters.im.userManage.getToken();
     },
@@ -27,18 +26,17 @@ export default {
   },
   methods: {
     clickJoinGroupCloseHandler() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
     },
     closeLayer() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
     }
 
     //finish
   },
-  beforeDestroy() {
-  }
+  beforeDestroy() {}
 };
 </script>
 

@@ -1,43 +1,53 @@
 <template>
   <div class="group_setting_layer">
     <div class="layer">
-      <div class="layer_header">群设置
+      <div class="layer_header">
+        群设置
         <div @click="clickGroupsettingCloseHandler" class="closer"></div>
       </div>
       <div class="layer_content">
         <div class="group_setting_group">
           <p>
-            <span class="sl">需要邀请才能入群</span><span class="sr">
-              <i :class="['r', groupInfo.member_invite  ? 'switcher_on':'switcher_off']" @click="switchTouched(0)"></i></span>
+            <span class="sl">需要邀请才能入群</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.member_invite ? 'switcher_on' : 'switcher_off']" @click="switchTouched(0)"></i>
+            </span>
           </p>
 
           <p>
-            <span class="sl">允许成员修改信息</span><span class="sr">
-              <i :class="['r', groupInfo.member_modify  ? 'switcher_on':'switcher_off']" @click="switchTouched(1)"></i></span>
+            <span class="sl">允许成员修改信息</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.member_modify ? 'switcher_on' : 'switcher_off']" @click="switchTouched(1)"></i>
+            </span>
           </p>
 
           <p>
-            <span class="sl">开启群聊消息已读功能</span><span class="sr">
-              <i :class="['r', groupInfo.read_ack  ? 'switcher_on':'switcher_off']"
-                 @click="switchTouched(2)"></i></span>
+            <span class="sl">开启群聊消息已读功能</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.read_ack ? 'switcher_on' : 'switcher_off']" @click="switchTouched(2)"></i>
+            </span>
           </p>
 
           <p>
-            <span class="sl">允许成员查看历史消息</span><span class="sr">
-              <i :class="['r', groupInfo.history_visible  ? 'switcher_on':'switcher_off']"
-                 @click="switchTouched(3)"></i></span>
+            <span class="sl">允许成员查看历史消息</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.history_visible ? 'switcher_on' : 'switcher_off']" @click="switchTouched(3)"></i>
+            </span>
           </p>
 
           <p>
-            <span class="sl">入群需要审批</span><span class="sr">
-              <i :class="['r', groupInfo.apply_approval  ? 'switcher_on':'switcher_off']" @click="switchTouched(4)"></i></span>
+            <span class="sl">入群需要审批</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.apply_approval ? 'switcher_on' : 'switcher_off']" @click="switchTouched(4)"></i>
+            </span>
           </p>
 
           <p>
-            <span class="sl">屏蔽此群消息</span><span class="sr">
-              <i :class="['r', groupInfo.msg_mute_mode  ? 'switcher_on':'switcher_off']" @click="switchTouched(5)"></i></span>
+            <span class="sl">屏蔽此群消息</span>
+            <span class="sr">
+              <i :class="['r', groupInfo.msg_mute_mode ? 'switcher_on' : 'switcher_off']" @click="switchTouched(5)"></i>
+            </span>
           </p>
-
         </div>
         <div class="group_setting_group">
           <div class="category">
@@ -48,85 +58,96 @@
             <a @click="touchedListHeader(4)">文件</a>
             <a @click="touchedListHeader(5)">添加成员</a>
           </div>
-          <div class="setting_lists" v-if="listTab===0">
+          <div class="setting_lists" v-if="listTab === 0">
             <p>请选择成员进行操作</p>
-            <div :key="p.user_id" class="item" v-for="p in memberList"><span>
-                {{p.user_name}}
-                {{adminList.indexOf(p.user_id)>=0 ? '(管理员)':''}}
+            <div :key="p.user_id" class="item" v-for="p in memberList">
+              <span>
+                {{ p.user_name }}
+                {{ adminList.indexOf(p.user_id) >= 0 ? '(管理员)' : '' }}
               </span>
-              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox" />
             </div>
             <div class="category">
               <a @click="kickMember">踢出群</a>
               <a @click="addBlockList">拉黑</a>
-              <a @click="removeAdminMember" v-if="userLevel===3">删除管理</a>
-              <a @click="addAdminMember" v-if="userLevel===3">提升管理</a>
+              <a @click="removeAdminMember" v-if="userLevel === 3">删除管理</a>
+              <a @click="addAdminMember" v-if="userLevel === 3">提升管理</a>
             </div>
           </div>
 
-          <div class="setting_lists" v-if="listTab===1">
+          <div class="setting_lists" v-if="listTab === 1">
             <p>请选择禁言的成员</p>
-            <div :key="p.user_id" class="item" v-for="p in this.banList"><span>{{p.user_name}} {{p.duration}}</span>
-              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
+            <div :key="p.user_id" class="item" v-for="p in this.banList">
+              <span>{{ p.user_name }} {{ p.duration }}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox" />
             </div>
-            <div class="category"><a @click="addMute">禁言</a><a @click="removeMute">解除禁言</a>
-              <input placeholder="输入分钟数" type="text" v-model="banDuration"/>分钟(-1永久)
+            <div class="category">
+              <a @click="addMute">禁言</a>
+              <a @click="removeMute">解除禁言</a>
+              <input placeholder="输入分钟数" type="text" v-model="banDuration" />
+              分钟(-1永久)
             </div>
           </div>
 
-          <div class="setting_lists" v-if="listTab===2">
+          <div class="setting_lists" v-if="listTab === 2">
             <p>请选择要移除的用户</p>
-            <div :key="p.user_id" class="item" v-for="p in this.blockList"><span>{{p.user_name}}</span>
-              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
+            <div :key="p.user_id" class="item" v-for="p in this.blockList">
+              <span>{{ p.user_name }}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox" />
             </div>
             <div class="category"><a @click="removeBlock">移除黑名单</a></div>
           </div>
 
-          <div class="setting_lists" v-if="listTab===3">
+          <div class="setting_lists" v-if="listTab === 3">
             <p>请添加或选择要删除的公告</p>
             <a @click="addPublic">添加</a>
-            <input placeHolder="title" type="text" v-model="public_title"/>
-            <input placeHolder="content" type="text" v-model="public_content"/>
-            <div :key="p.id" class="item" v-for="p in this.publicList"><span>title:{{p.title}}</span><br/><span>content:{{p.content}}</span>
+            <input placeHolder="title" type="text" v-model="public_title" />
+            <input placeHolder="content" type="text" v-model="public_content" />
+            <div :key="p.id" class="item" v-for="p in this.publicList">
+              <span>title:{{ p.title }}</span>
+              <br />
+              <span>content:{{ p.content }}</span>
               <a @click="removePublic(p.id)" class="r">删除</a>
             </div>
           </div>
 
-          <div class="setting_lists" v-if="listTab===4">
+          <div class="setting_lists" v-if="listTab === 4">
             <p>请选择上传的文件</p>
-            <input ref="fileRef" style="width:150px;height:28px;visibility:visible;position:static;" type="file"/>
+            <input ref="fileRef" style="width: 150px; height: 28px; visibility: visible; position: static" type="file" />
             <a @click="uploadFile" class="ml10">上传</a>
             <a @click="removeFile" class="r">批量删除</a>
 
             <div :key="d.file_id" class="item p5 bprder" style="width: 400px" v-for="d in this.fileList">
-              <p><a @click="downloadImage(d.url)" class="r">下载</a>
-                文件名:{{d.name}}<br/>大小:{{d.size}}
-                <input :checked="selIdList.indexOf(d.file_id) >= 0" @click="touchMemberCheck(d.file_id)"
-                       type="checkbox"/></p>
+              <p>
+                <a @click="downloadImage(d.url)" class="r">下载</a>
+                文件名:{{ d.name }}
+                <br />
+                大小:{{ d.size }}
+                <input :checked="selIdList.indexOf(d.file_id) >= 0" @click="touchMemberCheck(d.file_id)" type="checkbox" />
+              </p>
             </div>
           </div>
 
-          <div class="setting_lists" v-if="listTab===5">
+          <div class="setting_lists" v-if="listTab === 5">
             <p>请选择邀请的好友</p>
-            <div :key="p.user_id" class="item" v-for="p in this.rosterList"><span>{{p.user_name}}</span>
-              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox"/>
+            <div :key="p.user_id" class="item" v-for="p in this.rosterList">
+              <span>{{ p.user_name }}</span>
+              <input :checked="selIdList.indexOf(p.user_id) >= 0" @click="touchMemberCheck(p.user_id)" type="checkbox" />
             </div>
             <div class="category"><a @click="inviteRoster">邀请好友</a></div>
           </div>
-
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import moment from "moment";
+import { mapGetters } from 'vuex';
+import moment from 'moment';
 
 export default {
-  name: "contentIndex",
+  name: 'contentIndex',
   data() {
     return {
       groupInfo: {},
@@ -139,11 +160,11 @@ export default {
       blocks: [], // 黑名单列表
 
       publicList: [], //公告列表
-      banDuration: "",
+      banDuration: '',
       listTab: 0,
 
-      public_title: "",
-      public_content: "",
+      public_title: '',
+      public_content: '',
 
       fileList: [],
       rosters: []
@@ -156,8 +177,8 @@ export default {
   },
   components: {},
   computed: {
-    ...mapGetters("chat", ["getViewType"]),
-    ...mapGetters("content", ["getSid"]),
+    ...mapGetters('chat', ['getViewType']),
+    ...mapGetters('content', ['getSid']),
     im() {
       return this.$store.state.im;
     },
@@ -178,16 +199,15 @@ export default {
     memberList() {
       const cuid = this.im.userManage.getUid();
       const allMaps = this.im.rosterManage.getAllRosterDetail() || {};
-      let arr = this.members.filter(x => (x.user_id || x) !== cuid);
+      let arr = this.members.filter((x) => (x.user_id || x) !== cuid);
       if (this.userLevel === 2) {
-        arr = arr.filter(x => this.adminList.indexOf(x.user_id) === -1);
+        arr = arr.filter((x) => this.adminList.indexOf(x.user_id) === -1);
       }
       let ret = [];
-      arr.forEach(x => {
+      arr.forEach((x) => {
         const sxuid = x.user_id || x;
         const mapUser = allMaps[sxuid] || {};
-        const user_name =
-          x.display_name || mapUser.alias || mapUser.username || x.user_id;
+        const user_name = x.display_name || mapUser.alias || mapUser.username || x.user_id;
         ret.push({
           user_id: sxuid,
           user_name
@@ -198,18 +218,14 @@ export default {
     banList() {
       const allMaps = this.im.rosterManage.getAllRosterDetail() || {};
       let ret = [];
-      this.memberList.forEach(x => {
+      this.memberList.forEach((x) => {
         const user_id = x.user_id || x;
         const mapUser = allMaps[user_id] || {};
-        const user_name =
-          x.display_name || mapUser.alias || mapUser.username || x.user_id;
-        const durItem = this.bans.find(i => i.user_id === x.user_id);
-        let duration = "";
+        const user_name = x.display_name || mapUser.alias || mapUser.username || x.user_id;
+        const durItem = this.bans.find((i) => i.user_id === x.user_id);
+        let duration = '';
         if (durItem) {
-          duration =
-            durItem.expired_time === -1
-              ? " 永久 "
-              : moment(durItem.expired_time).format("YYYY-MM-DD HH:mm:ss");
+          duration = durItem.expired_time === -1 ? ' 永久 ' : moment(durItem.expired_time).format('YYYY-MM-DD HH:mm:ss');
         }
         ret.push({
           user_name,
@@ -222,11 +238,10 @@ export default {
     blockList() {
       let ret = [];
       const allMaps = this.im.rosterManage.getAllRosterDetail() || {};
-      this.blocks.forEach(x => {
+      this.blocks.forEach((x) => {
         const user_id = x.user_id || x;
         const mapUser = allMaps[user_id] || {};
-        const user_name =
-          x.display_name || mapUser.alias || mapUser.username || x.user_id;
+        const user_name = x.display_name || mapUser.alias || mapUser.username || x.user_id;
         ret.push({
           user_name,
           user_id
@@ -237,12 +252,10 @@ export default {
     rosterList() {
       const uid = this.im.userManage.getUid();
       const allMaps = this.im.rosterManage.getAllRosterDetail() || {};
-      let arr = this.rosters.filter(x => x !== uid);
-      arr = arr.filter(
-        x => this.memberList.findIndex(y => (y.user_id || y) == x) === -1
-      );
+      let arr = this.rosters.filter((x) => x !== uid);
+      arr = arr.filter((x) => this.memberList.findIndex((y) => (y.user_id || y) == x) === -1);
       let ret = [];
-      arr.forEach(x => {
+      arr.forEach((x) => {
         const user_id = x;
         const mapUser = allMaps[user_id] || {};
         const user_name = mapUser.alias || mapUser.username || x;
@@ -305,8 +318,7 @@ export default {
             value: !this.groupInfo.history_visible - 0
           })
           .then(() => {
-            this.groupInfo.history_visible =
-              !this.groupInfo.history_visible - 0;
+            this.groupInfo.history_visible = !this.groupInfo.history_visible - 0;
           });
       } //
       if (index === 4) {
@@ -335,8 +347,8 @@ export default {
     },
     //////
     clickGroupsettingCloseHandler() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
     },
     touchMemberCheck(uid) {
       const idx = this.selIdList.indexOf(uid);
@@ -348,52 +360,42 @@ export default {
     },
     /********************************** 成员管理 ************************************/
     requireInfo() {
-      this.im.groupManage.asyncGetInfo({ group_id: this.getSid }).then(res => {
+      this.im.groupManage.asyncGetInfo({ group_id: this.getSid }).then((res) => {
         this.groupInfo = res;
       });
     },
 
     requireAdmin() {
-      this.im.groupManage
-        .asyncGetAdminList({ group_id: this.getSid })
-        .then(res => {
-          this.admins = (res || []).map(x => x.user_id);
-        });
+      this.im.groupManage.asyncGetAdminList({ group_id: this.getSid }).then((res) => {
+        this.admins = (res || []).map((x) => x.user_id);
+      });
     },
 
     requireMember() {
-      this.im.groupManage.asyncGetMemberList(this.getSid, true).then(res => {
+      this.im.groupManage.asyncGetMemberList(this.getSid, true).then((res) => {
         this.members = res;
       });
     },
 
     removeAdminMember() {
       let user_list = this.selIdList;
-      user_list = user_list.filter(
-        id => this.adminList.findIndex(s => s === id) > -1
-      );
+      user_list = user_list.filter((id) => this.adminList.findIndex((s) => s === id) > -1);
       if (user_list.length < 1) {
-        alert("您的选择里边没有管理员");
+        alert('您的选择里边没有管理员');
       } else {
-        this.im.groupManage
-          .asyncAdminRemove({ group_id: this.getSid, user_list })
-          .then(() => {
-            alert("已经删除管理员");
-            this.im.groupManage
-              .asyncGetAdminList({ group_id: this.getSid })
-              .then(r => {
-                this.adminList = (r || []).map(i => i.user_id);
-              });
+        this.im.groupManage.asyncAdminRemove({ group_id: this.getSid, user_list }).then(() => {
+          alert('已经删除管理员');
+          this.im.groupManage.asyncGetAdminList({ group_id: this.getSid }).then((r) => {
+            this.adminList = (r || []).map((i) => i.user_id);
           });
+        });
       }
     },
     addAdminMember() {
       let user_list = this.selIdList;
-      user_list = user_list.filter(
-        id => this.adminList.findIndex(s => s === id) === -1
-      );
+      user_list = user_list.filter((id) => this.adminList.findIndex((s) => s === id) === -1);
       if (user_list.length < 1) {
-        alert("您的选择里边没有非管理员");
+        alert('您的选择里边没有非管理员');
       } else {
         this.im.groupManage
           .asyncAdminAdd({
@@ -401,7 +403,7 @@ export default {
             user_list
           })
           .then(() => {
-            alert("已经添加管理员");
+            alert('已经添加管理员');
             this.adminList = this.adminList.concat(user_list);
           });
       }
@@ -410,9 +412,9 @@ export default {
       let user_list = this.selIdList;
       const group_id = this.getSid;
       this.im.groupManage.asyncKick({ group_id, user_list }).then(() => {
-        alert("已t人");
+        alert('已t人');
         this.selIdList = [];
-        this.im.groupManage.asyncGetGroupMembers(group_id, true).then(res => {
+        this.im.groupManage.asyncGetGroupMembers(group_id, true).then((res) => {
           this.members = res;
         });
       });
@@ -420,12 +422,12 @@ export default {
     addBlockList() {
       let user_list = this.selIdList;
       if (!user_list.length) {
-        alert("请选择");
+        alert('请选择');
         return;
       }
       const group_id = this.getSid;
       this.im.groupManage.asyncGroupBlock({ group_id, user_list }).then(() => {
-        alert("已加黑");
+        alert('已加黑');
         this.selIdList = [];
         this.requireMember();
       });
@@ -434,100 +436,90 @@ export default {
     addMute() {
       let user_list = this.selIdList;
       if (!user_list.length) {
-        alert("请选择");
+        alert('请选择');
         return;
       }
       if (!this.banDuration.length) {
-        alert("请输入禁言时间");
+        alert('请输入禁言时间');
         return;
       }
       if (!/^-?\d+$/.test(this.banDuration)) {
-        alert("请输入正确禁言时间");
+        alert('请输入正确禁言时间');
         return;
       }
 
       const duration = this.banDuration - 0;
       const group_id = this.getSid;
-      this.im.groupManage
-        .asyncGroupBab({ group_id, duration, user_list })
-        .then(() => {
-          alert("禁言设置成功");
-          this.requireBanList();
-        });
+      this.im.groupManage.asyncGroupBab({ group_id, duration, user_list }).then(() => {
+        alert('禁言设置成功');
+        this.requireBanList();
+      });
     },
 
     removeMute() {
       let user_list = this.selIdList;
       if (!user_list.length) {
-        alert("请选择");
+        alert('请选择');
         return;
       }
       const group_id = this.getSid;
 
       this.im.groupManage.asyncGroupUnban({ group_id, user_list }).then(() => {
-        alert("解除禁言成功");
+        alert('解除禁言成功');
         this.requireBanList();
       });
     },
     requireBanList() {
       const group_id = this.getSid;
-      this.im.groupManage.asyncGroupBannedList({ group_id }).then(res => {
+      this.im.groupManage.asyncGroupBannedList({ group_id }).then((res) => {
         this.bans = res;
       });
     },
     /******黑名单 */
     requireBlockList() {
       const group_id = this.getSid;
-      this.im.groupManage.asyncGroupBockedlist({ group_id }).then(res => {
+      this.im.groupManage.asyncGroupBockedlist({ group_id }).then((res) => {
         this.blocks = res;
       });
     },
     removeBlock() {
       let user_list = this.selIdList;
       if (!user_list.length) {
-        alert("请选择");
+        alert('请选择');
         return;
       }
       const group_id = this.getSid;
-      this.im.groupManage
-        .asyncGroupUnblock({ group_id, user_list })
-        .then(() => {
-          alert("解除黑名单成功");
-          this.requireBlockList();
-        });
+      this.im.groupManage.asyncGroupUnblock({ group_id, user_list }).then(() => {
+        alert('解除黑名单成功');
+        this.requireBlockList();
+      });
     },
     /******   公告 */
     requirePublicList() {
       const group_id = this.getSid;
-      this.im.groupManage
-        .asyncGetAnnouncementList({ group_id })
-        .then((res = []) => {
-          this.publicList = [].concat(res);
-        });
+      this.im.groupManage.asyncGetAnnouncementList({ group_id }).then((res = []) => {
+        this.publicList = [].concat(res);
+      });
     },
     addPublic() {
       const title = this.public_title;
       const content = this.public_content;
       if (!title || !content) {
-        alert("请输入内容");
+        alert('请输入内容');
         return;
       }
       const group_id = this.getSid;
-      this.im.groupManage
-        .asyncAnnouncementEdit({ title, content, group_id })
-        .then(() => {
-          alert("公告添加成功");
-          this.requirePublicList();
-        });
+      this.im.groupManage.asyncAnnouncementEdit({ title, content, group_id }).then(() => {
+        alert('公告添加成功');
+        this.requirePublicList();
+      });
     },
     removePublic(announcement_id) {
       const group_id = this.getSid;
-      this.im.groupManage
-        .asyncAnouncementDelete({ group_id, announcement_id })
-        .then(() => {
-          alert("群公告删除成功");
-          this.requirePublicList();
-        });
+      this.im.groupManage.asyncAnouncementDelete({ group_id, announcement_id }).then(() => {
+        alert('群公告删除成功');
+        this.requirePublicList();
+      });
     },
     /********** files .... */
     requireFileList() {
@@ -539,7 +531,7 @@ export default {
     uploadFile() {
       const file = this.$refs.fileRef.files[0];
       if (!file) {
-        alert("请先选择文件");
+        alert('请先选择文件');
         return;
       }
       this.im.sysManage
@@ -548,16 +540,16 @@ export default {
           to_id: this.getSid,
           to_type: 2
         })
-        .then(res => {
+        .then((res) => {
           let param = new FormData();
-          param.append("OSSAccessKeyId", res.oss_body_param.OSSAccessKeyId);
-          param.append("policy", res.oss_body_param.policy);
-          param.append("signature", res.oss_body_param.signature);
-          param.append("callback", res.oss_body_param.callback);
-          param.append("key", res.oss_body_param.key);
-          param.append("file", file);
+          param.append('OSSAccessKeyId', res.oss_body_param.OSSAccessKeyId);
+          param.append('policy', res.oss_body_param.policy);
+          param.append('signature', res.oss_body_param.signature);
+          param.append('callback', res.oss_body_param.callback);
+          param.append('key', res.oss_body_param.key);
+          param.append('file', file);
           let config = {
-            headers: { "Content-Type": "multipart/form-data" }
+            headers: { 'Content-Type': 'multipart/form-data' }
           };
           this.axios.post(res.upload_url, param, config).then(() => {
             const name = file.name;
@@ -570,8 +562,8 @@ export default {
               .then(() => {
                 this.requireFileList();
               })
-              .catch(function(err) {
-                alert("error:" + err.message);
+              .catch(function (err) {
+                alert('error:' + err.message);
               });
           });
         });
@@ -584,17 +576,12 @@ export default {
       });
     },
     downloadImage(d) {
-      const url =
-        d +
-        "&access-token=" +
-        this.im.userManage.getToken() +
-        "&app_id=" +
-        this.im.userManage.getAppid();
+      const url = d + '&access-token=' + this.im.userManage.getToken() + '&app_id=' + this.im.userManage.getAppid();
       window.open(url);
     },
     /********** add roster */
     requireRosterList() {
-      this.im.rosterManage.asyncGetRosterIdList().then(res => {
+      this.im.rosterManage.asyncGetRosterIdList().then((res) => {
         this.rosters = res;
       });
     },
@@ -603,7 +590,7 @@ export default {
       let user_list = this.selIdList;
       const group_id = this.getSid;
       this.im.groupManage.asyncInvite({ group_id, user_list }).then(() => {
-        alert("邀请成功");
+        alert('邀请成功');
         this.selIdList = [];
         this.requireMember();
       });
@@ -628,5 +615,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

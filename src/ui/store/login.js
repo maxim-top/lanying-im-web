@@ -2,11 +2,11 @@
 
 const state = {
   // appStatus: 'login',  //初始化一个colects数组
-  appStatus: 'login',  //初始化一个colects数组
+  appStatus: 'login', //初始化一个colects数组
   loginLog: ['这里是登录日志..'],
   mobileSign: '',
   signMobile: '',
-  loginInfo: {},
+  loginInfo: {}
 };
 
 const getters = {
@@ -28,7 +28,8 @@ const getters = {
 };
 
 const mutations = {
-  changeAppStatus(state, status) { //如何变化collects,插入items
+  changeAppStatus(state, status) {
+    //如何变化collects,插入items
     state.appStatus = status;
   },
 
@@ -49,11 +50,11 @@ const mutations = {
   setLoginInfo(state, info) {
     state.loginInfo = info;
   }
-
 };
 
 const actions = {
-  actionChangeAppStatus(context, status) { //触发mutations里面的pushCollects ,传入数据形参item 对应到items
+  actionChangeAppStatus(context, status) {
+    //触发mutations里面的pushCollects ,传入数据形参item 对应到items
     context.commit('changeAppStatus', status);
   },
 
@@ -69,12 +70,11 @@ const actions = {
   actionSetLoginInfo(context, info) {
     context.commit('setLoginInfo', info);
   }
-
 };
 export default {
-  namespaced: true,//用于在全局引用此文件里的方法时标识这一个的文件名
+  namespaced: true, //用于在全局引用此文件里的方法时标识这一个的文件名
   state,
   getters,
   mutations,
   actions
-}
+};

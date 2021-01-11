@@ -4,45 +4,45 @@
 <template>
   <div class="login">
     <p class="header">
-      <span class="hint"> AppID: {{appid}}</span>
+      <span class="hint">AppID: {{ appid }}</span>
     </p>
     <span @click="login" class="skip">跳过</span>
     <div class="logo">
-      <img src="/image/logob.png"/>
+      <img src="/image/logob.png" />
     </div>
     <div class="iptFrame mt21">
-      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="手机号" type="text" v-model="user.mobile"/>
+      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="手机号" type="text" v-model="user.mobile" />
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input @keyup.enter="submit" autocomplete="false" placeholder="图片验证码" type="text" v-model="user.captcha"/>
+        <input @keyup.enter="submit" autocomplete="false" placeholder="图片验证码" type="text" v-model="user.captcha" />
       </div>
-      <img :src="codeImageSrc" @click="timerImage" class="vm ml15 w150 h45  pointer" v-if="codeImageSrc"/>
+      <img :src="codeImageSrc" @click="timerImage" class="vm ml15 w150 h45 pointer" v-if="codeImageSrc" />
     </div>
 
     <div class="cframe mt14">
       <div class="ipframe">
-        <input @keyup.enter="submit" autocomplete="false" placeholder="手机验证码" type="text" v-model="user.code"/>
+        <input @keyup.enter="submit" autocomplete="false" placeholder="手机验证码" type="text" v-model="user.code" />
       </div>
-      <div @click="sendSms" class="smallbtn">{{checkText}}</div>
+      <div @click="sendSms" class="smallbtn">{{ checkText }}</div>
     </div>
     <div @click="submit" class="loginBtn mt14">绑定</div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "bind",
-  props: ["sdkok", "appid"],
+  name: 'bind',
+  props: ['sdkok', 'appid'],
   data() {
     return {
       user: {
-        mobile: "",
-        captcha: "",
-        code: "",
+        mobile: '',
+        captcha: '',
+        code: '',
         checkCodeTime: 0,
         checkCodeTimer: null
       }
@@ -53,26 +53,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters("login", ["getLoginInfo"]),
+    ...mapGetters('login', ['getLoginInfo']),
     codeImageSrc() {
-      const image_id = this.user["image_captcha_id"];
-      if (!image_id) return "";
+      const image_id = this.user['image_captcha_id'];
+      if (!image_id) return '';
 
       const app_id = this.$store.state.im.userManage.getAppid();
-      const url = this.$store.state.im.sysManage.getServers(app_id).ratel + "/app/captcha/image";
-      return url + "?image_id=" + image_id + "&app_id=" + app_id;
+      const url = this.$store.state.im.sysManage.getServers(app_id).ratel + '/app/captcha/image';
+      return url + '?image_id=' + image_id + '&app_id=' + app_id;
     },
     checkText() {
       if (this.checkCodeTime > 0) {
         return `${this.checkCodeTime} 秒`;
       }
-      return "获取验证码";
+      return '获取验证码';
     }
   },
   methods: {
     submit() {
       if (!this.user.code || !this.user.mobile) {
-        alert("请输入手机号和验证码");
+        alert('请输入手机号和验证码');
         return;
       }
       const im = this.$store.state.im;
@@ -81,22 +81,22 @@ export default {
           captcha: this.user.code,
           mobile: this.user.mobile
         })
-        .then(res => {
+        .then((res) => {
           if (res.username) {
-            alert("该手机已被使用！");
+            alert('该手机已被使用！');
           } else if (res.sign) {
-            this.$store.dispatch("login/actionSetMobileSign", res.sign);
-            this.$store.dispatch("login/actionSetSignMobile", this.user.mobile);
+            this.$store.dispatch('login/actionSetMobileSign', res.sign);
+            this.$store.dispatch('login/actionSetSignMobile', this.user.mobile);
             this.login();
           }
         });
     },
 
     switchLogin(type) {
-      this.$store.dispatch("login/actionChangeAppStatus", type);
+      this.$store.dispatch('login/actionChangeAppStatus', type);
     },
     getImageCode() {
-      this.$store.state.im.userManage.asyncCaptchaImagePost().then(res => {
+      this.$store.state.im.userManage.asyncCaptchaImagePost().then((res) => {
         const obj = Object.assign({}, this.user, { image_captcha_id: res });
         this.user = obj;
       });
@@ -110,7 +110,7 @@ export default {
     },
     sendSms() {
       if (!this.user.mobile) {
-        this.$message.error("请输入手机号");
+        this.$message.error('请输入手机号');
         return;
       }
 
@@ -141,6 +141,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

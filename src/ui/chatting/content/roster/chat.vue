@@ -1,33 +1,35 @@
 <template>
   <div class="list" ref="rlist">
-    <div @click="requestHistory" id="roster_history_btn">{{queryingHistory ? '正在拉取历史消息，请稍候' : '点击拉取历史消息'}}</div>
-    <Message :message="message" v-bind:key="aid" v-for="(message, aid) in allMessages"/>
+    <div @click="requestHistory" id="roster_history_btn">
+      {{ queryingHistory ? '正在拉取历史消息，请稍候' : '点击拉取历史消息' }}
+    </div>
+    <Message :message="message" v-bind:key="aid" v-for="(message, aid) in allMessages" />
   </div>
 </template>
 
 <script>
 // import Chat from "./chat.vue";
-import Message from "./renderMsg.vue";
-import {numToString, toNumber} from "../../../third/tools";
+import Message from './renderMsg.vue';
+import { numToString, toNumber } from '../../../third/tools';
 
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "RosterChat",
+  name: 'RosterChat',
   mounted() {
     this.requireMessage();
     this.scroll();
 
     const im = this.$store.getters.im;
-    if( !im ) return;
+    if (!im) return;
 
-    im.on("onRosterMessage", message => {
+    im.on('onRosterMessage', (message) => {
       this.reloadMessage(message);
     });
 
-    im.on("onReceiveHistoryMsg", messages => {
+    im.on('onReceiveHistoryMsg', (messages) => {
       this.queryingHistory = false;
-      this.$store.dispatch("content/actionAppendMessage", {
+      this.$store.dispatch('content/actionAppendMessage', {
         history: true,
         messages: messages.messages,
         next: messages.next
@@ -35,27 +37,27 @@ export default {
       !this.getMessages.length && this.scroll();
     });
 
-    im.on("onMessageStatusChanged", ({mid}) => {
-      console.log("Message status changed, mid: ", mid);
+    im.on('onMessageStatusChanged', ({ mid }) => {
+      console.log('Message status changed, mid: ', mid);
       this.requireMessage();
     });
 
-    this.$store.getters.im.on("onSendingMessageStatusChanged", ({status, mid}) => {
-      console.log("Sending Message status changed to ", status," mid: ", mid);
+    this.$store.getters.im.on('onSendingMessageStatusChanged', ({ status, mid }) => {
+      console.log('Sending Message status changed to ', status, ' mid: ', mid);
       // this.requireMessage();
     });
 
-    im.on("onMessageRecalled", ({mid}) => {
+    im.on('onMessageRecalled', ({ mid }) => {
       this.deleteMessage(mid);
     });
 
-    im.on("onMessageDeleted", ({mid}) => {
+    im.on('onMessageDeleted', ({ mid }) => {
       this.deleteMessage(mid);
     });
 
-    im.on("onMessageCanceled", message => {
+    im.on('onMessageCanceled', (message) => {
       const uid = this.$store.getters.im.userManage.getUid();
-      if (uid + "" === message.uid + "") {
+      if (uid + '' === message.uid + '') {
         this.requireMessage();
       }
     });
@@ -63,15 +65,15 @@ export default {
 
   destroyed() {
     const im = this.$store.getters.im;
-    if( !im ) return;
+    if (!im) return;
 
     im.off({
-      'onRosterMessage': '',
-      'onReceiveHistoryMsg': '',
-      'onMessageStatusChanged': '',
-      'onMessageRecalled': '',
-      'onMessageDeleted': '',
-      'onMessageCanceled': '',
+      onRosterMessage: '',
+      onReceiveHistoryMsg: '',
+      onMessageStatusChanged: '',
+      onMessageRecalled: '',
+      onMessageDeleted: '',
+      onMessageCanceled: ''
     });
   },
 
@@ -86,15 +88,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("content", [
-      "getSid",
-      "getMessages",
-      "getMessageTime",
-      "getScroll"
-    ]),
+    ...mapGetters('content', ['getSid', 'getMessages', 'getMessageTime', 'getScroll']),
     allMessages() {
       const msgs = this.getMessages || [];
-      msgs.forEach(x => {
+      msgs.forEach((x) => {
         x.aid = numToString(x.id);
       });
       return msgs;
@@ -114,13 +111,13 @@ export default {
   methods: {
     requireMessage() {
       setTimeout(() => {
-        this.$store.dispatch("content/actionRequireMessage");
+        this.$store.dispatch('content/actionRequireMessage');
       }, 200);
     },
 
     deleteMessage(mid) {
       setTimeout(() => {
-        this.$store.dispatch("content/actionDeleteMessage", mid);
+        this.$store.dispatch('content/actionDeleteMessage', mid);
       }, 200);
 
       !this.getMessages.length && this.scroll();
@@ -131,10 +128,7 @@ export default {
       const toUid = toNumber(message.to);
       const fromUid = toNumber(message.from);
       const pid = this.getSid;
-      if (
-        (uid === toUid && fromUid === pid) ||
-        (uid === fromUid && toUid === pid)
-      ) {
+      if ((uid === toUid && fromUid === pid) || (uid === fromUid && toUid === pid)) {
         this.$store.getters.im.rosterManage.readRosterMessage(this.getSid);
         this.requireMessage();
         this.scroll();
@@ -150,13 +144,12 @@ export default {
       this.queryHistoryTimer = setTimeout(() => {
         this.queryingHistory = false;
       }, 10000);
-      this.$store.dispatch("content/queryHistory");
+      this.$store.dispatch('content/queryHistory');
     },
 
     scroll() {
       setTimeout(() => {
-        this.$refs.rlist &&
-        (this.$refs.rlist.scrollTop = this.$refs.rlist.scrollHeight);
+        this.$refs.rlist && (this.$refs.rlist.scrollTop = this.$refs.rlist.scrollHeight);
       }, 200);
     }
     //methods finish ...
@@ -164,5 +157,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

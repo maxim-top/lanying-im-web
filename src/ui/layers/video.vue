@@ -1,23 +1,22 @@
 <template>
   <div @click="closeLayer" class="video_layer">
-    <video :src="getVideoUrl" autoplay class="video" v-if="getShowing=='video'"/>
+    <video :src="getVideoUrl" autoplay class="video" v-if="getShowing == 'video'" />
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {};
   },
-  name: "video",
-  mounted() {
-  },
+  name: 'video',
+  mounted() {},
 
   computed: {
-    ...mapGetters("layer", ["getShowing"]),
-    ...mapGetters("layer", ["getVideoUrl"]),
+    ...mapGetters('layer', ['getShowing']),
+    ...mapGetters('layer', ['getVideoUrl']),
     token() {
       return this.$store.getters.im.userManage.getToken();
     },
@@ -27,18 +26,17 @@ export default {
   },
   methods: {
     clickJoinGroupCloseHandler() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
     },
     closeLayer() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
     }
 
     //finish
   },
-  beforeDestroy() {
-  }
+  beforeDestroy() {}
 };
 </script>
 

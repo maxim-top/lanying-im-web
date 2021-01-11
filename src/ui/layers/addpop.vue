@@ -7,35 +7,34 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "contentIndex",
+  name: 'contentIndex',
   components: {},
   computed: {
-    ...mapGetters("layer", ["showing", "showmask"])
+    ...mapGetters('layer', ['showing', 'showmask'])
   },
   methods: {
     clickAddFriend() {
-      this.$store.dispatch("layer/actionSetShowing", "addfriend");
-      this.$store.dispatch("layer/actionSetShowmask", "true");
+      this.$store.dispatch('layer/actionSetShowing', 'addfriend');
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
     },
     clickCreateGroup() {
-      this.$store.dispatch("layer/actionSetShowing", "creategroup");
-      this.$store.dispatch("layer/actionSetShowmask", "true");
+      this.$store.dispatch('layer/actionSetShowing', 'creategroup');
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
     },
     clickJoinGroup() {
-      this.$store.dispatch("layer/actionSetShowing", "joingroup");
-      this.$store.dispatch("layer/actionSetShowmask", "true");
+      this.$store.dispatch('layer/actionSetShowing', 'joingroup');
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
     },
 
     mouseLeave() {
-      this.$store.dispatch("layer/actionSetShowing", "");
-      this.$store.dispatch("layer/actionSetShowmask", false);
-    },
+      this.$store.dispatch('layer/actionSetShowing', '');
+      this.$store.dispatch('layer/actionSetShowmask', false);
+    }
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,25 +1,24 @@
 <template>
   <div class="chat-index">
-    <MemberList/>
-    <Header/>
-    <Chat/>
-    <Inputer/>
-    <Forward/>
-
+    <MemberList />
+    <Header />
+    <Chat />
+    <Inputer />
+    <Forward />
   </div>
 </template>
 
 <script>
-import Chat from "./chat.vue";
-import Inputer from "./inputer.vue";
-import Header from "./header.vue";
-import Forward from "./forward.vue";
-import MemberList from "./memberList";
+import Chat from './chat.vue';
+import Inputer from './inputer.vue';
+import Header from './header.vue';
+import Forward from './forward.vue';
+import MemberList from './memberList';
 
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "GroupChat",
+  name: 'GroupChat',
   data() {
     return {
       // status: "login"
@@ -27,10 +26,10 @@ export default {
   },
   mounted() {
     this.requireGroups();
-    this.$store.dispatch("content/actionOpenGroup");
+    this.$store.dispatch('content/actionOpenGroup');
 
-    this.$store.getters.im.on("onGroupMemberChanged", (/*gid*/) => {
-      this.$store.dispatch("content/actionUpdateMemberList");
+    this.$store.getters.im.on('onGroupMemberChanged', (/*gid*/) => {
+      this.$store.dispatch('content/actionUpdateMemberList');
     });
   },
   components: {
@@ -41,7 +40,7 @@ export default {
     MemberList
   },
   computed: {
-    ...mapGetters("content", ["getSid", "getMessages", "getMessageTime"])
+    ...mapGetters('content', ['getSid', 'getMessages', 'getMessageTime'])
   },
   methods: {
     requireGroups() {
@@ -51,12 +50,11 @@ export default {
   watch: {
     getSid(a, b) {
       if (a !== b) {
-        this.$store.dispatch("content/actionOpenGroup");
+        this.$store.dispatch('content/actionOpenGroup');
       }
     }
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

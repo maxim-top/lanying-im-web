@@ -2,11 +2,11 @@
 
 const state = {
   headerStatus: 'contact',
-  userProfile: {},
+  userProfile: {}
 };
 
 const headerRequestFlag = {
-  profile: false,
+  profile: false
 };
 
 const getters = {
@@ -26,7 +26,6 @@ const mutations = {
   changeHeaderUserProfile(state, profile) {
     state.userProfile = profile;
   }
-
 };
 
 const actions = {
@@ -40,18 +39,17 @@ const actions = {
     const { state, rootState } = context;
     if (!state.userProfile.user_id && !headerRequestFlag.profile) {
       headerRequestFlag.profile = true;
-      rootState.im.userManage.asyncGetProfile().then(profile => {
+      rootState.im.userManage.asyncGetProfile().then((profile) => {
         context.commit('changeHeaderUserProfile', profile);
         headerRequestFlag.profile = false;
       });
     }
-  },
-
+  }
 };
 export default {
-  namespaced: true,//用于在全局引用此文件里的方法时标识这一个的文件名
+  namespaced: true, //用于在全局引用此文件里的方法时标识这一个的文件名
   state,
   getters,
   mutations,
   actions
-}
+};

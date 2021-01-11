@@ -3,7 +3,7 @@
 
 const state = {
   settingInfo: {},
-  profileInfo: {},
+  profileInfo: {}
 };
 
 const getters = {
@@ -13,9 +13,7 @@ const getters = {
 
   getProfileInfo(state) {
     return state.profileInfo;
-  },
-
-
+  }
 };
 
 const mutations = {
@@ -25,27 +23,23 @@ const mutations = {
 
   setProfileInfo(state, x) {
     state.profileInfo = x;
-  },
-
+  }
 };
 
 const actions = {
   actionGetProfile(context) {
     const { rootState } = context;
-    rootState.im.userManage.asyncGetProfile(true).then(res => {
-      context.commit('setProfileInfo', res)
-    })
+    rootState.im.userManage.asyncGetProfile(true).then((res) => {
+      context.commit('setProfileInfo', res);
+    });
   },
   actionGetSettingInfo(context) {
     const { rootState } = context;
-    rootState.im.userManage.asyncGetSettings().then(res => {
-      context.commit('setSettingInfo', res)
-    })
+    rootState.im.userManage.asyncGetSettings().then((res) => {
+      context.commit('setSettingInfo', res);
+    });
   }
-
-
 };
-
 
 export default {
   namespaced: true,
@@ -53,4 +47,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

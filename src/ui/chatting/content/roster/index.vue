@@ -1,22 +1,22 @@
 <template>
   <div class="chat-index">
-    <Header/>
-    <Chat/>
-    <Inputer/>
-    <Forward/>
+    <Header />
+    <Chat />
+    <Inputer />
+    <Forward />
   </div>
 </template>
 
 <script>
-import Chat from "./chat.vue";
-import Inputer from "./inputer.vue";
-import Header from "./header.vue";
-import Forward from "./forward.vue";
+import Chat from './chat.vue';
+import Inputer from './inputer.vue';
+import Header from './header.vue';
+import Forward from './forward.vue';
 
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "RosterChat",
+  name: 'RosterChat',
   data() {
     return {
       // status: "login"
@@ -32,11 +32,11 @@ export default {
     Forward
   },
   computed: {
-    ...mapGetters("content", ["getSid", "getMessages", "getMessageTime"])
+    ...mapGetters('content', ['getSid', 'getMessages', 'getMessageTime'])
   },
   methods: {
     requireUserInfo() {
-      this.$store.dispatch("content/actionUpdateRoster");
+      this.$store.dispatch('content/actionUpdateRoster');
     }
   },
   watch: {
@@ -49,5 +49,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

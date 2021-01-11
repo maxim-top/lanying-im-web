@@ -1,34 +1,34 @@
 <template>
   <div class="content">
-    <audio id="audio_player"/>
-    <RosterInfo v-if="getViewType=='rosterinfo'"/>
-    <GroupInfo v-if="getViewType=='groupinfo'"/>
+    <audio id="audio_player" />
+    <RosterInfo v-if="getViewType == 'rosterinfo'" />
+    <GroupInfo v-if="getViewType == 'groupinfo'" />
 
-    <RosterChat v-if="getViewType=='rosterchat'"/>
-    <GroupChat v-if="getViewType=='groupchat'"/>
+    <RosterChat v-if="getViewType == 'rosterchat'" />
+    <GroupChat v-if="getViewType == 'groupchat'" />
 
-    <Setting v-if="getViewType=='setting'"/>
+    <Setting v-if="getViewType == 'setting'" />
 
-    <RosterNotice v-if="getViewType=='rosterNotice'"/>
-    <GroupInviteNotice v-if="getViewType=='groupInviteNotice'"/>
-    <GroupApplyNotice v-if="getViewType=='grpupApplyNotice'"/>
+    <RosterNotice v-if="getViewType == 'rosterNotice'" />
+    <GroupInviteNotice v-if="getViewType == 'groupInviteNotice'" />
+    <GroupApplyNotice v-if="getViewType == 'grpupApplyNotice'" />
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
-import RosterInfo from "./roster/info";
-import GroupInfo from "./group/info";
-import RosterChat from "./roster/index";
-import GroupChat from "./group/index";
-import Setting from "./setting/index";
-import RosterNotice from "./notice/rosterNotice";
-import GroupInviteNotice from "./notice/groupInvitationNotice";
-import GroupApplyNotice from "./notice/groupApplyNotice";
+import RosterInfo from './roster/info';
+import GroupInfo from './group/info';
+import RosterChat from './roster/index';
+import GroupChat from './group/index';
+import Setting from './setting/index';
+import RosterNotice from './notice/rosterNotice';
+import GroupInviteNotice from './notice/groupInvitationNotice';
+import GroupApplyNotice from './notice/groupApplyNotice';
 
 export default {
-  name: "contentIndex",
+  name: 'contentIndex',
   components: {
     RosterInfo,
     GroupInfo,
@@ -40,11 +40,10 @@ export default {
     GroupApplyNotice
   },
   computed: {
-    ...mapGetters("chat", ["getViewType"])
+    ...mapGetters('chat', ['getViewType'])
   },
   methods: {}
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

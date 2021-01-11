@@ -1,11 +1,10 @@
 //collection.js
 const state = {
-
   rosterList: [],
   groupList: [],
   forwardMessage: null,
 
-  showForwardList: false,
+  showForwardList: false
 };
 
 const getters = {
@@ -19,7 +18,7 @@ const getters = {
 
   getShowForwardList(state) {
     return state.showForwardList;
-  },
+  }
 };
 
 const mutations = {
@@ -38,33 +37,32 @@ const mutations = {
   setShowForwardList(state, x) {
     state.showForwardList = x;
   }
-
 };
 
 const actions = {
   actionGetForwardList(context) {
     const { rootState, state } = context;
     if (!state.rosterList.length && !state.groupList.length) {
-      rootState.im.rosterManage.asyncGetRosterIdList().then(res => {
+      rootState.im.rosterManage.asyncGetRosterIdList().then((res) => {
         rootState.im.rosterManage.asnycGetRosterListDetailByIds(res).then(() => {
           const allMaps = rootState.im.rosterManage.getAllRosterDetail() || {};
-          const retObj = res.map(i => {
+          const retObj = res.map((i) => {
             const rosterInfo = allMaps[i];
-            return ({
+            return {
               name: rosterInfo.username,
-              id: rosterInfo.user_id,
-            })
+              id: rosterInfo.user_id
+            };
           });
           context.commit('setRosterList', [].concat(retObj));
-        })
+        });
       });
 
-      rootState.im.groupManage.asyncGetJoinedGroups(/**true**/).then(res => {
+      rootState.im.groupManage.asyncGetJoinedGroups(/**true**/).then((res) => {
         res = res || [];
-        const retObj = res.map(i => {
+        const retObj = res.map((i) => {
           return {
             name: i.name,
-            id: i.group_id,
+            id: i.group_id
           };
         });
         // this.forwardMembers.groupps = [].concat(retObj);
@@ -73,7 +71,8 @@ const actions = {
     }
   },
 
-  actionRecordForwardMessage(context, x) { // 记录要转发的message
+  actionRecordForwardMessage(context, x) {
+    // 记录要转发的message
     context.commit('setForwardMessage', x);
     context.commit('setShowForwardList', true);
   },
@@ -95,9 +94,7 @@ const actions = {
   actionCancelForward(context) {
     context.commit('setShowForwardList', false);
   }
-
 };
-
 
 export default {
   namespaced: true,
@@ -105,4 +102,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

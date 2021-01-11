@@ -5,12 +5,12 @@ const state = {
   groupList: [],
   conversationList: [],
   contactStatus: 'contact',
-  searchKeyword: '',
+  searchKeyword: ''
 };
 
 const contactRequestFlag = {
   rosterList: false,
-  groupList: false,
+  groupList: false
 };
 
 const getters = {
@@ -31,7 +31,6 @@ const getters = {
   getSearchKeyword(state) {
     return state.searchKeyword;
   }
-
 };
 
 const mutations = {
@@ -59,15 +58,21 @@ const mutations = {
 const actions = {
   actionSetRosterList(context, x) {
     const { rootState } = context;
-    x.forEach(s => {
-      s.avatar = rootState.im.sysManage.getImage({ avatar: s.avatar, type: 'roster' });
+    x.forEach((s) => {
+      s.avatar = rootState.im.sysManage.getImage({
+        avatar: s.avatar,
+        type: 'roster'
+      });
     });
     context.commit('setRosterList', x);
   },
   actionSetGroupList(context, x) {
     const { rootState } = context;
-    x.forEach(s => {
-      s.avatar = rootState.im.sysManage.getImage({ avatar: s.avatar, type: 'group' });
+    x.forEach((s) => {
+      s.avatar = rootState.im.sysManage.getImage({
+        avatar: s.avatar,
+        type: 'group'
+      });
     });
     context.commit('setGroupList', x);
   },
@@ -77,9 +82,7 @@ const actions = {
   },
 
   actionGetConversationList(context) {
-    const {
-      rootState
-    } = context;
+    const { rootState } = context;
     const convlist = rootState.im.userManage.getConversationList();
     const allGroupMap = rootState.im.groupManage.getAllGroupDetail();
     const allRosterMap = rootState.im.rosterManage.getAllRosterDetail() || {};
@@ -90,20 +93,22 @@ const actions = {
       const timestamp = item.timestamp;
       // const img = allRosterMap[id] && allRosterMap[id].avatar;
       let avatar = ''; //(img && this.client.signatureUrl(img, { expires: 600, process: 'image/resize,w_50' })) || '/image/roster.png';
-      const unreadCount = item.type == 'roster' ? rootState.im.rosterManage.getUnreadCount(id) :
-        rootState.im.groupManage.getUnreadCount(id);
+      const unreadCount = item.type == 'roster' ? rootState.im.rosterManage.getUnreadCount(id) : rootState.im.groupManage.getUnreadCount(id);
       const unread = unreadCount > 0 ? unreadCount : 0;
-      if (item.type === 'roster') { //roster
+      if (item.type === 'roster') {
+        //roster
         const sroster = allRosterMap[id] || {};
         name = sroster.username || id;
         avatar = sroster.avatar;
-      } else if (item.type === 'group') { //group
+      } else if (item.type === 'group') {
+        //group
         const sgroup = allGroupMap[id] || {};
         name = sgroup.name || id;
         avatar = sgroup.avatar;
       }
       avatar = rootState.im.sysManage.getImage({
-        avatar, type: (item.type === 'roster' ? 'roster' : 'group')
+        avatar,
+        type: item.type === 'roster' ? 'roster' : 'group'
       });
       return {
         type: item.type,
@@ -114,53 +119,58 @@ const actions = {
         avatar,
         unread,
         sid: id
-      }
+      };
     });
 
     const sortedConvList = convData.sort((a, b) => {
-      return (a.timestamp < b.timestamp) ? 1 : (a.timestamp > b.timestamp ? -1 : 0);
+      return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0;
     });
     context.commit('saveConversationList', sortedConvList);
   },
 
   actionLazyGetRosterList(context) {
-    const {
-      state,
-      rootState
-    } = context;
+    const { state, rootState } = context;
     if (!state.rosterList.length && !contactRequestFlag.rosterList) {
       contactRequestFlag.rosterList = true;
-      rootState.im.rosterManage.asyncGetRosterIdList().then(res => {
+      rootState.im.rosterManage.asyncGetRosterIdList().then((res) => {
         rootState.im.rosterManage.asnycGetRosterListDetailByIds(res).then(() => {
           const allMaps = rootState.im.rosterManage.getAllRosterDetail() || {};
-          const retObj = res.map(i => {
+          const retObj = res.map((i) => {
             const rosterInfo = allMaps[i];
-            rosterInfo.avatar = rootState.im.sysManage.getImage({ avatar: rosterInfo.avatar });
+            rosterInfo.avatar = rootState.im.sysManage.getImage({
+              avatar: rosterInfo.avatar
+            });
             const unreadCount = rootState.im.rosterManage.getUnreadCount(i);
-            return Object.assign({
-              unreadCount
-            }, rosterInfo);
+            return Object.assign(
+              {
+                unreadCount
+              },
+              rosterInfo
+            );
           });
           context.commit('setRosterList', retObj);
           contactRequestFlag.rosterList = false;
-        })
-      })
+        });
+      });
     }
   },
 
   actionLazyGetGroupList(context) {
-    const {
-      state,
-      rootState
-    } = context;
+    const { state, rootState } = context;
     if (!state.groupList.length && !contactRequestFlag.groupList) {
-      rootState.im.groupManage.asyncGetJoinedGroups().then(res => {
-        const retObj = res.map(i => {
+      rootState.im.groupManage.asyncGetJoinedGroups().then((res) => {
+        const retObj = res.map((i) => {
           const unreadCount = rootState.im.groupManage.getUnreadCount(i.group_id);
-          i.avatar = rootState.im.sysManage.getImage({ avatar: i.avatar, type: 'group' });
-          return Object.assign({
-            unreadCount
-          }, i);
+          i.avatar = rootState.im.sysManage.getImage({
+            avatar: i.avatar,
+            type: 'group'
+          });
+          return Object.assign(
+            {
+              unreadCount
+            },
+            i
+          );
         });
         context.commit('setGroupList', retObj);
         contactRequestFlag.rosterList = false;
@@ -176,9 +186,8 @@ const actions = {
   },
 
   actionSetSearchkeyword(context, x) {
-    context.commit('setSearchKeyword', x)
+    context.commit('setSearchKeyword', x);
   }
-
 };
 export default {
   namespaced: true, //用于在全局引用此文件里的方法时标识这一个的文件名
@@ -186,4 +195,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

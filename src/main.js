@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import './assets/index.css';
 
-import ElementUI from "element-ui";
+import ElementUI from 'element-ui';
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
@@ -20,8 +20,7 @@ Vue.prototype.serr = (err) => {
   alert(msg);
 };
 
-
 new Vue({
-  render: h => h(App),
-  store,
+  render: (h) => h(App),
+  store
 }).$mount('#app');

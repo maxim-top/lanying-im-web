@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import Login from './login'
+import Login from './login';
 import header from './header';
 import contact from './contact';
 import chat from './content';
@@ -9,7 +9,6 @@ import content from './content';
 import forward from './forward';
 import setting from './setting';
 import layer from './layer';
-
 
 Vue.use(Vuex);
 
@@ -22,12 +21,12 @@ export default new Vuex.Store({
     content,
     forward,
     setting,
-    layer,
+    layer
   },
 
   state: {
     appID: '',
-    im: {},
+    im: {}
   },
 
   getters: {
@@ -54,7 +53,7 @@ export default new Vuex.Store({
 
     saveIm(state, pim) {
       state.im = pim;
-    },
+    }
   },
 
   actions: {
@@ -64,6 +63,6 @@ export default new Vuex.Store({
 
     actionSaveIm(context, pim) {
       context.commit('saveIm', pim);
-    },
+    }
   }
 });

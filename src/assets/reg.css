@@ -7,9 +7,9 @@
   margin-left: -200px;
   margin-top: -250px;
   padding: 50px 30px;
-  box-shadow: 0 8px 10px 0 #F0F2F5;
+  box-shadow: 0 8px 10px 0 #f0f2f5;
   border-radius: 20px;
-  background: #FFF;
+  background: #fff;
 }
 
 .rege .reg_header {
@@ -27,7 +27,7 @@
 
 .rege .reg_header .text2 {
   margin-left: 38px;
-  color: #8D8300;;
+  color: #8d8300;
   line-height: 17px;
   font-size: 12px;
 }
@@ -45,16 +45,16 @@
 }
 
 .rege .iptFrame {
-  background: #FAFBFC;
-  border: 1px solid #E6E8EB;
+  background: #fafbfc;
+  border: 1px solid #e6e8eb;
   border-radius: 12px;
   height: 28px;
   margin-top: 20px;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .rege .iptFrame input {
-  background: #FAFBFC;
+  background: #fafbfc;
   border: none;
   width: 100%;
   height: 100%;
@@ -65,7 +65,7 @@
 
 .rege .regBtn {
   line-height: 48px;
-  background: #F7E700;
+  background: #f7e700;
   border-radius: 12px;
   font-size: 16px;
   text-align: center;

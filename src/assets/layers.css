@@ -31,7 +31,7 @@
 .layer .layer_header {
   height: 52px;
   line-height: 52px;
-  background: #409FE0;
+  background: #409fe0;
   position: relative;
   text-indent: 48px;
   font-size: 16px;
@@ -74,7 +74,7 @@
   text-align: center;
   line-height: 25px;
   color: #000;
-  background: #409FE0;
+  background: #409fe0;
   font-size: 14px;
   float: right;
   border-radius: 3px;
@@ -103,7 +103,7 @@
 .layer .layer_content p.inputer input {
   width: 200px;
   height: 18px;
-  border: 1px solid #EEE;
+  border: 1px solid #eee;
   border-radius: 3px;
   float: left;
   margin-left: 15px;
@@ -121,7 +121,7 @@
   text-align: center;
   line-height: 40px;
   color: #000;
-  background: #409FE0;
+  background: #409fe0;
   font-size: 14px;
   float: right;
   margin-right: 16px;
@@ -135,7 +135,7 @@
   text-align: center;
   line-height: 40px;
   color: #000;
-  background: #F0F2F5;
+  background: #f0f2f5;
   font-size: 14px;
   float: right;
   margin-right: 16px;
@@ -171,7 +171,7 @@
 
 .create_group_layer .layer_content .create_group_member_List > div {
   text-indent: 10px;
-  border: 1px solid #EEE;
+  border: 1px solid #eee;
 }
 
 .create_group_layer .layer_content .create_group_member_List input {
@@ -194,7 +194,7 @@
   width: 120px;
   height: 100px;
   background: #419fe0;
-  box-shadow: 0 2px 4px 0 rgba(173, 185, 193, 0.50);
+  box-shadow: 0 2px 4px 0 rgba(173, 185, 193, 0.5);
   border-radius: 0 0 2px 2px;
   padding: 10px 0;
 }
@@ -296,7 +296,7 @@
 .group_setting_layer .group_setting_group .category a {
   float: left;
   padding: 0 8px;
-  background: #319DE1;
+  background: #319de1;
   color: white;
   font-size: 12px;
   cursor: pointer;
@@ -313,7 +313,7 @@
 .group_setting_layer .group_setting_group .setting_lists .item {
   padding: 5px;
   line-height: 15px;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .group_setting_layer .group_setting_group .setting_lists .item span {
@@ -325,7 +325,7 @@
 }
 
 .group_setting_layer .group_setting_group .setting_lists .category a {
-  background: #B3D0FD;
+  background: #b3d0fd;
 }
 
 /** search result ***/
@@ -335,13 +335,13 @@
   width: 240px;
   height: 100%;
   top: 48px;
-  background: #FAFAFA;
+  background: #fafafa;
   border-radius: 10px 0px 0px 10px;
 }
 
 .layer_frame .search_result_layer .list {
   overflow-y: auto;
-  background: #FAFAFA;
+  background: #fafafa;
 }
 
 .layer_frame .search_result_layer .header {
@@ -360,7 +360,7 @@
 }
 
 .layer_frame .search_result_layer .item:hover {
-  background: rgba(176, 208, 253, .3);
+  background: rgba(176, 208, 253, 0.3);
   color: #4a4a4a;
 }
 
@@ -389,7 +389,7 @@
   height: 20px;
   line-height: 20px;
   margin-left: 60px;
-  color: #8798A4;
+  color: #8798a4;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -403,4 +403,3 @@
   text-align: left;
   color: #e6e6e6;
 }
-

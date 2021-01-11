@@ -1,17 +1,17 @@
 <template>
   <div class="ui-index">
     <div class="layer_mask" v-if="getShowmask"></div>
-    <Chatting v-if="getAppStatus=='chatting'"/>
-    <Login :appid="appid" :sdkok="sdkok" v-else/>
-    <Layers/>
+    <Chatting v-if="getAppStatus == 'chatting'" />
+    <Login :appid="appid" :sdkok="sdkok" v-else />
+    <Layers />
   </div>
 </template>
 
 <script>
-import Login from "./login/index.vue";
-import Chatting from "./chatting/index.vue";
-import Layers from "./layers/index.vue";
-import {mapGetters} from "vuex";
+import Login from './login/index.vue';
+import Chatting from './chatting/index.vue';
+import Layers from './layers/index.vue';
+import { mapGetters } from 'vuex';
 
 // 您有两种方式使用 flooim：
 // 1. script 模式，你可以直接 import 后，使用 window.flooIM()
@@ -26,7 +26,7 @@ let autoLoginTimes = 0;
 const INIT_CHECK_TIMES_MAX = 20;
 
 export default {
-  name: "index",
+  name: 'index',
   components: {
     Login,
     Chatting,
@@ -40,8 +40,7 @@ export default {
   },
   mounted() {
     this.appid = this.$parent.appid;
-    this.$store.dispatch("actionChangeAppID", this.appid);
-    // this.prepare(this.appid);
+    this.$store.dispatch('actionChangeAppID', this.appid);
   },
   watch: {
     getAppID: {
@@ -52,48 +51,48 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("login", ["getAppStatus", "getMobileSign", "getSignMobile"]),
-    ...mapGetters("layer", ["getShowmask"]),
-    ...mapGetters(["getAppID"]),
+    ...mapGetters('login', ['getAppStatus', 'getMobileSign', 'getSignMobile']),
+    ...mapGetters('layer', ['getShowmask']),
+    ...mapGetters(['getAppID']),
 
     showLogin() {
-      return this.getAppStatus != "chatting";
+      return this.getAppStatus != 'chatting';
     },
 
     showChatting() {
-      return this.getAppStatus === "chatting";
+      return this.getAppStatus === 'chatting';
     }
   },
   methods: {
     prepare(newAppID) {
       // not prepare for same appid except the previous preparation is aborted;
       if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
-        this.appid = newAppID;
         this.sdkok = false;
+        const im = newAppID !== this.appid ? undefined : this.$store.state.im;
+        this.appid = newAppID;
 
-        const im = this.$store.state.im;
-        if ( !(im && im.isReady && im.isReady()) ){
+        if (!(im && im.isReady && im.isReady())) {
           this.init_flooIM();
         }
         this.waitForFlooReadyAndLogin(0);
       } else {
-        console.log("Invalid AppID", newAppID);
+        console.log('Invalid AppID', newAppID);
       }
     },
 
-    waitForFlooReadyAndLogin( times ){
+    waitForFlooReadyAndLogin(times) {
       const im = this.$store.state.im;
       //通常来讲，初始化过程会非常快，但由于涉及网络调用，这个时间并无法保证；如果你的业务非常依赖初始化成功，请等待；
       if (im && im.isReady && im.isReady()) {
-        console.log("flooim 初始化成功 ", times);
+        console.log('flooim 初始化成功 ', times);
         this.sdkok = true;
         this.addIMListeners();
         return;
       }
-      if(times < INIT_CHECK_TIMES_MAX) {
-        setTimeout(()=> this.waitForFlooReadyAndLogin(times+1), 1000);
-      }else{
-        console.error("flooim 初始化失败，请重新初始化");
+      if (times < INIT_CHECK_TIMES_MAX) {
+        setTimeout(() => this.waitForFlooReadyAndLogin(times + 1), 1000);
+      } else {
+        console.error('flooim 初始化失败，请重新初始化');
       }
     },
 
@@ -104,7 +103,7 @@ export default {
         ws: false,
         autoLogin: true
       };
-      console.log("Init floo IM for ", this.appid);
+      console.log('Init floo IM for ', this.appid);
 
       // 1. 使用 flooim script 方式
       // try {
@@ -121,70 +120,70 @@ export default {
 
       // 2. 使用 flooim module 模式
       const im = flooim(config);
-      this.$store.dispatch("actionSaveIm", im);
+      this.$store.dispatch('actionSaveIm', im);
     },
 
-    addIMListeners(){
+    addIMListeners() {
       this.$store.state.im.on({
         loginSuccess: () => {
-          this.$store.dispatch("login/actionChangeAppStatus", "chatting");
+          this.$store.dispatch('login/actionChangeAppStatus', 'chatting');
           this.bindMobile();
           // this.bindDeviceToken( device_token, notifier_name );
         },
-        loginFail: msg => {
-          window.alert("登陆失败, error: " + msg);
+        loginFail: (msg) => {
+          window.alert('登陆失败, error: ' + msg);
         },
-        flooNotice: msg => {
+        flooNotice: (msg) => {
           const { category, desc } = msg;
-          console.log("Floo Notice: " + category + " : " + desc.toString());
-          switch( category ) {
+          console.log('Floo Notice: ' + category + ' : ' + desc.toString());
+          switch (category) {
             case 'action':
               if ('relogin' == desc) {
-                console.log("Token失效，尝试自动登录中");
+                console.log('Token失效，尝试自动登录中');
                 const info = window.localStorage.getItem('maxim_logininfo') || {};
-                if( info.name && autoLoginTimes < AUTO_LOGIN_TIMES_MAX ) {
-                  console.log("Token失效，尝试自动登录中:", autoLoginTimes);
+                if (info.name && autoLoginTimes < AUTO_LOGIN_TIMES_MAX) {
+                  console.log('Token失效，尝试自动登录中:', autoLoginTimes);
                   setTimeout(() => {
                     this.$store.state.im.login(info);
                   }, autoLoginTimes * AUTO_LOGIN_DELAY);
                   autoLoginTimes++;
-                }else {
-                  console.log("自动登录失败次数过多，请手工登录。");
+                } else {
+                  console.log('自动登录失败次数过多，请手工登录。');
                   autoLoginTimes = 0;
-                  window.alert("请重新登录");
+                  window.alert('请重新登录');
                   this.imLogout();
                 }
               } else if ('relogin_manually' == desc) {
-                window.alert("请重新登录");
+                window.alert('请重新登录');
                 this.imLogout();
               } else {
-                console.log("Floo Notice: unknown action ", desc);
+                console.log('Floo Notice: unknown action ', desc);
               }
               break;
             case 'loginMessage':
-              this.$store.dispatch("login/actionAddLoginLog", desc);
+              this.$store.dispatch('login/actionAddLoginLog', desc);
               break;
             case 'conversation_deleted':
-              console.log("Floo Notice: 会话被删除：", desc.toString());
+              console.log('Floo Notice: 会话被删除：', desc.toString());
               break;
             default:
-              console.log("Floo Notice: unknown category " + category);
+              console.log('Floo Notice: unknown category ' + category);
           }
         },
-        flooError: msg => {
+        flooError: (msg) => {
           const { category, desc } = msg;
-          switch( category ) {
+          switch (category) {
             case 'USER_BANNED':
-              window.alert("用户错误: " + desc);
+              window.alert('用户错误: ' + desc);
               break;
             case 'DNS_FAILED':
-              window.alert("DNS错误: 无法访问 " + desc);
+              window.alert('DNS错误: 无法访问 ' + desc);
               break;
             case 'LICENSE':
-              window.alert("服务需要续费: " + desc);
+              window.alert('服务需要续费: ' + desc);
               break;
             default:
-              console.log("Floo Error：" + category + " : " + desc);
+              console.log('Floo Error：' + category + ' : ' + desc);
           }
         }
       });
@@ -195,26 +194,32 @@ export default {
     bindDeviceToken(device_token, notifier_name) {
       const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
-      imUser.asyncBindDeviceToken({
-        device_sn,
-        device_token,
-        notifier_name
-      }).then(()=>{
-        window.alert("设备绑定成功: " + device_sn );
-      }).catch( err =>{
-        window.alert("设备绑定失败: " + err.code +":"+err.errMsg);
-      });
+      imUser
+        .asyncBindDeviceToken({
+          device_sn,
+          device_token,
+          notifier_name
+        })
+        .then(() => {
+          window.alert('设备绑定成功: ' + device_sn);
+        })
+        .catch((err) => {
+          window.alert('设备绑定失败: ' + err.code + ':' + err.errMsg);
+        });
     },
     unbindDeviceToken() {
       const imUser = this.$store.state.im.userManage;
       const device_sn = imUser.getDeviceSN();
-      imUser.asyncUnbindDeviceToken({
-        deviceSn: device_sn
-      }).then(()=>{
-        window.alert("设备解绑成功: " + device_sn );
-      }).catch( err =>{
-        window.alert("设备解绑失败: " + err.code +":"+err.errMsg);
-      });
+      imUser
+        .asyncUnbindDeviceToken({
+          deviceSn: device_sn
+        })
+        .then(() => {
+          window.alert('设备解绑成功: ' + device_sn);
+        })
+        .catch((err) => {
+          window.alert('设备解绑失败: ' + err.code + ':' + err.errMsg);
+        });
     },
     bindMobile() {
       if (this.getMobileSign && this.getSignMobile) {
@@ -224,17 +229,17 @@ export default {
             sign: this.getMobileSign
           })
           .then(() => {
-            this.$store.dispatch("login/actionSetMobileSign", "");
-            this.$store.dispatch("login/actionSetSignMobile", "");
+            this.$store.dispatch('login/actionSetMobileSign', '');
+            this.$store.dispatch('login/actionSetSignMobile', '');
           });
       }
     },
 
-    imLogout(){
+    imLogout() {
       const im = this.$store.getters.im;
       im.logout();
       window.localStorage.removeItem('maxim_logininfo');
-      this.$store.dispatch("login/actionChangeAppStatus", "login");
+      this.$store.dispatch('login/actionChangeAppStatus', 'login');
     }
     // saveLoginInfo(info) {
     //   // const {name, password} = info;
@@ -250,5 +255,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

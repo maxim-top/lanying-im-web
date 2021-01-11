@@ -1,5 +1,5 @@
 //collection.js
-import {toLong, toNumber} from '../third/tools';
+import { toLong, toNumber } from '../third/tools';
 // import axios from 'axios'
 
 const state = {
@@ -28,11 +28,10 @@ const state = {
   memberlistMap: {},
   adminListMap: {},
 
-
   scroll: 0,
 
   queryHistoryMessageId: 0,
-  queryHistoryRecords: {}, // map of sid:queryTimes
+  queryHistoryRecords: {} // map of sid:queryTimes
 };
 
 const getters = {
@@ -69,7 +68,7 @@ const getters = {
 
   getScroll(state) {
     return state.scroll;
-  },
+  }
 };
 
 const mutations = {
@@ -128,28 +127,33 @@ const mutations = {
 };
 
 const actions = {
-
   actionOpenGroup(context) {
     const { rootState, state } = context;
     rootState.im.groupManage.openGroup(state.sid);
     rootState.im.groupManage.readGroupMessage(state.sid);
 
-    rootState.im.groupManage.asyncGetAdminList({ group_id: state.sid }).then(res => {
-      context.commit('setAdminList', res);
-    }).catch((err) => {
-      console.error("Failed to GetAdminList, error:", err);
-    });
+    rootState.im.groupManage
+      .asyncGetAdminList({ group_id: state.sid })
+      .then((res) => {
+        context.commit('setAdminList', res);
+      })
+      .catch((err) => {
+        console.error('Failed to GetAdminList, error:', err);
+      });
 
-    rootState.im.groupManage.asyncGetGroupInfo(state.sid, true).then(res => {
-      context.commit('setGroupInfo', res);
-    }).catch((err) => {
-      console.error("Failed to GetGroupInfo, error:", err);
-    });
+    rootState.im.groupManage
+      .asyncGetGroupInfo(state.sid, true)
+      .then((res) => {
+        context.commit('setGroupInfo', res);
+      })
+      .catch((err) => {
+        console.error('Failed to GetGroupInfo, error:', err);
+      });
   },
 
   actionSetType(context, x) {
     const { state } = context;
-    if ( typeof x.sid === "undefined" || x.sid < 0 ) {
+    if (typeof x.sid === 'undefined' || x.sid < 0) {
       context.commit('setMessage', []);
       context.commit('setViewType', '');
     }
@@ -164,14 +168,14 @@ const actions = {
 
   actionUpdateRoster(context) {
     const { rootState, state } = context;
-    rootState.im.rosterManage.asyncGetRosterInfo(state.sid).then(res => {
+    rootState.im.rosterManage.asyncGetRosterInfo(state.sid).then((res) => {
       context.commit('setRosterInfo', res);
-    })
+    });
   },
 
   actionUpdateGroup(context) {
     const { rootState, state } = context;
-    rootState.im.groupManage.asyncGetGroupInfo(state.sid).then(res => {
+    rootState.im.groupManage.asyncGetGroupInfo(state.sid).then((res) => {
       context.commit('setGroupInfo', res);
     });
   },
@@ -186,11 +190,11 @@ const actions = {
     const { rootState, state } = context;
 
     let localMessages = undefined;
-    if (state.viewType === "rosterchat") {
+    if (state.viewType === 'rosterchat') {
       localMessages = rootState.im.rosterManage.getRosterMessageByRid(state.sid);
-    } else if (state.viewType === "groupchat") {
+    } else if (state.viewType === 'groupchat') {
       localMessages = rootState.im.groupManage.getGruopMessage(state.sid);
-    } else ; //undefined type
+    } else; //undefined type
 
     if (localMessages) {
       context.dispatch('actionAppendMessage', { messages: localMessages });
@@ -213,8 +217,9 @@ const actions = {
     const oldMessages = state.messages || [];
 
     let allMessages = [];
-    let i = 0, j = 0;
-    while( i < newMessages.length && j < oldMessages.length ){
+    let i = 0,
+      j = 0;
+    while (i < newMessages.length && j < oldMessages.length) {
       const newMeta = newMessages[i];
       if (newMeta.ext && newMeta.ext.input_status) {
         i++;
@@ -227,19 +232,20 @@ const actions = {
       if (saveUid + '' !== state.sid + '' && state.viewType === 'rosterchat') {
         return; // rosterchat, 必须有一个id是 sid
       }
-      if (toUid + '' !== state.sid + '' && state.viewType === 'groupchat') { // 群消息 to 是 群 id。。
+      if (toUid + '' !== state.sid + '' && state.viewType === 'groupchat') {
+        // 群消息 to 是 群 id。。
         return; //group，to 必须是sid
       }
 
       const oldMeta = oldMessages[j];
       const c = toLong(newMeta.id).comp(toLong(oldMeta.id));
-      if( -1 === c ){
+      if (-1 === c) {
         allMessages.push(newMeta);
         i++;
-      }else if( 1 === c ) {
+      } else if (1 === c) {
         allMessages.push(oldMeta);
         j++;
-      }else{
+      } else {
         //same id, which means message info updated
         allMessages.push(newMeta);
         i++;
@@ -247,12 +253,12 @@ const actions = {
       }
     }
 
-    if( i < newMessages.length ){
-      allMessages = allMessages.concat( newMessages.slice(i, newMessages.length));
+    if (i < newMessages.length) {
+      allMessages = allMessages.concat(newMessages.slice(i, newMessages.length));
     }
 
-    if( j < newMessages.length ){
-      allMessages = allMessages.concat( oldMessages.slice(i, oldMessages.length));
+    if (j < newMessages.length) {
+      allMessages = allMessages.concat(oldMessages.slice(i, oldMessages.length));
     }
     context.commit('setMessage', allMessages);
     if (!isHistory && allMessages.length !== oldMessages.length) {
@@ -263,13 +269,13 @@ const actions = {
   actionDeleteMessage(context, mid) {
     const { state } = context;
     const oldMessages = state.messages || [];
-    const newMessages = oldMessages.filter( meta => {
-      if ( meta.id == mid ) return false;
+    const newMessages = oldMessages.filter((meta) => {
+      if (meta.id == mid) return false;
       else return true;
     });
 
     context.commit('setMessage', [].concat(newMessages));
-    if ( oldMessages.length !== state.messages.length) {
+    if (oldMessages.length !== state.messages.length) {
       state.scroll = state.scroll - 1;
     }
   },
@@ -287,11 +293,8 @@ const actions = {
     context.commit('setMessageTime', time);
   },
 
-  actionUpdateQueryMessageId() {
-
-  }
+  actionUpdateQueryMessageId() {}
 };
-
 
 export default {
   namespaced: true,
@@ -299,4 +302,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

@@ -1,56 +1,58 @@
 <template>
   <div class="user_setting">
-
     <div class="avatar">
-      <input @change="fileChangeHandler" ref="fileRef" type="file"/>
-      <img :src="groupInfo.avatar" @click="touchedAvatar" class="av"/>
-      <img @click="viewQrcode" class="qrcode" src="/image/qr.png" v-if="groupInfo.member_invite"/>
+      <input @change="fileChangeHandler" ref="fileRef" type="file" />
+      <img :src="groupInfo.avatar" @click="touchedAvatar" class="av" />
+      <img @click="viewQrcode" class="qrcode" src="/image/qr.png" v-if="groupInfo.member_invite" />
     </div>
 
     <div class="line">
       <span class="ll">群名称</span>
-      <p @click="nameModifyHandler" class="lr">{{groupInfo.name}}</p>
+      <p @click="nameModifyHandler" class="lr">{{ groupInfo.name }}</p>
     </div>
 
     <div class="line">
       <span class="ll">群id</span>
-      <p class="lr">{{getSid}}</p>
+      <p class="lr">{{ getSid }}</p>
     </div>
 
     <div class="line">
       <span class="ll">群描述</span>
-      <p @click="descriptionModifyHanderl" class="lr">{{groupInfo.description}}</p>
+      <p @click="descriptionModifyHanderl" class="lr">
+        {{ groupInfo.description }}
+      </p>
     </div>
 
     <div class="line">
       <span class="ll">群名片</span>
-      <p @click="cardModifyHandler" class="lr">{{cardName}}</p>
+      <p @click="cardModifyHandler" class="lr">{{ cardName }}</p>
     </div>
 
-    <div @click="destroyClickHandler" class="logout mt15">{{dismissMessage}}</div>
+    <div @click="destroyClickHandler" class="logout mt15">
+      {{ dismissMessage }}
+    </div>
 
     <div @click="chatClickHandler" class="logout mt15">开始聊天</div>
-
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "groupInfo",
+  name: 'groupInfo',
   data() {
     return {
       groupInfo: {},
-      cardName: ""
+      cardName: ''
     };
   },
   mounted() {
     this.refreshGroupInfo(this.getSid);
 
-    this.$store.getters.im.on("onGroupListUpdate", () => {
-      this.$store.dispatch("contact/actionClearGroupList");
-      this.$store.dispatch("contact/actionLazyGetGroupList");
+    this.$store.getters.im.on('onGroupListUpdate', () => {
+      this.$store.dispatch('contact/actionClearGroupList');
+      this.$store.dispatch('contact/actionLazyGetGroupList');
     });
   },
   watch: {
@@ -60,12 +62,7 @@ export default {
   },
   components: {},
   computed: {
-    ...mapGetters("content", [
-      "getGroupInfo",
-      "getSid",
-      "getAdminList",
-      "getMemberList"
-    ]),
+    ...mapGetters('content', ['getGroupInfo', 'getSid', 'getAdminList', 'getMemberList']),
 
     token() {
       return this.$store.getters.im.userManage.getToken();
@@ -80,43 +77,41 @@ export default {
     },
     isAdmin() {
       const uid = this.$store.getters.im.userManage.getUid();
-      return (
-        this.getAdminList.filter(x => x.user_id === uid).length > 0 ||
-        this.getGroupInfo.member_modify
-      );
+      return this.getAdminList.filter((x) => x.user_id === uid).length > 0 || this.getGroupInfo.member_modify;
     },
     isOwner() {
       const uid = this.$store.getters.im.userManage.getUid();
       return this.getGroupInfo.owner_id === uid;
     },
     dismissMessage() {
-      return this.isOwner ? "解散" : "退出";
+      return this.isOwner ? '解散' : '退出';
     }
   },
   methods: {
     refreshGroupInfo(newSid) {
-      this.$store.getters.im.groupManage.asyncGetInfo({ group_id: newSid })
-        .then(res => {
+      this.$store.getters.im.groupManage
+        .asyncGetInfo({ group_id: newSid })
+        .then((res) => {
           res.avatar = this.$store.getters.im.sysManage.getImage({
             avatar: res.avatar,
             type: 'group'
           });
           this.groupInfo = res;
         })
-        .catch(ex => {
+        .catch((ex) => {
           this.serr(ex);
         });
 
       const uid = this.$store.getters.im.userManage.getUid();
-      const user = this.getMemberList.find(x => x.user_id === uid);
-      this.cardName = (user && (user.display_name || user.name)) || "";
+      const user = this.getMemberList.find((x) => x.user_id === uid);
+      this.cardName = (user && (user.display_name || user.name)) || '';
     },
 
     chatClickHandler() {
-      this.$store.dispatch("header/actionChangeHeaderStatus", "conversation");
-      this.$store.dispatch("content/actionSetType", {
+      this.$store.dispatch('header/actionChangeHeaderStatus', 'conversation');
+      this.$store.dispatch('content/actionSetType', {
         sid: this.getSid,
-        type: "groupchat"
+        type: 'groupchat'
       });
     },
     touchedAvatar() {
@@ -131,15 +126,15 @@ export default {
       this.$store.getters.im.sysManage
         .asyncFileUpload({
           file,
-          toType: "groupAvatar",
+          toType: 'groupAvatar',
           group_id: this.getSid
         })
-        .then(res => {
-          this.$refs.fileRef.value = "";
+        .then((res) => {
+          this.$refs.fileRef.value = '';
           this.updateAvatarUrl(res.url);
         })
         .catch(() => {
-          this.$refs.fileRef.value = "";
+          this.$refs.fileRef.value = '';
         });
     },
 
@@ -150,42 +145,38 @@ export default {
           value: url
         })
         .then(() => {
-          this.$store.dispatch("content/actionUpdateGroup");
-          alert("更新头像完成");
+          this.$store.dispatch('content/actionUpdateGroup');
+          alert('更新头像完成');
         });
     },
 
     destroyClickHandler() {
       if (this.isOwner) {
         //dismiss
-        this.$store.getters.im.groupManage
-          .asyncDestroy({ group_id: this.getSid })
-          .then(() => {
-            alert("您已解散了此群。。");
-          });
+        this.$store.getters.im.groupManage.asyncDestroy({ group_id: this.getSid }).then(() => {
+          alert('您已解散了此群。。');
+        });
       } else {
         //leave
-        this.$store.getters.im.groupManage
-          .asyncLeave({ group_id: this.getSid })
-          .then(() => {
-            alert("您已退出了此群。。");
-          });
+        this.$store.getters.im.groupManage.asyncLeave({ group_id: this.getSid }).then(() => {
+          alert('您已退出了此群。。');
+        });
       }
 
       const also_delete_other_devices = true;
       this.$store.getters.im.sysManage.deleteConversation(this.getSid, also_delete_other_devices);
     },
     viewQrcode() {
-      this.$store.dispatch("layer/actionSetShowmask", "true");
-      this.$store.dispatch("layer/actionSetShowing", "qrgroup");
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
+      this.$store.dispatch('layer/actionSetShowing', 'qrgroup');
     },
     nameModifyHandler() {
       if (!this.isAdmin && !this.isOwner && !this.getGroupInfo.member_modify) {
         return;
       }
-      this.$prompt("请输入群名称", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('请输入群名称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
           if (!value) return;
@@ -196,19 +187,18 @@ export default {
             })
             .then(() => {
               this.name = value;
-              alert("修改成功");
+              alert('修改成功');
             });
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     descriptionModifyHanderl() {
       if (!this.isAdmin && !this.isOwner && !this.getGroupInfo.member_modify) {
         return;
       }
-      this.$prompt("请输入群描述", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('请输入群描述', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
           if (!value) return;
@@ -219,19 +209,18 @@ export default {
             })
             .then(() => {
               this.description = value;
-              alert("修改成功");
+              alert('修改成功');
             });
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     cardModifyHandler() {
       if (!this.isAdmin && !this.isOwner && !this.getGroupInfo.member_modify) {
         return;
       }
-      this.$prompt("请输入群名片", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
+      this.$prompt('请输入群名片', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
         .then(({ value }) => {
           if (!value) return;
@@ -241,13 +230,12 @@ export default {
               value
             })
             .then(() => {
-              this.$store.dispatch("content/actionUpdateMemberList");
+              this.$store.dispatch('content/actionUpdateMemberList');
               this.cardName = value;
-              alert("修改成功");
+              alert('修改成功');
             });
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     }
     //methods finish
   }
