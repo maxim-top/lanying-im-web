@@ -9,6 +9,7 @@
       <input @change="fileChangeHandler" ref="fileRef" type="file" />
       <span @click="imageUploadClickHandler" class="ico image"></span>
       <span @click="fileUploadClickHandler" class="ico file"></span>
+      <span @click="locationClickHandler" class="ico location"></span>
     </div>
     <div class="input">
       <textarea @keydown="textareaKeyDown" @keyup="textKeyUp" class="input_text" placeholder="Type a message!" v-model="message" wrap="hard"></textarea>
@@ -113,6 +114,21 @@ export default {
       this.fileType = 'file';
       this.$refs.fileRef.click();
     },
+
+    locationClickHandler() {
+      const message = {
+        gid: this.getSid,
+        content: '',
+        type: 'location',
+        attachment: {
+          lat: 40.024422,
+          lon: 116.398376,
+          addr: '奥林匹克森林公园'
+        }
+      };
+      this.im.sysManage.sendGroupMessage(message);
+    },
+
     handleSendMessage() {
       const txt = this.message;
       if (/^\s*$/.test(txt)) {

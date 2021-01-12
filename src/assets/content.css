@@ -257,11 +257,11 @@
 .content .inputer_frame .attach .ico {
   float: left;
   cursor: pointer;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   margin-top: 4px;
   margin-left: 10px;
-  background-size: 12px 12px;
+  background-size: 14px 14px;
 }
 
 .content .inputer_frame .attach .image {
@@ -270,6 +270,10 @@
 
 .content .inputer_frame .attach .file {
   background-image: url(/image/file.png);
+}
+
+.content .inputer_frame .attach .location {
+  background-image: url(/image/loc2.png);
 }
 
 .content .inputer_frame .attach .mentionList {

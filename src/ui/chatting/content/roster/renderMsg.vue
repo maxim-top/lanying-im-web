@@ -87,6 +87,15 @@ export default {
     if (timestamp - last > 5 * 60 * 1000) {
       this.$store.dispatch('content/actionUpdateMessageTime', timestamp);
     }
+
+    // Message displayed as read
+    const fromUid = toNumber(this.message.from);
+    const uid = this.$store.getters.im.userManage.getUid();
+    if (fromUid !== uid) {
+      //do not read message sent by oneself
+      const im = this.$store.getters.im;
+      if (im) im.rosterManage.readRosterMessage(this.getSid, this.message.id);
+    }
   },
   components: {
     // Chat,
@@ -125,7 +134,7 @@ export default {
       const fromUid = toNumber(this.message.from);
       const fromUserObj = umaps[fromUid] || {};
       let username = fromUserObj.username || '';
-      let avatar = this.im.sysManage.getImage({ url: fromUserObj.avatar });
+      let avatar = this.im.sysManage.getImage({ avatar: fromUserObj.avatar });
 
       if (fromUid === cuid) {
         username = '我';
@@ -172,13 +181,7 @@ export default {
     },
 
     attachLocation() {
-      const attachment = this.message.attach || '{}';
-      let attachObj = {};
-      try {
-        attachObj = JSON.parse(attachment);
-      } catch (ex) {
-        //
-      }
+      const attachObj = this.message.attach || {};
       let loc = {};
       if (attachObj.lat) {
         loc.addr = attachObj.addr;
@@ -207,8 +210,12 @@ export default {
 
     messageStatus() {
       const fromUid = toNumber(this.message.from);
+      const toUid = toNumber(this.message.to);
+      const uid = this.im.userManage.getUid();
+      const cid = fromUid === uid ? toUid : fromUid;
+
       // status will be unread / delivered / read
-      return this.im.sysManage.getMessageStatus(fromUid, this.message.id);
+      return this.im.sysManage.getMessageStatus(cid, this.message.id);
     }
   },
 

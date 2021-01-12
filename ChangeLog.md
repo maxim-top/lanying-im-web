@@ -4,9 +4,21 @@ Maxim-Web Changelog
 
 [美信拓扑](https://www.maximtop.com/) ，一键启用多云架构的即时通讯云服务
 
+### v2.9.4 20210113
+
+1. 支持从服务端获取消息已读未读状态；
+2. 与 Uniapp 同步版本；
+3. 支持发送定位消息，type: location；
+4. Fix bug：偶现情况下 token 失效上报事件使用了 loginFailure 而不是 loginFail；
+5. Demo：演示发送定位信息；
+6. Demo: 调整未读数显示位置；
+7. Demo fix bug: 单聊时不显示自己头像；
+8. Demo fix bug：发送消息后显示已读；
+
 ### v2.9.3 20210111
 
 1. 使用 prettier 格式化工程；
+2. Demo bug fix：修改 AppID 后不初始化；
 
 ### v2.9.2 20210110
 

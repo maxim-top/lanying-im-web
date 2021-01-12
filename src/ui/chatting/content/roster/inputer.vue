@@ -4,6 +4,7 @@
       <input @change="fileChangeHandler" ref="fileRef" type="file" />
       <span @click="imageUploadClickHandler" class="ico image"></span>
       <span @click="fileUploadClickHandler" class="ico file"></span>
+      <span @click="locationClickHandler" class="ico location"></span>
     </div>
     <div class="input">
       <textarea
@@ -57,6 +58,21 @@ export default {
       this.fileType = 'file';
       this.$refs.fileRef.click();
     },
+
+    locationClickHandler() {
+      const message = {
+        uid: this.getSid,
+        content: '',
+        type: 'location',
+        attachment: {
+          lat: 40.024422,
+          lon: 116.398376,
+          addr: '奥林匹克森林公园'
+        }
+      };
+      this.im.sysManage.sendRosterMessage(message);
+    },
+
     handleSendMessage() {
       if (/^\s*$/.test(this.message)) {
         this.message = '';

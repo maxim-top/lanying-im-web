@@ -129,7 +129,10 @@ export default {
       const fromUid = toNumber(message.from);
       const pid = this.getSid;
       if ((uid === toUid && fromUid === pid) || (uid === fromUid && toUid === pid)) {
-        this.$store.getters.im.rosterManage.readRosterMessage(this.getSid);
+        if (fromUid !== uid) {
+          //do not read message sent by oneself
+          this.$store.getters.im.rosterManage.readRosterMessage(this.getSid, message.id);
+        }
         this.requireMessage();
         this.scroll();
       }

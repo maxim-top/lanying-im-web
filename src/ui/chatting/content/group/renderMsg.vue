@@ -76,6 +76,14 @@ export default {
     if (timestamp - last > 5 * 60 * 1000) {
       this.$store.dispatch('content/actionUpdateMessageTime', timestamp);
     }
+
+    // Message displayed as read
+    const fromUid = toNumber(this.message.from);
+    const uid = this.$store.getters.im.userManage.getUid();
+    if (fromUid !== uid) {
+      const im = this.$store.getters.im;
+      if (im) im.groupManage.readGroupMessage(this.getSid, this.message.id);
+    }
   },
   components: {
     // Chat,
@@ -165,13 +173,7 @@ export default {
     },
 
     attachLocation() {
-      const attachment = this.message.attach || '{}';
-      let attachObj = {};
-      try {
-        attachObj = JSON.parse(attachment);
-      } catch (ex) {
-        //
-      }
+      const attachObj = this.message.attach || '{}';
       let loc = {};
       if (attachObj.lat) {
         loc.addr = attachObj.addr;
