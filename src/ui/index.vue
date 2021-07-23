@@ -71,7 +71,7 @@ export default {
         const im = newAppID !== this.appid ? undefined : this.$store.state.im;
         this.appid = newAppID;
 
-        if (!(im && im.isReady && im.isReady())) {
+        if (!im) {
           this.init_flooIM();
         }
         this.waitForFlooReadyAndLogin(0);
@@ -86,7 +86,6 @@ export default {
       if (im && im.isReady && im.isReady()) {
         console.log('flooim 初始化成功 ', times);
         this.sdkok = true;
-        this.addIMListeners();
         return;
       }
       if (times < INIT_CHECK_TIMES_MAX) {
@@ -121,6 +120,7 @@ export default {
       // 2. 使用 flooim module 模式
       const im = flooim(config);
       this.$store.dispatch('actionSaveIm', im);
+      this.addIMListeners();
     },
 
     addIMListeners() {

@@ -1,6 +1,0 @@
-# src/sdk/core/protocol
-src/im/
-build
-dist
-node_modules
-maxim-web
