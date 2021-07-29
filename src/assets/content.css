@@ -160,6 +160,7 @@
 .content .self .c_content {
   float: right;
   background: #b3d0fd;
+  white-space: pre-line;
 }
 
 .content .roster .c_content {

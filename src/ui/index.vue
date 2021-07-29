@@ -64,14 +64,19 @@ export default {
     }
   },
   methods: {
+    getIM() {
+      return this.$store.state.im;
+    },
+
     prepare(newAppID) {
       // not prepare for same appid except the previous preparation is aborted;
       if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
         this.sdkok = false;
-        const im = newAppID !== this.appid ? undefined : this.$store.state.im;
+        const im = newAppID !== this.appid ? undefined : this.getIM();
         this.appid = newAppID;
 
-        if (!im) {
+        //check function existence in case empty im object accounted
+        if (!(im && im.isReady)) {
           this.init_flooIM();
         }
         this.waitForFlooReadyAndLogin(0);
@@ -81,11 +86,12 @@ export default {
     },
 
     waitForFlooReadyAndLogin(times) {
-      const im = this.$store.state.im;
+      const im = this.getIM();
       //通常来讲，初始化过程会非常快，但由于涉及网络调用，这个时间并无法保证；如果你的业务非常依赖初始化成功，请等待；
       if (im && im.isReady && im.isReady()) {
         console.log('flooim 初始化成功 ', times);
         this.sdkok = true;
+        this.imLogin();
         return;
       }
       if (times < INIT_CHECK_TIMES_MAX) {
@@ -124,10 +130,9 @@ export default {
     },
 
     addIMListeners() {
-      this.$store.state.im.on({
+      this.getIM().on({
         loginSuccess: () => {
           this.$store.dispatch('login/actionChangeAppStatus', 'chatting');
-          this.bindMobile();
           // this.bindDeviceToken( device_token, notifier_name );
         },
         loginFail: (msg) => {
@@ -135,7 +140,7 @@ export default {
         },
         flooNotice: (msg) => {
           const { category, desc } = msg;
-          console.log('Floo Notice: ' + category + ' : ' + desc.toString());
+          console.log('Floo Notice: ' + category + ' : ' + desc);
           switch (category) {
             case 'action':
               if ('relogin' == desc) {
@@ -144,7 +149,7 @@ export default {
                 if (info.name && autoLoginTimes < AUTO_LOGIN_TIMES_MAX) {
                   console.log('Token失效，尝试自动登录中:', autoLoginTimes);
                   setTimeout(() => {
-                    this.$store.state.im.login(info);
+                    this.getIM().login(info);
                   }, autoLoginTimes * AUTO_LOGIN_DELAY);
                   autoLoginTimes++;
                 } else {
@@ -159,6 +164,9 @@ export default {
               } else {
                 console.log('Floo Notice: unknown action ', desc);
               }
+              break;
+            case 'userNotice':
+              console.log('Floo Notice: 收到用户/设备通知 : ', desc);
               break;
             case 'loginMessage':
               this.$store.dispatch('login/actionAddLoginLog', desc);
@@ -192,7 +200,7 @@ export default {
     //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
     //其中 notifier_name 为证书名称，也即在美信拓扑控制台内上传证书时候设置的名称。
     bindDeviceToken(device_token, notifier_name) {
-      const imUser = this.$store.state.im.userManage;
+      const imUser = this.getIM().userManage;
       const device_sn = imUser.getDeviceSN();
       imUser
         .asyncBindDeviceToken({
@@ -208,7 +216,7 @@ export default {
         });
     },
     unbindDeviceToken() {
-      const imUser = this.$store.state.im.userManage;
+      const imUser = this.getIM().userManage;
       const device_sn = imUser.getDeviceSN();
       imUser
         .asyncUnbindDeviceToken({
@@ -221,36 +229,58 @@ export default {
           window.alert('设备解绑失败: ' + err.code + ':' + err.errMsg);
         });
     },
-    bindMobile() {
-      if (this.getMobileSign && this.getSignMobile) {
-        this.$store.state.im.userManage
-          .asyncUserMobileBindSign({
-            mobile: this.getSignMobile,
-            sign: this.getMobileSign
-          })
-          .then(() => {
-            this.$store.dispatch('login/actionSetMobileSign', '');
-            this.$store.dispatch('login/actionSetSignMobile', '');
+
+    imLogin() {
+      const im = this.getIM();
+      if (!this.isIMLogin()) {
+        const loginInfo = this.getLoginInfo();
+
+        console.log('GOT USER: ', JSON.stringify(loginInfo));
+        if (loginInfo && loginInfo.username) {
+          im.login({
+            //TODO: change name to username
+            name: loginInfo.username,
+            password: loginInfo.password
           });
+        } else if (loginInfo && loginInfo.user_id) {
+          im.idLogin({
+            user_id: loginInfo.user_id,
+            password: loginInfo.password
+          });
+        } else {
+          console.log('没有用户信息不能登录');
+        }
       }
     },
 
     imLogout() {
-      const im = this.$store.getters.im;
-      im.logout();
-      window.localStorage.removeItem('maxim_logininfo');
+      this.getIM().logout();
+      this.removeLoginInfo();
       this.$store.dispatch('login/actionChangeAppStatus', 'login');
+    },
+
+    isIMLogin() {
+      const im = this.getIM();
+      return im && im.isLogin && im.isLogin();
+    },
+    saveLoginInfo(info) {
+      // const {name, password} = info;
+      window.localStorage.setItem('maxim_logininfo', JSON.stringify(info));
+    },
+    getLoginInfo() {
+      const info_str = window.localStorage.getItem('maxim_logininfo') || {};
+      let info = {};
+      try {
+        info = JSON.parse(info_str);
+      } catch (ex) {
+        console.error('Can not parse json, remove login info: ', info_str);
+        this.removeLoginInfo();
+      }
+      return info;
+    },
+    removeLoginInfo() {
+      window.localStorage.removeItem('maxim_logininfo');
     }
-    // saveLoginInfo(info) {
-    //   // const {name, password} = info;
-    //   window.localStorage.setItem('maxim_logininfo', info);
-    // },
-    // getLoginInfo() {
-    //   return window.localStorage.getItem('maxim_logininfo') || {};
-    // },
-    // removeLoginInfo() {
-    //   window.localStorage.removeItem('maxim_logininfo');
-    // }
   }
 };
 </script>

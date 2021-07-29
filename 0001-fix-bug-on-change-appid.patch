@@ -1,0 +1,37 @@
+From ef2382323af8afb8c56a85172ae0b04a8073baae Mon Sep 17 00:00:00 2001
+From: Eric Liang <eric@bmxlabs.com>
+Date: Mon, 11 Jan 2021 19:16:29 +0800
+Subject: [PATCH] fix bug on change appid
+
+---
+ src/ui/index.vue | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/src/ui/index.vue b/src/ui/index.vue
+index e003a94..d19646b 100644
+--- a/src/ui/index.vue
++++ b/src/ui/index.vue
+@@ -41,7 +41,6 @@ export default {
+     mounted() {
+         this.appid = this.$parent.appid;
+         this.$store.dispatch('actionChangeAppID', this.appid);
+-        // this.prepare(this.appid);
+     },
+     watch: {
+         getAppID: {
+@@ -68,10 +67,10 @@ export default {
+         prepare(newAppID) {
+             // not prepare for same appid except the previous preparation is aborted;
+             if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
+-                this.appid = newAppID;
+                 this.sdkok = false;
++                const im = (newAppID !== this.appid) ? undefined : this.$store.state.im;
++                this.appid = newAppID;
+ 
+-                const im = this.$store.state.im;
+                 if (!(im && im.isReady && im.isReady())) {
+                     this.init_flooIM();
+                 }
+-- 
+2.24.3 (Apple Git-128)
+

@@ -9,7 +9,7 @@
       <img src="/image/logob.png" />
     </div>
     <div class="iptFrame mt21">
-      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="用户名" type="text" v-model="user.name" />
+      <input @keyup.enter="nameEnter" autocomplete="false" placeholder="用户名" type="text" v-model="user.username" />
     </div>
 
     <div class="iptFrame mt14">
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       user: {
-        name: '',
+        username: '',
         password: ''
       }
     };
@@ -48,11 +48,12 @@ export default {
     nameEnter() {
       this.$refs.password.focus();
     },
+    getApp() {
+      return this.$parent.$parent;
+    },
     submit() {
-      window.localStorage.setItem('maxim_logininfo', this.user);
-      if (this.sdkok) {
-        this.$store.state.im.login(this.user);
-      }
+      this.getApp().saveLoginInfo(this.user);
+      this.getApp().imLogin();
     },
 
     changeAppID(presentAppID) {

@@ -4,6 +4,11 @@ Maxim-Web Changelog
 
 [美信拓扑](https://www.maximtop.com/) ，一键启用多云架构的即时通讯云服务
 
+### v2.9.7 20210728
+
+1. Fix Bug: 收到 userNotice 后退出并不再重连；
+2. Demo：增加 userNotice 演示；
+
 ### v2.9.6 20210723
 
 1. 优化登陆速度至 100ms 以内；

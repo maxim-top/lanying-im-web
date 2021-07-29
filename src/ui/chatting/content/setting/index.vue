@@ -114,10 +114,11 @@ export default {
           alert('修改成功');
         });
     },
+    getApp() {
+      return this.$parent.$parent.$parent;
+    },
     logout() {
-      const im = this.$store.getters.im;
-      im.logout();
-      window.localStorage.removeItem('maxim_logininfo');
+      this.getApp().imLogout();
       this.$store.dispatch('login/actionChangeAppStatus', 'login');
       this.$store.dispatch('header/actionChangeHeaderUserProfile', {});
     },
