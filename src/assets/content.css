@@ -157,10 +157,12 @@
   line-height: 25px;
 }
 
+.content .c_content {
+  white-space: pre-line;
+}
 .content .self .c_content {
   float: right;
   background: #b3d0fd;
-  white-space: pre-line;
 }
 
 .content .roster .c_content {

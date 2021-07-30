@@ -8,6 +8,7 @@ Maxim-Web Changelog
 
 1. Fix Bug: 收到 userNotice 后退出并不再重连；
 2. Demo：增加 userNotice 演示；
+3. Demo bug fix: 退出登录另一账号后，会话页面消息显示错误判断是否为自己发送；
 
 ### v2.9.6 20210723
 

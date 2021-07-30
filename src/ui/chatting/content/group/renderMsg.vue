@@ -119,7 +119,7 @@ export default {
     },
 
     isSelf() {
-      const uid = this.$store.getters.uid;
+      const uid = this.im.userManage.getUid();
       const cid = numToString(this.message.from);
       return cid + '' === uid + '';
     },

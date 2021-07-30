@@ -39,10 +39,6 @@ export default new Vuex.Store({
     },
     im(state) {
       return state.im;
-    },
-
-    uid(state) {
-      return state.im.userManage.getUid();
     }
   },
 
