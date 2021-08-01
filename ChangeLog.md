@@ -4,6 +4,13 @@ Maxim-Web Changelog
 
 [美信拓扑](https://www.maximtop.com/) ，一键启用多云架构的即时通讯云服务
 
+### v2.9.8 20210801
+
+1. Fix Bug: 好友信息更新时间应该使用 onRosterInfoUpdate；
+2. Demo bug fix: 好友信息变化后不再触发花名册更新，后者将会在处理不存在用户时引发循环请求；
+3. Demo: 显示花名册好友昵称；
+4. Demo: 持久化存储 AppID，页面刷新后依然使用上次设置 AppID；
+
 ### v2.9.7 20210728
 
 1. Fix Bug: 收到 userNotice 后退出并不再重连；

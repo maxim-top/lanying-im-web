@@ -13,8 +13,7 @@ export default {
     return {
       windowWidth: 0,
       windowHeight: 0,
-      appStyle: '',
-      appid: 'welovemaxim'
+      appStyle: ''
     };
   },
   mounted() {

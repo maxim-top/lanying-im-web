@@ -33,9 +33,10 @@ export default {
   mounted() {
     this.refreshUserInfo(this.getSid);
 
-    this.$store.getters.im.on('onRosterListUpdate', () => {
-      this.$store.dispatch('contact/actionClearRosterList');
-      this.$store.dispatch('contact/actionLazyGetRosterList');
+    this.$store.getters.im.on('onRosterInfoUpdate', (ids) => {
+      if (ids.has(this.getSid)) {
+        this.refreshUserInfo(newSid);
+      }
     });
   },
   watch: {

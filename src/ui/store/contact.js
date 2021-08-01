@@ -98,7 +98,7 @@ const actions = {
       if (item.type === 'roster') {
         //roster
         const sroster = allRosterMap[id] || {};
-        name = sroster.username || id;
+        name = sroster.nick_name || sroster.username || id;
         avatar = sroster.avatar;
       } else if (item.type === 'group') {
         //group
@@ -136,7 +136,7 @@ const actions = {
         rootState.im.rosterManage.asnycGetRosterListDetailByIds(res).then(() => {
           const allMaps = rootState.im.rosterManage.getAllRosterDetail() || {};
           const retObj = res.map((i) => {
-            const rosterInfo = allMaps[i];
+            const rosterInfo = allMaps[i] || { user_id: i };
             rosterInfo.avatar = rootState.im.sysManage.getImage({
               avatar: rosterInfo.avatar
             });

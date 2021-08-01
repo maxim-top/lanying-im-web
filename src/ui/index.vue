@@ -39,13 +39,13 @@ export default {
     };
   },
   mounted() {
-    this.appid = this.$parent.appid;
+    this.appid = this.retrieveAppId();
     this.$store.dispatch('actionChangeAppID', this.appid);
   },
   watch: {
     getAppID: {
       handler(newAppID) {
-        this.prepare(newAppID);
+        this.setupIM(newAppID);
       },
       immediate: true
     }
@@ -68,17 +68,17 @@ export default {
       return this.$store.state.im;
     },
 
-    prepare(newAppID) {
+    setupIM(newAppID) {
       // not prepare for same appid except the previous preparation is aborted;
       if (newAppID && (newAppID !== this.appid || !this.sdkok)) {
         this.sdkok = false;
-        const im = newAppID !== this.appid ? undefined : this.getIM();
         this.appid = newAppID;
+        this.saveAppId(this.appid);
 
-        //check function existence in case empty im object accounted
-        if (!(im && im.isReady)) {
-          this.init_flooIM();
-        }
+        const im = this.getIM();
+        im && im.logout && im.logout();
+
+        this.initFlooIM();
         this.waitForFlooReadyAndLogin(0);
       } else {
         console.log('Invalid AppID', newAppID);
@@ -101,7 +101,7 @@ export default {
       }
     },
 
-    init_flooIM() {
+    initFlooIM() {
       const config = {
         // dnsServer: "https://dns.maximtop.com/v2/app_dns",
         appid: this.appid,
@@ -119,7 +119,7 @@ export default {
       //   // sdk not ready, should retry later
       //   console.log(ex);
       //   setTimeout(() => {
-      //     this.init_flooIM();
+      //     this.initFlooIM();
       //   }, 500);
       // }
 
@@ -280,6 +280,12 @@ export default {
     },
     removeLoginInfo() {
       window.localStorage.removeItem('maxim_logininfo');
+    },
+    saveAppId(appid) {
+      window.localStorage.setItem('maxim_appid', appid);
+    },
+    retrieveAppId() {
+      return window.localStorage.getItem('maxim_appid') || 'welovemaxim';
     }
   }
 };

@@ -39,7 +39,7 @@ export default {
       this.$store.dispatch('contact/actionGetConversationList');
     });
 
-    this.$store.getters.im.on('onRosterInfoUpdated', () => {
+    this.$store.getters.im.on('onRosterInfoUpdate', () => {
       this.$store.dispatch('contact/actionGetConversationList');
     });
   },

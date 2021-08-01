@@ -47,7 +47,7 @@ const actions = {
         rootState.im.rosterManage.asnycGetRosterListDetailByIds(res).then(() => {
           const allMaps = rootState.im.rosterManage.getAllRosterDetail() || {};
           const retObj = res.map((i) => {
-            const rosterInfo = allMaps[i];
+            const rosterInfo = allMaps[i] || { user_id: i };
             return {
               name: rosterInfo.username,
               id: rosterInfo.user_id
