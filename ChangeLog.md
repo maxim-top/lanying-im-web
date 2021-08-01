@@ -7,9 +7,10 @@ Maxim-Web Changelog
 ### v2.9.8 20210801
 
 1. Fix Bug: 好友信息更新时间应该使用 onRosterInfoUpdate；
-2. Demo bug fix: 好友信息变化后不再触发花名册更新，后者将会在处理不存在用户时引发循环请求；
-3. Demo: 显示花名册好友昵称；
-4. Demo: 持久化存储 AppID，页面刷新后依然使用上次设置 AppID；
+2. Fix Bug: 自动登录未正确设置 isLogin，导致同一用户会出现两次登录；
+3. Demo bug fix: 好友信息变化后不再触发花名册更新，后者将会在处理不存在用户时引发循环请求；
+4. Demo: 显示花名册好友昵称；
+5. Demo: 持久化存储 AppID，页面刷新后依然使用上次设置 AppID；
 
 ### v2.9.7 20210728
 
