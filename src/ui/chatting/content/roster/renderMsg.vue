@@ -246,9 +246,36 @@ export default {
       au.src = url;
       au.play();
     },
+
+    getBlob(url) {
+      return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.responseType = 'blob';
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            resolve(xhr.response);
+          }
+        };
+
+        xhr.send();
+      });
+    },
+
     downloadFile() {
       if (this.attachUrl) {
+        //方法 1 可直接下载文件，如果你想重命名，可以使用方法2，但要注意在 Safari 浏览器里，有些扩展名可能因为安全原因被屏蔽
+        //1. 直接下载
         window.open(this.attachUrl);
+
+        // //2. 下载并重命名
+        // this.getBlob(this.attachUrl).then(blob =>{
+        //   var link = document.createElement("a");
+        //   link.href = window.URL.createObjectURL(blob);;
+        //   link.download = "Example.txt";
+        //   link.click();
+        // });
       } else {
         alert('附件错误..');
       }
