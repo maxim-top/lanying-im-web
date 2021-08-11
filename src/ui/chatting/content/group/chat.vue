@@ -24,12 +24,11 @@ export default {
       this.reloadMessage(message);
     });
 
-    this.$store.getters.im.on('onReceiveHistoryMsg', (messages) => {
+    this.$store.getters.im.on('onReceiveHistoryMsg', ({ next }) => {
       this.queryingHistory = false;
       this.$store.dispatch('content/actionAppendMessage', {
         history: true,
-        messages: messages.messages,
-        next: messages.next
+        next
       });
       !this.getMessages.length && this.scroll();
     });

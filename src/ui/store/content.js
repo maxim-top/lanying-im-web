@@ -257,7 +257,7 @@ const actions = {
       allMessages = allMessages.concat(newMessages.slice(i, newMessages.length));
     }
 
-    if (j < newMessages.length) {
+    if (j < oldMessages.length) {
       allMessages = allMessages.concat(oldMessages.slice(i, oldMessages.length));
     }
     context.commit('setMessage', allMessages);

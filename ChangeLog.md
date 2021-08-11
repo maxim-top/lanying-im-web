@@ -4,6 +4,11 @@ Maxim-Web Changelog
 
 [美信拓扑](https://www.maximtop.com/) ，一键启用多云架构的即时通讯云服务
 
+### v2.9.9 20210811
+
+1. 收取历史消息不需要额外通知；
+2. Fix Bug: 获取 roster 失败引发 socket 初始化失败，将会导致 disConnect 时候异常；
+
 ### v2.9.8 20210801
 
 1. Fix Bug: 好友信息更新时间应该使用 onRosterInfoUpdate；
