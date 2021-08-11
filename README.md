@@ -6,6 +6,8 @@
 
 DemoApp 是为了演示 IM SDK 调用而开发，也因此最好的开发方式为根据 DemoApp 找到功能，然后直接查看使用示例.
 
+[![Scc Count Badge](https://sloc.xyz/github/maxim-top/maxim-web/?category=total&avg-wage=1)](https://github.com/maxim-top/maxim-web/) [![Scc Count Badge](https://sloc.xyz/github/maxim-top/maxim-web/?category=code&avg-wage=1)](https://github.com/maxim-top/maxim-web/)
+
 ### 构建
 
 本工程为标准 web 工程，推荐使用 yarn 来操作：
