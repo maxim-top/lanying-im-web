@@ -4,7 +4,7 @@ import App from './App.vue';
 import store from './ui/store';
 import axios from 'axios';
 
-import './assets/index.css';
+import './css/index.css';
 
 import ElementUI from 'element-ui';
 
