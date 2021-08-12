@@ -35,7 +35,7 @@ export default {
 
     this.$store.getters.im.on('onRosterInfoUpdate', (ids) => {
       if (ids.has(this.getSid)) {
-        this.refreshUserInfo(newSid);
+        this.refreshUserInfo(this.getSid);
       }
     });
   },

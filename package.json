@@ -15,12 +15,8 @@
     "presdk": "yarn",
     "sdk": "webpack --mode production --config ./config/webpack.sdk.config.js",
     "sdk2": "rollup --config ./config/rollup.sdk.config.js",
-    "prewasm": "yarn sdk",
-    "wasm": "./scripts/generate-wasm.sh && ./scripts/build-wasm.sh",
-    "prerelease-wasm": "yarn wasm",
-    "release-wasm": "./scripts/floo.sh maxim-web --wasm",
     "prerelease": "yarn sdk",
-    "release": "./scripts/floo.sh maxim-web"
+    "release": "./floo.sh maxim-web"
   },
   "dependencies": {
     "core-js": "2",
