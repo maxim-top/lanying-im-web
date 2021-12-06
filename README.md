@@ -71,6 +71,7 @@ module.exports = {
 ```
 
 2. 找不到 long 模块，提示
+
 ```
 module "third/long" is not defined
 ```
@@ -80,7 +81,6 @@ module "third/long" is not defined
 ```
 npm i -f
 ```
-
 
 ## 其他
 
