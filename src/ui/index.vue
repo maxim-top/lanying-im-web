@@ -103,7 +103,7 @@ export default {
 
     initFlooIM() {
       const config = {
-        // dnsServer: "https://dns.maximtop.com/v2/app_dns",
+        // dnsServer: "https://dns.lanyingim.com/v2/app_dns",
         appid: this.appid,
         ws: false,
         autoLogin: true
@@ -198,7 +198,7 @@ export default {
     },
 
     //如果你在原生App中集成Web版，尤其是Uniapp这样的场景，你才可能需要绑定 DeviceToken 以利用厂商推送通道。
-    //其中 notifier_name 为证书名称，也即在美信拓扑控制台内上传证书时候设置的名称。
+    //其中 notifier_name 为证书名称，也即在蓝莺IM控制台内上传证书时候设置的名称。
     bindDeviceToken(device_token, notifier_name) {
       const imUser = this.getIM().userManage;
       const device_sn = imUser.getDeviceSN();
@@ -265,10 +265,10 @@ export default {
     },
     saveLoginInfo(info) {
       // const {name, password} = info;
-      window.localStorage.setItem('maxim_logininfo', JSON.stringify(info));
+      window.localStorage.setItem('lanying_im_logininfo', JSON.stringify(info));
     },
     getLoginInfo() {
-      const info_str = window.localStorage.getItem('maxim_logininfo') || {};
+      const info_str = window.localStorage.getItem('lanying_im_logininfo') || {};
       let info = {};
       try {
         info = JSON.parse(info_str);
@@ -279,13 +279,13 @@ export default {
       return info;
     },
     removeLoginInfo() {
-      window.localStorage.removeItem('maxim_logininfo');
+      window.localStorage.removeItem('lanying_im_logininfo');
     },
     saveAppId(appid) {
-      window.localStorage.setItem('maxim_appid', appid);
+      window.localStorage.setItem('lanying_im_appid', appid);
     },
     retrieveAppId() {
-      return window.localStorage.getItem('maxim_appid') || 'welovemaxim';
+      return window.localStorage.getItem('lanying_im_appid') || 'welovemaxim';
     }
   }
 };
