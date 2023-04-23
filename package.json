@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "core-js": "2",
+    "vue-js-popover": "^1.2.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

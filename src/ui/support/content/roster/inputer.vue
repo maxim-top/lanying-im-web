@@ -1,23 +1,27 @@
 <template>
   <div class="inputer_frame">
-    <div class="attach">
-      <input @change="fileChangeHandler" ref="fileRef" type="file" />
-      <span v-popover:tooltip.top="'发送图片'" @click="imageUploadClickHandler" class="ico image"></span>
-      <span v-popover:tooltip.top="'发送文件'" @click="fileUploadClickHandler" class="ico file"></span>
-      <span v-popover:tooltip.top="'发送位置'" @click="locationClickHandler" class="ico location"></span>
-    </div>
     <div class="input">
       <textarea
         @blur="inputBlurHandler"
         @focus="inputFocusHandler"
         @keydown="textareaKeyDown"
         class="input_text"
-        placeholder="Type a message!"
+        :placeholder="[[placeholder]]"
         v-model="message"
         wrap="hard"
         ref="inputTextRef"
+        focus
       ></textarea>
+      <div class="button">
+        <div @click="handleSendMessage" class="im_send" />
+      </div>
     </div>
+    <span class="attach">
+      <input @change="fileChangeHandler" ref="fileRef" type="file" />
+      <span v-popover:tooltip.top="'发送图片'" @click="imageUploadClickHandler" class="ico image"></span>
+      <span v-popover:tooltip.top="'发送文件'" @click="fileUploadClickHandler" class="ico file"></span>
+    </span>
+    <div class="support_link"><a href="https://www.lanyingim.com" target="_blank">打造你的智能聊天APP，使用蓝莺IM SDK</a></div>
   </div>
 </template>
 
@@ -28,6 +32,7 @@ export default {
   name: 'rosterInputer',
   data() {
     return {
+      placeholder: '',
       message: '',
       fileType: ''
     };
@@ -79,8 +84,8 @@ export default {
 
     handleSendMessage() {
       if (/^\s*$/.test(this.message)) {
-        this.message = '';
-        return;
+        this.message = this.placeholder;
+        if (/^\s*$/.test(this.message)) return;
       }
 
       // 如果需要自定义消息，直接使用 ext 字段即可
@@ -137,7 +142,7 @@ export default {
 
     initIntentMessage() {
       if (this.getIntentMessage) {
-        this.message = this.getIntentMessage;
+        this.placeholder = this.getIntentMessage;
         this.$nextTick(() => {
           this.$refs.inputTextRef.focus();
         });
@@ -147,5 +152,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

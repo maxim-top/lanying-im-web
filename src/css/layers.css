@@ -31,7 +31,7 @@
 .layer .layer_header {
   height: 52px;
   line-height: 52px;
-  background: #409fe0;
+  background: #47b6ff;
   position: relative;
   text-indent: 48px;
   font-size: 16px;
@@ -74,7 +74,7 @@
   text-align: center;
   line-height: 25px;
   color: #000;
-  background: #409fe0;
+  background: #47b6ff;
   font-size: 14px;
   float: right;
   border-radius: 3px;
@@ -121,7 +121,7 @@
   text-align: center;
   line-height: 40px;
   color: #000;
-  background: #409fe0;
+  background: #47b6ff;
   font-size: 14px;
   float: right;
   margin-right: 16px;
@@ -296,7 +296,7 @@
 .group_setting_layer .group_setting_group .category a {
   float: left;
   padding: 0 8px;
-  background: #319de1;
+  background: #47b6ff;
   color: white;
   font-size: 12px;
   cursor: pointer;
@@ -325,7 +325,7 @@
 }
 
 .group_setting_layer .group_setting_group .setting_lists .category a {
-  background: #b3d0fd;
+  background: #47b6ff;
 }
 
 /** search result ***/

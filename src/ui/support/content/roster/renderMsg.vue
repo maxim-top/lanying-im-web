@@ -31,24 +31,6 @@
             <img class="loc" src="/image/loc.png" />
             <span class="loc_txt">{{ attachLocation.addr }}</span>
           </div>
-
-          <el-popover :placement="isSelf ? 'left' : 'right'" trigger="hover" width="70">
-            <div class="messageExt">
-              <div @click="deleteMessage" class="item delete" v-if="!message.h">删除</div>
-              <div @click="forwardMessage" class="recall item">转发</div>
-              <div @click="recallMessage" class="recall item" v-if="isSelf && !message.h">撤回</div>
-
-              <div class="msgStatus item item" v-if="isSelf && messageStatus === 'unread' && !message.h">未读</div>
-              <div class="msgStatus item" v-if="isSelf && messageStatus === 'delivered' && !message.h">送达</div>
-              <div class="msgStatus item" v-if="isSelf && messageStatus === 'read' && !message.h">已读</div>
-
-              <div class="unread item" v-if="messageStatus === 'unread' && !isSelf && !message.h">未读</div>
-              <div @click="unreadMessage" class="set_unread item" v-if="messageStatus !== 'unread' && !isSelf && !message.h">设置未读</div>
-            </div>
-            <div class="h_image" slot="reference">
-              <img src="/image/more.png" />
-            </div>
-          </el-popover>
         </div>
       </div>
     </div>
@@ -130,10 +112,10 @@ export default {
     },
     userObj() {
       const cuid = this.im.userManage.getUid();
-      const umaps = this.im.rosterManage.getAllRosterDetail();
+      const umaps = this.im.rosterManage.getAllRosterDetail() || {};
       const fromUid = toNumber(this.message.from);
       const fromUserObj = umaps[fromUid] || {};
-      let username = fromUserObj.username || '';
+      let username = fromUserObj.alias || fromUserObj.nick_name || fromUserObj.username || fromUserObj.user_id;
       let avatar = this.im.sysManage.getImage({ avatar: fromUserObj.avatar });
 
       if (fromUid === cuid) {
@@ -220,6 +202,10 @@ export default {
   },
 
   methods: {
+    notEmpty(str) {
+      return !(!str || /^\s*$/.test(str));
+    },
+
     getImage({ url = '', thumbnail = true }) {
       if (!url) {
         const attach = this.message.attach || {};
