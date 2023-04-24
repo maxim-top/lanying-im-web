@@ -34,7 +34,7 @@ export default {
 
     rosterName() {
       let name = this.getRosterInfo.alias || this.getRosterInfo.nick_name;
-      name = this.isEmpty(name) ? this.getRosterInfo.username : '';
+      name = this.isEmpty(name) ? this.getRosterInfo.username : name;
       if (name && name.length > 20) {
         name = name.substring(0, 20) + '...';
       }
