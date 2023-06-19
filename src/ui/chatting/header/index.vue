@@ -5,7 +5,10 @@
       <div @click="headerAddChickHandler" class="addBtn"></div>
     </div>
     <div class="tab">
-      <div @click="touchRecent" class="stab"><img :src="convImage" /></div>
+      <div @click="touchRecent" class="stab">
+        <img :src="convImage" />
+        <span :class="{ none: getTotalUnread === '' }" class="unread_number">{{ getTotalUnread }}</span>
+      </div>
       <div @click="touchContact" class="stab"><img :src="contactImage" /></div>
       <div @click="touchSetting" class="stab"><img :src="settingImage" /></div>
     </div>
@@ -52,6 +55,7 @@ export default {
   },
   computed: {
     ...mapGetters('header', ['getHeaderStatus', 'getUserProfile']),
+    ...mapGetters('contact', ['getTotalUnread']),
 
     // avatar() {
     //   return this.$store.state.im.sysManage.getImage({

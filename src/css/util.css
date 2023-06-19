@@ -113,6 +113,80 @@ i.switcher_off {
   display: block;
 }
 
+i.mic_on {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/mic_on.png);
+  display: block;
+}
+
+i.mic_off {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/mic_off.png);
+  display: block;
+}
+
+i.speaker_on {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/speaker_on.png);
+  display: block;
+}
+
+i.speaker_off {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/speaker_off.png);
+  display: block;
+}
+
+i.camera_on {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/camera_on.png);
+  display: block;
+}
+
+i.camera_off {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/camera_off.png);
+  display: block;
+}
+
+i.audio_call_switch {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/audio_call_switch.png);
+  display: block;
+}
+
+i.pickup {
+  width: 30px;
+  height: 30px;
+  background-size: 30px 30px;
+  background-image: url(/image/pickup.png);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+i.hangup {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url(/image/hangup.png);
+  display: block;
+}
+
 .el-popover {
   min-width: 10px !important;
 }

@@ -5,6 +5,8 @@
       <span v-popover:tooltip.top="'发送图片'" @click="imageUploadClickHandler" class="ico image"></span>
       <span v-popover:tooltip.top="'发送文件'" @click="fileUploadClickHandler" class="ico file"></span>
       <span v-popover:tooltip.top="'发送位置'" @click="locationClickHandler" class="ico location"></span>
+      <span v-popover:tooltip.top="'发起视频通话'" @click="videoCallClickHandler" class="ico videocall"></span>
+      <span v-popover:tooltip.top="'发送语音通话'" @click="audioCallClickHandler" class="ico audiocall"></span>
     </div>
     <div class="input">
       <textarea
@@ -75,6 +77,20 @@ export default {
         }
       };
       this.im.sysManage.sendRosterMessage(message);
+    },
+
+    videoCallClickHandler() {
+      this.$store.dispatch('layer/actionSetShowing', 'videocall');
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
+      this.$store.dispatch('setting/actionSetCallStatus', true);
+      this.$store.dispatch('contact/actionSetCallId', this.im.userManage.getUid().toString() + '_' + Date.now());
+    },
+
+    audioCallClickHandler() {
+      this.$store.dispatch('layer/actionSetShowing', 'audiocall');
+      this.$store.dispatch('layer/actionSetShowmask', 'true');
+      this.$store.dispatch('setting/actionSetCallStatus', true);
+      this.$store.dispatch('contact/actionSetCallId', this.im.userManage.getUid().toString() + '_' + Date.now());
     },
 
     handleSendMessage() {

@@ -15,13 +15,14 @@ import Chatting from './chatting/index.vue';
 import Support from './support/index.vue';
 import Layers from './layers/index.vue';
 import { mapGetters } from 'vuex';
+var JSONBigString = require('json-bigint');
 
 // 您有两种方式使用 flooim：
 // 1. script 模式，你可以直接 import 后，使用 window.flooIM()
 // 这种方式主要为支持浏览器中使用 script 标签引用，但会存在初始化并发问题，所以要用 try-catch-retry，具体使用方法见下文。
-// import '../im/floo-2.0.0';
+// import '../im/floo-3.0.0';
 // 2. module 方式，import flooim 后，使用 flooim()
-import flooim from '../im/floo-2.0.0';
+import flooim from '../im/floo-3.0.0';
 
 const AUTO_LOGIN_DELAY = 2000; // ms
 const AUTO_LOGIN_TIMES_MAX = 3;
@@ -283,7 +284,7 @@ export default {
       const info_str = window.localStorage.getItem('lanying_im_logininfo') || {};
       let info = {};
       try {
-        info = JSON.parse(info_str);
+        info = JSONBigString.parse(info_str);
       } catch (ex) {
         console.error('Can not parse json, remove login info: ', info_str);
         this.removeLoginInfo();

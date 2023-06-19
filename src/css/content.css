@@ -251,8 +251,8 @@
   color: gray;
   font-size: 10px;
   line-height: 0.8;
-  width: 40px !important;
-  text-align: right;
+  width: 50px !important;
+  text-align: center;
   float: left;
   top: calc(75% + 72px) !important;
 }
@@ -289,6 +289,14 @@
 
 .content .inputer_frame .attach .location {
   background-image: url(/image/loc2.png);
+}
+
+.content .inputer_frame .attach .videocall {
+  background-image: url(/image/camera_on.png);
+}
+
+.content .inputer_frame .attach .audiocall {
+  background-image: url(/image/pickup.png);
 }
 
 .content .inputer_frame .attach .mentionList {
