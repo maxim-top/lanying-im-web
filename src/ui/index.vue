@@ -28,9 +28,9 @@ import { mapGetters } from 'vuex';
 // 您有两种方式使用 flooim：
 // 1. script 模式，你可以直接 import 后，使用 window.flooIM()
 // 这种方式主要为支持浏览器中使用 script 标签引用，但会存在初始化并发问题，所以要用 try-catch-retry，具体使用方法见下文。
-// import '../sdk/index';
+// import '../im/floo-3.0.0';
 // 2. module 方式，import flooim 后，使用 flooim()
-import flooim from '../sdk/index';
+import flooim from '../im/floo-3.0.0';
 import CryptoJS from 'crypto-js';
 
 const AUTO_LOGIN_DELAY = 2000; // ms
@@ -274,7 +274,12 @@ export default {
           // this.bindDeviceToken( device_token, notifier_name );
         },
         loginFail: (msg) => {
-          that.alert('登陆失败, error: ' + msg);
+          console.log('autoLoginTimes = ' + autoLoginTimes);
+          if (autoLoginTimes) {
+            console.log('登陆失败, error: ' + msg);
+          } else {
+            that.alert('登陆失败, error: ' + msg);
+          }
         },
         flooNotice: (msg) => {
           const { category, desc } = msg;
@@ -286,6 +291,13 @@ export default {
                 const info = that.getLoginInfo();
                 if (info.username && autoLoginTimes < AUTO_LOGIN_TIMES_MAX) {
                   console.log('Token失效，尝试自动登录中:', autoLoginTimes);
+                  if (autoLoginTimes) {
+                    that.$message({
+                      message: '第' + autoLoginTimes + '登录重试中...',
+                      type: 'warning',
+                      duration: 1500
+                    });
+                  }
                   setTimeout(() => {
                     that.getIM().login({
                       name: info.username,
@@ -296,7 +308,9 @@ export default {
                 } else {
                   console.log('自动登录失败次数过多，请手工登录。');
                   autoLoginTimes = 0;
-                  that.alert('请重新登录');
+                  setTimeout(() => {
+                    that.alert('自动登录失败次数过多,请重新手工登录');
+                  }, 500);
                   if (that.intent.action === 'support') {
                     that.imLogout(true);
                   } else {
@@ -334,7 +348,7 @@ export default {
               that.alert('用户错误: ' + desc);
               break;
             case 'DNS_FAILED':
-              that.alert('DNS错误: 无法访问 ' + desc);
+              that.alert('DNS错误: ' + desc);
               break;
             case 'LICENSE':
               that.alert('服务需要续费: ' + desc);
