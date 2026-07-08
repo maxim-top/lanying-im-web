@@ -1,2 +1,5 @@
 /src/sdk/core/rtc/janus.js
-/src/ui/third/marked.min.js
+src/im/**
+src/ui/third/marked.min.js
+dist/**
+node_modules/**
